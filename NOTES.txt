@@ -1,0 +1,21 @@
+Item Status
+
+1 - Pending
+2 - Approved
+3 - Reject
+4 - Ready for Bid/ Active
+5 - Sold
+
+Notification Type
+0 - Pending Add Item
+1 - Approved Add Item
+2 - Reject Add Item
+
+
+Pending/Action Items
+1. Delete
+2. Payment
+3. Bidding
+4. Subscription
+5. Admin Section
+6. Profile
