@@ -100,17 +100,3 @@
         </div>
     </ul>
 </nav>
-
-<div class="toast-container" style="position: absolute; top: 75px; right: 10px;">
-    <div id="myToast" class="toast fade show">
-        <div class="toast-header">
-            <strong class="me-auto"><i class="bi-globe"></i> Hello, world!</strong>
-            <button id="hideBtn" type="button" class="ml-2 mb-1 close pull-right" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            See? This is another toast message.
-        </div>
-    </div>
-</div>
