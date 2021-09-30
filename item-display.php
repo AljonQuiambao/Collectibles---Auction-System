@@ -120,6 +120,10 @@ $items = $results->fetch_all(MYSQLI_ASSOC);
                     }
                 }
             }
+
+            $(function() { 
+                $(".feedback").addClass("hidden");
+            });
         </script>
 </body>
 

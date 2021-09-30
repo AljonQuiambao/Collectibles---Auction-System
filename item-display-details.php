@@ -197,7 +197,20 @@ $comment_count =  count($comments);
                                                     </span>
                                                 </h4>
                                             </div>
-
+                                            <div>
+                                                <span class="random"></span>
+                                            </div>
+                                            <div class="mt-4">
+                                                <p class="mb-2">
+                                                    If you want to engage in bidding or liked this item, just "Register" or if you have an account just "Login".
+                                                </p>
+                                                <span>
+                                                    <a href="login.php" class="btn btn-success mr-2">Login</a>
+                                                        or
+                                                    <a href="register.php" class="btn btn-secondary ml-2">Register Now</a>
+                                                </span>
+                                                
+                                            </div>
                                         </div>
 
                                         <div class="col-md-4">
@@ -341,6 +354,10 @@ $comment_count =  count($comments);
                     $(this).html(getRandomWord()).fadeIn(500);
                 });
             }, 5000);
+        });
+
+        $(function() { 
+            $(".feedback").addClass("hidden");
         });
     </script>
 </body>
