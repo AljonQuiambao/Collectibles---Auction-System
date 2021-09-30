@@ -27,23 +27,22 @@ $items = $results->fetch_all(MYSQLI_ASSOC);
                 <?php include 'navbar.php' ?>
 
                 <div class="container-fluid">
-                    <div>
-                        <div class="jumbotron text-white jumbotron-image shadow" 
-                            style="background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
-                             url(img/background-template.jpg);
-                             background-position: center; background-repeat: no-repeat;">
-                            <h2 class="mb-4 text-uppercase">
-                                Online Auction for the whole family
-                            </h2>
-                            <p class="mb-4">
-                                Online Auction is where everyone goes to shop, sell, and give, while discovering variety and affordability.
-                            </p>
-                            <a href="register.php" class="btn btn-primary">Register Now</a>
-                        </div>
+                    <div class="jumbotron text-white jumbotron-image shadow" 
+                        style="background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
+                            url(img/background-template.jpg);
+                            background-position: center; 
+                            background-repeat: no-repeat; 
+                            padding: 1rem;">
+                        <h2 class="mb-4 text-uppercase">
+                            Online Auction for the whole family
+                        </h2>
+                        <p class="mb-4">
+                            Online Auction is where everyone goes to shop, sell, and give, while discovering variety and affordability.
+                        </p>
+                        <a href="register.php" class="btn btn-primary">Register Now</a>
                     </div>
 
-
-                    <div class="row mb-4">
+                    <div class="row mb-2">
                         <div class="col-md-9 col-sm-9">
                             <h1 class="h3 mb-0 text-gray-800">
                                 Product Catalog
