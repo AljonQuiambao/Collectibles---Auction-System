@@ -26,7 +26,7 @@
 				<div class="uavatar mb-2"><img src="assets/uploads/<?php echo $user['avatar'] ?>" alt=""></div>
 			</td>
 			<td>
-				<?php echo ucwords($user['name']) ?>
+				<?php echo ucwords($user['username']) ?>
 				<div style="font-size: 12px;">
 					<?php switch ($user['role']) {
 						case 1:
@@ -292,7 +292,8 @@
 		if (loaded == 1)
 			cfield.find('.status').html('Sent')
 		if ('<?php echo $_SESSION['login_id'] ?>' != data.id) {
-			cfield.find('.status').html(data.name)
+			var username = data.username.charAt(0).toUpperCase() + data.username.slice(1);
+			cfield.find('.status').html(username);
 		}
 		var scrolltop = $('#cbody').scroll().get(0).scrollTop
 		var scrollheight = $('#mbody').height()

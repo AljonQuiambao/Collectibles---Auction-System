@@ -30,7 +30,7 @@
 							<div class="uavatar mr-2"><img src="assets/uploads/<?php echo $user['avatar'] ?>" alt=""></div>
 						</td>
 						<td>
-							<strong><?php echo ucwords($user['name']) ?></strong>
+							<strong><?php echo ucwords($user['username']) ?></strong>
 							<div style="font-size: 12px;">
 								<?php switch ($user['role']) {
 									case 1:
@@ -184,7 +184,7 @@
 						Object.keys(resp).map(k => {
 							var div = $('#search_clone .searched-user').clone()
 							div.find('img').attr('src', 'assets/uploads/' + resp[k].avatar)
-							div.find('span').html(resp[k].name)
+							div.find('span').html(resp[k].username)
 							div.attr('data-id', resp[k].id)
 							$('#filtered-field').append(div)
 						})

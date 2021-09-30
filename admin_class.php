@@ -62,7 +62,7 @@ class Action
 	{
 		extract($_POST);
 		$data = array();
-		$get = $this->db->query("SELECT m.message,u.id,u.name,u.avatar FROM messages m inner join users u on u.id = m.user_id where md5(m.convo_id) = '$convo_id' ");
+		$get = $this->db->query("SELECT m.message,u.id,u.name,u.avatar,u.username FROM messages m inner join users u on u.id = m.user_id where md5(m.convo_id) = '$convo_id' ");
 		while ($row = $get->fetch_assoc()) {
 			$data[] = $row;
 		}
