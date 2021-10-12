@@ -18,6 +18,20 @@ $item_sold_result = mysqli_query($link, $item_sql);
 $items_sold = $item_sold_result->fetch_all(MYSQLI_ASSOC);
 $items_sold_count = (count($items_sold) / 100) * 100;
 
+function filterByItemStatus($items, $status)
+{
+    return array_filter($items, function ($item) use ($status) {
+        if ($item['status'] == $status) {
+            return true;
+        }
+    });
+}
+
+$item_pending = filterByItemStatus($items, 1);
+$item_approved = filterByItemStatus($items, 2);
+$item_reject = filterByItemStatus($items, 3);
+$item_sold = filterByItemStatus($items, 5);
+
 function filterByUserRole($users, $role)
 {
     return array_filter($users, function ($user) use ($role) {
@@ -173,23 +187,23 @@ $auctioneers = filterByUserRole($users, 2);
                                     <h6 class="m-0 font-weight-bold text-primary">Item Status</h6>
                                 </div>
                                 <div class="card-body">
-                                    <h4 class="small font-weight-bold">Pending <span class="float-right">20%</span></h4>
+                                    <h4 class="small font-weight-bold">Pending <span class="float-right"><?php echo (count($item_pending) / 100) * 100; ?>%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo (count($item_pending) / 100) * 100; ?>%" aria-valuenow="<?php echo (count($item_pending) / 100) * 100; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <h4 class="small font-weight-bold">Sold <span class="float-right">40%</span></h4>
+                                    <h4 class="small font-weight-bold">Sold <span class="float-right"><?php echo (count($item_sold) / 100) * 100; ?>%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo (count($item_sold) / 100) * 100; ?>%" aria-valuenow="<?php echo (count($item_sold) / 100) * 100; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <h4 class="small font-weight-bold">Reject <span class="float-right">60%</span>
+                                    <h4 class="small font-weight-bold">Reject <span class="float-right"><?php echo (count($item_reject) / 100) * 100; ?>%</span>
                                     </h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo (count($item_reject) / 100) * 100; ?>%" aria-valuenow="<?php echo (count($item_reject) / 100) * 100; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <h4 class="small font-weight-bold">Approved <span class="float-right">60%</span>
+                                    <h4 class="small font-weight-bold">Approved <span class="float-right"><?php echo (count($item_approved) / 100) * 100; ?>%</span>
                                     </h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: <?php echo (count($item_approved) / 100) * 100; ?>%" aria-valuenow="<?php echo (count($item_approved) / 100) * 100; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
