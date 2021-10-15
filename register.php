@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-2 mt-4">Create an Account</h1>
                             </div>
-                            <form class="user" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                            <form class="user" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-3 mb-3 mb-sm-0">
                                         <img class="w-100 rounded-circle" src="img/male_avatar.svg" id="cimg">
@@ -279,67 +279,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="row hidden" id="payment-options">
-                                    <aside class="col-lg-12">
-                                        <article class="card">
-                                            <div class="card-body p-3">
-                                                <form role="form">
-                                                    <div class="form-group">
-                                                        <label for="username">Full name (on the card)</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
-                                                            </div>
-                                                            <input type="text" class="form-control" name="username" placeholder="" required="">
-                                                        </div>
-                                                    </div> 
-
-                                                    <div class="form-group">
-                                                        <label for="cardNumber">Card number</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
-                                                            </div>
-                                                            <input type="text" class="form-control" name="cardNumber" placeholder="">
-                                                        </div> 
-                                                    </div> 
-
-                                                    <div class="row">
-                                                        <div class="col-sm-8">
-                                                            <div class="form-group">
-                                                                <label><span class="hidden-xs">Expiration</span> </label>
-                                                                <div class="form-inline">
-                                                                    <input class="form-control" required="" type="number" placeholder="MM">    
-                                                                    <span style="width:10%; text-align: center"> / </span>
-                                                                    <input class="form-control" required="" type="number" placeholder="YY">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <div class="form-group">
-                                                                <label data-toggle="tooltip" title="" data-original-title="3 digits code on back side of the card">CVV <i class="fa fa-question-circle"></i></label>
-                                                                <input class="form-control" required="" type="text">
-                                                            </div> 
-                                                        </div>
-                                                    </div> 
-                                                    <button class="subscribe btn btn-success btn-block" type="button"> Confirm </button>
-                                                </form>
-                                            </div> 
-                                        </article> 
-                                    </aside>
-                                </div>
-                        </div>
-
-                        <div class="form-group row mt-2 mb-3">
-                            <div class="col-sm-12 mb-3 mb-sm-0 text-center">
-                                By continuing, I accept the
-                                <a href="terms-conditions.php">Terms and Conditions</a>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-primary btn-user btn-block" value="Register Account">
-                        </div>
+                            <div class="form-group row mt-2 mb-3">
+                                <div class="col-sm-12 mb-3 mb-sm-0 text-center">
+                                    By continuing, I accept the
+                                    <a href="terms-conditions.php">Terms and Conditions</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary btn-user btn-block" value="Register Account">
+                            </div>
                         </form>
                         <hr>
                         <div class="text-center">
