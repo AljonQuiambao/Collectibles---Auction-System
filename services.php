@@ -184,4 +184,45 @@
             exit();
         }
     }
+
+    if (isset($_POST['cashout'])) { 
+        $user_id = $_POST['user_id'];
+        $amount = $_POST['amount'];
+
+        $checkRecord = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $user_id);
+        $totalrows = mysqli_num_rows($checkRecord);
+
+        if ($checkRecord->fetch_array()['token'] < $amount)
+            $_SESSION['error_status'] = "Your balance is less than the amount you want to cash out. Please try again!";
+            header("location: my-tokens.php");
+            exit();
+
+        if ($totalrows > 0) {
+            $final_amount = $checkRecord->fetch_array()['token'] - $amount;
+            $query_update = "UPDATE tokens SET token = $final_amount 
+                WHERE user_id = $user_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
+        } else {
+            $query_update = "INSERT INTO tokens(user_id, token) 
+            VALUES ('$user_id', '$amount')";
+
+            $query_update_run = mysqli_query($link, $query_update); 
+        }
+
+        if ($query_update_run) {
+            $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                 VALUES ('$bidder_id', '$item_id', 2, 'Successfully cash out your account.', 0, NOW())"; 
+            $run = mysqli_query($link, $query_sql);
+            
+            $_SESSION['success_status'] = "Successfully cash out your account!";
+            header("location: my-tokens.php");
+            exit();
+        }
+        else {
+            $_SESSION['error_status'] = "Have an error on cash out to your account. Please try again!";
+            header("location: my-tokens.php");
+            exit();
+        }
+    }
 ?>

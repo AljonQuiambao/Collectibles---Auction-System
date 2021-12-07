@@ -70,7 +70,8 @@ $display_token = number_format($token['token']);
                                             <input type="number" name="amount" placeholder="Amount" required class="form-control ">
                                         </div>
                                         <div class="card-footer"> 
-                                            <input type="submit" name="cashin" class="subscribe btn btn-primary btn-block shadow-sm" value="Cash In"> 
+                                            <input type="submit" name="cashin" class="subscribe btn btn-primary btn-md shadow-sm" value="Cash In"> 
+                                            <input type="submit" name="cashout" class="subscribe btn btn-secondary btn-md shadow-sm" value="Cash Out"> 
                                         </div>
                                     </form>
                                 </div>
