@@ -1,22 +1,37 @@
-<?php 
-    // Include config file
-    require_once "config.php";
+<?php
+// Include config file
+require_once "config.php";
 
-    // Initialize the session
-    session_start();
+// Initialize the session
+session_start();
 
-    $sql = "SELECT * FROM items
+$sql = "SELECT * FROM items
         JOIN item_status ON items.id = item_status.item_id
         JOIN users ON items.user_id = users.id
         JOIN item_status_enum ON items.status = item_status_enum.item_status_enum_id
         JOIN item_category ON items.category = item_category.category_id";
 
-    $result = mysqli_query($link, $sql);
-    $items = $result->fetch_all(MYSQLI_ASSOC);
-    
-    $image_sql = "SELECT * FROM images ORDER BY id DESC";
-    $item_result = mysqli_query($link, $image_sql);
-    $images = $item_result->fetch_all(MYSQLI_ASSOC);
+$result = mysqli_query($link, $sql);
+$items = $result->fetch_all(MYSQLI_ASSOC);
+
+function filterByStatus($items, $status)
+{
+    return array_filter($items, function ($item) use ($status) {
+        if ($item['status'] == $status) {
+            return true;
+        }
+    });
+}
+
+// print_r($items);
+
+$pendingItems = filterByStatus($items, "Pending");
+$approvedItems = filterByStatus($items, "Approved");
+$soldItems = filterByStatus($items, "Sold");
+
+$image_sql = "SELECT * FROM images ORDER BY id DESC";
+$item_result = mysqli_query($link, $image_sql);
+$images = $item_result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 
@@ -55,115 +70,279 @@
                         Item sucessfully deleted.
                     </div>
 
-                    <?php 
-                        if (isset($_SESSION['success_status'])) 
-                        {
-                            ?>
-                                <div class="alert alert-success alert-dismissable">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                   <?php echo $_SESSION['success_status'];?>
-                                </div>
-                            <?php 
-                            unset($_SESSION['success_status']);
-                        }
+                    <?php
+                    if (isset($_SESSION['success_status'])) {
+                    ?>
+                        <div class="alert alert-success alert-dismissable">
+                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                            <?php echo $_SESSION['success_status']; ?>
+                        </div>
+                    <?php
+                        unset($_SESSION['success_status']);
+                    }
 
-                        if (isset($_SESSION['error_status'])) 
-                        {
-                            ?>
-                                <div class="alert alert-danger alert-dismissable">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                   <?php echo $_SESSION['error_status'];?>
-                                </div>
-                            <?php 
-                            unset($_SESSION['error_status']);
-                        }
+                    if (isset($_SESSION['error_status'])) {
+                    ?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                            <?php echo $_SESSION['error_status']; ?>
+                        </div>
+                    <?php
+                        unset($_SESSION['error_status']);
+                    }
                     ?>
 
-                    <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered auction-table" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th class="col-2">Image</th>
-                                            <th class="col-1">Item</th>
-                                            <th class="col-2">Details</th>
-                                            <th class="col-1">Category</th>
-                                            <th class="col-1">Token</th>
-                                            <th class="col-2">Bid date</th>
-                                            <th class="col-1">Status</th>
-                                            <th class="col-2">
-                                                Actions
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($items as $item) {  ?>                            
-                                            <tr class="text-center">
-                                                <td>
-                                                    <div id="image-container">
-                                                            <?php
-                                                                $result = array();
-                                                                foreach ($images as $element) {
-                                                                    $result[$element['item_id']][] = $element;
-                                                                }        
-                                                                
-                                                                // print_r($images['item_id']);
+                    <section id="tabs" class="project-tab">
+                        <nav>
+                            <div class="nav nav-tabs nav-fill mb-4" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" style="text-align:left;" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                                    <span class="fas fa-fw fa-search-dollar"></span>
+                                    Pending
+                                </a>
+                                <a class="nav-item nav-link" style="text-align:left;" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
+                                    <span class="fas fa-fw fa-user-clock"></span>
+                                    Approved
+                                </a>
+                                <a class="nav-item nav-link" style="text-align:left;" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">
+                                    <span class="fas fa-fw fa-tags"></span>
+                                    Sold
+                                </a>
+                            </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                <div class="card shadow mb-4">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered auction-table" id="pending-items" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th class="col-2">Image</th>
+                                                        <th class="col-1">Item</th>
+                                                        <th class="col-2">Details</th>
+                                                        <th class="col-1">Category</th>
+                                                        <th class="col-1">Token</th>
+                                                        <th class="col-2">Bid date</th>
+                                                        <th class="col-2">
+                                                            Actions
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if (array_filter($pendingItems) != []) {
+                                                        foreach ($pendingItems as $item) { ?>
+                                                            <tr class="text-center">
+                                                                <td>
+                                                                    <?php
+                                                                    $result = array();
+                                                                    foreach ($images as $element) {
+                                                                        $result[$element['item_id']][] = $element;
+                                                                    }
 
-                                                                foreach ($result as $key => $image) { 
-                                                                    ?>
-                                                                    <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
-                                                                        <div class="carousel-inner">
-                                                                            <?php
-                                                                            foreach ($image as $id => $data) {
-                                                                                if ($data['item_id'] === $item['item_id'])  {
-                                                                                    $imageURL = 'uploads/' . $data["file_name"];
-                                                                                    ?>
-                                                                                    <div class="carousel-item <?php if ($id === 0) { echo "active";} ?>">
-                                                                                        <img class="d-block slider w-100 h-100" src="<?php echo $imageURL; ?>">
-                                                                                    </div>
-                                                                                <?php 
-                                                                                }  
-                                                                            } ?>
+                                                                    foreach ($result as $key => $image) { ?>
+                                                                        <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                                            <div class="carousel-inner">
+                                                                                <?php
+                                                                                foreach ($image as $id => $data) {
+                                                                                    if ($data['item_id'] === $item['item_id']) {
+                                                                                        $imageURL = 'uploads/' . $data["file_name"];
+                                                                                ?>
+                                                                                        <div class="carousel-item <?php if ($id === 0) {
+                                                                                                                        echo "active";
+                                                                                                                    } ?>">
+                                                                                            <img class="d-block item-slider w-100 h-100" src="<?php echo $imageURL; ?>">
+                                                                                        </div>
+                                                                                <?php
+                                                                                    }
+                                                                                } ?>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                <?php 
-                                                            } ?>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <input class="item_id" type="hidden" value="<?php echo  $item['item_id']; ?>">
-                                                    <input class="user_id" type="hidden" value="<?php echo  $item['user_id']; ?>">
-                                                    <input class="category" type="hidden" value="<?php echo  $item['category_id']; ?>">
-                                                    <?php echo $item['title']; ?>
-                                                </td>
-                                                <td class="item-details"><?php echo $item['details']; ?></td>
-                                                <td><?php echo $item['category']; ?></td>
-                                                <td><?php echo intval($item['token']); ?></td>
-                                                <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
-                                                <td><?php echo $item['status']; ?></td>
-                                                <td>
-                                                    <?php if ($item['status'] === 2) { ?>
-                                                        <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
-                                                            Ready
-                                                        </button>
-                                                    <?php } ?>
-                                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
-                                                         Cancel
-                                                    </button>
-                                                    <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                            }
-                                        ?>
-                                    </tbody>
-                                </table>
+                                                                    <?php
+                                                                    } ?>
+                                                                </td>
+                                                                <td class="item-details"><?php echo $item['details']; ?></td>
+                                                                <td><?php echo $item['category']; ?></td>
+                                                                <td><?php echo intval($item['token']); ?></td>
+                                                                <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                                <td><?php echo $item['status']; ?></td>
+                                                                <td>
+                                                                    <?php if ($item['status'] === 2) { ?>
+                                                                        <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
+                                                                            Ready
+                                                                        </button>
+                                                                    <?php } ?>
+                                                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
+                                                                        Delete
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                    <?php }
+                                                    } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <div class="card shadow mb-4">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered auction-table" id="approved-items" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th class="col-1">Item</th>
+                                                        <th class="col-3">Details</th>
+                                                        <th class="col-1">Category</th>
+                                                        <th class="col-1">Token</th>
+                                                        <th class="col-1">Bid Date</th>
+                                                        <th class="col-1">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if (array_filter($approvedItems) != []) {
+                                                        foreach ($approvedItems as $item) { ?>
+                                                            <tr class="text-center">
+                                                                <td>
+                                                                    <?php
+                                                                    $result = array();
+                                                                    foreach ($images as $element) {
+                                                                        $result[$element['item_id']][] = $element;
+                                                                    }
+
+                                                                    foreach ($result as $key => $image) { ?>
+                                                                        <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                                            <div class="carousel-inner">
+                                                                                <?php
+                                                                                foreach ($image as $id => $data) {
+                                                                                    if ($data['item_id'] === $item['item_id']) {
+                                                                                        $imageURL = 'uploads/' . $data["file_name"];
+                                                                                ?>
+                                                                                        <div class="carousel-item <?php if ($id === 0) {
+                                                                                                                        echo "active";
+                                                                                                                    } ?>">
+                                                                                            <img class="d-block item-slider w-100 h-100" src="<?php echo $imageURL; ?>">
+                                                                                        </div>
+                                                                                <?php
+                                                                                    }
+                                                                                } ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php
+                                                                    } ?>
+                                                                </td>
+                                                                <td class="item-details"><?php echo $item['details']; ?></td>
+                                                                <td><?php echo $item['category']; ?></td>
+                                                                <td><?php echo intval($item['token']); ?></td>
+                                                                <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                                <td><?php echo $item['status']; ?></td>
+                                                                <td>
+                                                                    <?php if ($item['status'] === 2) { ?>
+                                                                        <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
+                                                                            Ready
+                                                                        </button>
+                                                                    <?php } ?>
+                                                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
+                                                                        Delete
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                    <?php }
+                                                    } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                <div class="card shadow mb-4">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered auction-table" id="reject-items" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th class="col-1">Image</th>
+                                                        <th class="col-1">Item</th>
+                                                        <th class="col-1">Details</th>
+                                                        <th class="col-1">Category</th>
+                                                        <th class="col-1">Token</th>
+                                                        <th class="col-1">Bid date</th>
+                                                        <th class="col-4">
+                                                            Actions
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if (array_filter($soldItems) != []) {
+                                                        foreach ($soldItems as $item) { ?>
+                                                            <tr class="text-center">
+                                                                <td>
+                                                                    <?php
+                                                                    $result = array();
+                                                                    foreach ($images as $element) {
+                                                                        $result[$element['item_id']][] = $element;
+                                                                    }
+
+                                                                    foreach ($result as $key => $image) { ?>
+                                                                        <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                                            <div class="carousel-inner">
+                                                                                <?php
+                                                                                foreach ($image as $id => $data) {
+                                                                                    if ($data['item_id'] === $item['item_id']) {
+                                                                                        $imageURL = 'uploads/' . $data["file_name"];
+                                                                                ?>
+                                                                                        <div class="carousel-item <?php if ($id === 0) {
+                                                                                                                        echo "active";
+                                                                                                                    } ?>">
+                                                                                            <img class="d-block item-slider w-100 h-100" src="<?php echo $imageURL; ?>">
+                                                                                        </div>
+                                                                                <?php
+                                                                                    }
+                                                                                } ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php
+                                                                    } ?>
+                                                                </td>
+                                                                <td class="item-details"><?php echo $item['details']; ?></td>
+                                                                <td><?php echo $item['category']; ?></td>
+                                                                <td><?php echo intval($item['token']); ?></td>
+                                                                <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                                <td><?php echo $item['status']; ?></td>
+                                                                <td>
+                                                                    <?php if ($item['status'] === 2) { ?>
+                                                                        <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
+                                                                            Ready
+                                                                        </button>
+                                                                    <?php } ?>
+                                                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
+                                                                        Delete
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                    <?php }
+                                                    } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
             </div>
             <?php include 'footer.php'; ?>
@@ -227,9 +406,9 @@
     <?php include 'script.php'; ?>
     <script src="js/string-trim.js"></script>
     <script>
-        $('#readyToBidModal').on('show.bs.modal', function (e) {
+        $('#readyToBidModal').on('show.bs.modal', function(e) {
             // get information to update quickly to modal view as loading begins
-            var $target = e.relatedTarget;//this holds the element who called the modal
+            var $target = e.relatedTarget; //this holds the element who called the modal
             var $item_id = $($target).parents('tr').find('.item_id').val();
             var $user_id = $($target).parents('tr').find('.user_id').val();
             var $category = $($target).parents('tr').find('.category').val();
@@ -241,7 +420,7 @@
         });
     </script>
 
-<script>
+    <script>
         $(document).ready(function() {
             // Delete 
             $('.delete').click(function() {

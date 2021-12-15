@@ -12,12 +12,12 @@ $name_err = $address_err = $username_err = $password_err =
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    //Validate name
-    if (empty(trim($_POST["name"]))) {
-        $name_err = "Please enter a name.";
-    } else {
-        $name = trim($_POST["name"]);
-    }
+    // //Validate name
+    // if (empty(trim($_POST["name"]))) {
+    //     $name_err = "Please enter a name.";
+    // } else {
+    //     $name = trim($_POST["name"]);
+    // }
 
     //Validate address
     if (empty(trim($_POST["address"]))) {
@@ -204,43 +204,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                     <div class="col-sm-9 mt-3 mb-3 mb-sm-0">
                                         <label for="" class="control-label">Avatar</label>
-                                        <input type="file" class="form-control form-control-user" name="avatar" onchange="displayImg(this,$(this))">
+                                        <input type="file" class="form-control form-control-user" name="avatar" onchange="displayImg(this,$(this))" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
-                                        <input type="text" name="name" placeholder="Name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $name; ?>">
-                                        <span class="invalid-feedback ml-2"><?php echo $name_err; ?></span>
+                                        <input type="text" name="name" placeholder="Name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $name; ?>" required>
+                                        <!-- <span class="invalid-feedback ml-2"><?php echo $name_err; ?></span> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="address" placeholder="Address" class="form-control <?php echo (!empty($address_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $address; ?>">
-                                    <span class="invalid-feedback ml-2"><?php echo $address_err; ?></span>
+                                    <input type="text" name="address" placeholder="Address" class="form-control <?php echo (!empty($address_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $address; ?>" required>
+                                    <!-- <span class="invalid-feedback ml-2"><?php echo $address_err; ?></span> -->
                                 </div>
 
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
-                                        <input type="text" name="username" placeholder="Username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $username; ?>">
-                                        <span class="invalid-feedback ml-2"><?php echo $username_err; ?></span>
+                                        <input type="text" name="username" placeholder="Username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $username; ?>" required>
+                                        <!-- <span class="invalid-feedback ml-2"><?php echo $username_err; ?></span> -->
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $password; ?>">
+                                        <input type="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $password; ?>" maxlength="6" required>
                                         <span class="invalid-feedback ml-2"><?php echo $password_err; ?></span>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $confirm_password; ?>">
+                                        <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $confirm_password; ?>" required>
                                         <span class="invalid-feedback ml-2"><?php echo $confirm_password_err; ?></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="date" class="form-control form-control-user" id="date-of-birth" placeholder="Date of Birth" name="date_of_birth">
+                                        <input type="date" class="form-control form-control-user" id="date-of-birth" placeholder="Date of Birth" name="date_of_birth" required>
                                         <span class="invalid-feedback ml-2"><?php echo $date_of_birth_err; ?></span>
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <select id="gender" class="form-control select-control-user" name="gender">
+                                        <select id="gender" class="form-control select-control-user" name="gender" required>
                                             <option value="" selected disabled hidden>Gender</option>
                                             <option>Male</option>
                                             <option>Female</option>
@@ -250,11 +250,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="number" name="contact" placeholder="Contact Number" class="form-control <?php echo (!empty($contact_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $contact; ?>">
+                                        <input type="number" name="contact" placeholder="Contact Number" class="form-control <?php echo (!empty($contact_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $contact; ?>" required>
                                         <span class="invalid-feedback ml-2"><?php echo $contact_err; ?></span>
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <select id="role" class="form-control select-control-user" name="role">
+                                        <select id="role" class="form-control select-control-user" name="role" required>
                                             <option value="" selected disabled hidden>Role</option>
                                             <option value="1">Bidder</option>
                                             <option value="2">Auctioneer</option>
