@@ -258,6 +258,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <option value="" selected disabled hidden>Role</option>
                                             <option value="1">Bidder</option>
                                             <option value="2">Auctioneer</option>
+                                            <option value="4">Multi-Role</option>
                                         </select>
                                         <span class="invalid-feedback ml-2"><?php echo $role_err; ?></span>
                                     </div>

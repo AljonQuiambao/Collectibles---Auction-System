@@ -225,4 +225,33 @@
             exit();
         }
     }
+
+    if (isset($_POST['activate_multirole'])) { 
+        $user_id = $_POST['user_id'];
+
+        $checkRecord = mysqli_query($link, "SELECT * FROM users WHERE id=" . $user_id);
+        $totalrows = mysqli_num_rows($checkRecord);
+
+        if ($totalrows > 0) {
+            $query_update = "UPDATE users SET role = 4 
+                WHERE id = $user_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
+        } 
+
+        if ($query_update_run) {
+            $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                 VALUES ('$user_id', 0, 2, 'Successfully activated multirole in your account.', 0, NOW())"; 
+            $run = mysqli_query($link, $query_sql);
+            
+            $_SESSION['success_status'] = "Successfully activated multirole in your account!";
+            header("location: profile.php");
+            exit();
+        }
+        else {
+            $_SESSION['error_status'] = "Have an error on activating multirole in to your account. Please try again!";
+            header("location: profile.php");
+            exit();
+        }
+    }
 ?>
