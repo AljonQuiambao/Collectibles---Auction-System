@@ -254,4 +254,30 @@
             exit();
         }
     }
+
+    if (isset($_POST['confirm_payment'])) { 
+        $user_id = $_POST['user_id'];
+        $item_id = $_POST['item_id'];
+        $category = $_POST['category'];
+
+        $query = "INSERT INTO payment_confirmation(user_id, item_id, date_confirmed) 
+        VALUES ('$user_id', '$item_id', NOW())"; 
+        $query_run = mysqli_query($link, $query);
+
+        if ($query_run) {
+            //for bidder
+            $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                VALUES ('$user_id', '$item_id', 2, 'The proof is already approved.', 0, NOW())"; 
+            $run = mysqli_query($link, $query_sql);
+
+            $_SESSION['status'] = "The proof is already approved.";
+            header("location: payment-confirmation.php");
+            exit();
+        }
+        else {
+            $_SESSION['status'] = "Proof is not approved. Please try again!";
+            header("location: payment-confirmation.php");
+            exit();
+        }
+    }
 ?>

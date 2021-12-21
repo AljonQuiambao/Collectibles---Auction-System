@@ -8,12 +8,14 @@
     $sql = "SELECT * FROM items 
                 JOIN item_status ON items.id = item_status.item_id
                 JOIN users ON items.user_id = users.id
-                JOIN item_images ON items.id = item_images.item_id
+                -- JOIN item_images ON items.id = item_images.item_id
                 JOIN item_category ON items.category = item_category.category_id
                 WHERE is_deleted = false";
 
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
+
+    print_r($items);
 
     function filterByStatus($items, $status)
     {

@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = trim($_POST["role"]);
     }
 
-    if ($_FILES['avatar']['tmp_name'] != '') {
+    if ($_FILES['avatar']['tmp_name'] != '' && $_FILES['img'] && $_FILES['img']['name']) {
         $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
         $move = move_uploaded_file($_FILES['img']['tmp_name'], 'assets/uploads/' . $filename);
         $avatar = $filename;
@@ -258,7 +258,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <option value="" selected disabled hidden>Role</option>
                                             <option value="1">Bidder</option>
                                             <option value="2">Auctioneer</option>
-                                            <option value="4">Multi-Role</option>
                                         </select>
                                         <span class="invalid-feedback ml-2"><?php echo $role_err; ?></span>
                                     </div>

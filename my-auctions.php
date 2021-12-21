@@ -27,7 +27,7 @@ function filterByStatus($items, $status)
 
 $pendingItems = filterByStatus($items, "Pending");
 $approvedItems = filterByStatus($items, "Approved");
-$soldItems = filterByStatus($items, "Sold");
+$soldItems = filterByStatus($items, "Reject");
 
 $image_sql = "SELECT * FROM images ORDER BY id DESC";
 $item_result = mysqli_query($link, $image_sql);
@@ -96,16 +96,16 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                         <nav>
                             <div class="nav nav-tabs nav-fill mb-4" id="nav-tab" role="tablist">
                                 <a class="nav-item nav-link active" style="text-align:left;" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                                    <span class="fas fa-fw fa-search-dollar"></span>
+                                    <span class="fas fa-fw fa-clock"></span>
                                     Pending
                                 </a>
                                 <a class="nav-item nav-link" style="text-align:left;" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
-                                    <span class="fas fa-fw fa-user-clock"></span>
+                                    <span class="fas fa-fw fa-check"></span>
                                     Approved
                                 </a>
                                 <a class="nav-item nav-link" style="text-align:left;" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">
-                                    <span class="fas fa-fw fa-tags"></span>
-                                    Sold
+                                    <span class="fas fa-fw fa-ban"></span>
+                                    Reject
                                 </a>
                             </div>
                         </nav>

@@ -10,7 +10,7 @@
     $result = mysqli_query($link, $sql);
     $currentUser = $result->fetch_array(MYSQLI_ASSOC);
 
-    print_r($currentUser);
+    // print_r($currentUser);
 ?>
 
 <!DOCTYPE html>
@@ -70,11 +70,11 @@
                                                 <h6 class="user-email">
                                                     @<?php echo ucwords($currentUser['username']); ?>
                                                 </h6>
-                                                <?php if ($currentUser['role'] == 1 || $currentUser['role'] == 2) { ?>
+                                                <?php if ($currentUser['role'] == 2) { ?>
                                                     <form action="services.php" method="POST">
                                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4">
                                                             <div>
-                                                                <input type="text" name="user_id" value="<?php echo $currentUser['id']; ?>">
+                                                                <input type="hidden" name="user_id" value="<?php echo $currentUser['id']; ?>">
                                                                 <input type="submit" name="activate_multirole" class="btn btn-md btn-success" value="Activate Multirole">
                                                             </div>
                                                         </div>

@@ -102,11 +102,11 @@
                                                                                 src="data:image/png;charset=utf8;base64,<?php echo base64_encode($item['proof']); ?>" /> 
                                                                         </td>
                                                                         <td>
-                                                                            <form action="add-methods.php" method="POST">
+                                                                            <form action="services.php" method="POST">
                                                                                 <input class="user_id" type="hidden" name="user_id" value="<?php echo $item['user_id'] ?>">
                                                                                 <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
                                                                                 <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
-                                                                                <input name="accept_item" type="submit" class="btn btn-success" value="Confirm">
+                                                                                <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
                                                                                 <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="item_proof" title="Delete">
                                                                                     Delete
                                                                                 </button>

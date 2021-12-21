@@ -81,7 +81,7 @@
                                         Cash In
                                     </span>
                                 </a>
-                                <a href="gcash.php" class="btn btn-primary">
+                                <a href="gcash.php" class="btn btn-secondary">
                                     <span class="text">
                                         Cash Out
                                     </span>
