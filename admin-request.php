@@ -15,7 +15,7 @@
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
 
-    print_r($items);
+    // print_r($items);
 
     function filterByStatus($items, $status)
     {
@@ -103,7 +103,6 @@
                                                     <table class="table table-bordered auction-table" id="pending-items" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr class="text-center">
-                                                                <th class="col-2">Image</th>
                                                                 <th class="col-1">Item</th>
                                                                 <th class="col-2">Details</th>
                                                                 <th class="col-1">Category</th>
@@ -119,10 +118,6 @@
                                                             <?php if (array_filter($pendingItems) != []) {
                                                                 foreach ($pendingItems as $item) { ?>
                                                                     <tr class="text-center">
-                                                                        <td>
-                                                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 15rem;"
-                                                                                src="data:image/png;charset=utf8;base64,<?php echo base64_encode($item['image']); ?>" /> 
-                                                                        </td>
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>

@@ -10,7 +10,7 @@
     $result = mysqli_query($link, $sql);
     $currentUser = $result->fetch_array(MYSQLI_ASSOC);
 
-    $token_sql = "SELECT * FROM tokens WHERE id = $user_id";
+    $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
     $display_token = number_format($token['token']);
@@ -81,7 +81,7 @@
                                         Cash In
                                     </span>
                                 </a>
-                                <a href="gcash.php" class="btn btn-secondary">
+                                <a href="gcash-cashout.php" class="btn btn-secondary">
                                     <span class="text">
                                         Cash Out
                                     </span>

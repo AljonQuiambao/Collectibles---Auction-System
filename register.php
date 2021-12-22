@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = trim($_POST["role"]);
     }
 
-    if ($_FILES['avatar']['tmp_name'] != '' && $_FILES['img'] && $_FILES['img']['name']) {
+    if ($_FILES['avatar']['tmp_name'] != '' && $_FILES['img'] != '' && $_FILES['img']['name'] != '') {
         $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
         $move = move_uploaded_file($_FILES['img']['tmp_name'], 'assets/uploads/' . $filename);
         $avatar = $filename;
@@ -226,7 +226,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $password; ?>" maxlength="6" required>
+                                        <input type="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $password; ?>" required>
                                         <span class="invalid-feedback ml-2"><?php echo $password_err; ?></span>
                                     </div>
                                     <div class="col-sm-6">

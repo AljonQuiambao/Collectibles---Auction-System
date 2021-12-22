@@ -39,7 +39,7 @@
     $token_sql = "SELECT * FROM tokens WHERE id = $param_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    if ($token['token'] !== '') {
+    if ($token !== '' && $token['token'] !== '') {
         $display_token = number_format($token['token']);
     }
 ?>

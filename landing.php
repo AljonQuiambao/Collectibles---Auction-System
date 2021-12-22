@@ -220,7 +220,7 @@
               <li><i class="bx bx-check"></i> <span>You can only add five (5) item(s) per month</span></li>
               <li class="na"><i class="bx bx-x"></i> <span>Auction item(s) are placed on the top search</span></li>
             </ul>
-            <a href="register" class="get-started-btn">Get Started</a>
+            <a href="register.php" class="get-started-btn">Get Started</a>
           </div>
         </div>
       </div>

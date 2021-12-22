@@ -192,10 +192,10 @@
         $checkRecord = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $user_id);
         $totalrows = mysqli_num_rows($checkRecord);
 
-        if ($checkRecord->fetch_array()['token'] < $amount)
-            $_SESSION['error_status'] = "Your balance is less than the amount you want to cash out. Please try again!";
-            header("location: my-tokens.php");
-            exit();
+        // if ($checkRecord->fetch_array()['token'] < $amount)
+        //     $_SESSION['error_status'] = "Your balance is less than the amount you want to cash out. Please try again!";
+        //     header("location: my-tokens.php");
+        //     exit();
 
         if ($totalrows > 0) {
             $final_amount = $checkRecord->fetch_array()['token'] - $amount;
