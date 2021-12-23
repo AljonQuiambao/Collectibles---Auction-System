@@ -12,12 +12,12 @@ $name_err = $address_err = $username_err = $password_err =
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // //Validate name
-    // if (empty(trim($_POST["name"]))) {
-    //     $name_err = "Please enter a name.";
-    // } else {
-    //     $name = trim($_POST["name"]);
-    // }
+    //Validate name
+    if (empty(trim($_POST["name"]))) {
+        $name_err = "Please enter a name.";
+    } else {
+        $name = trim($_POST["name"]);
+    }
 
     //Validate address
     if (empty(trim($_POST["address"]))) {
@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = trim($_POST["role"]);
     }
 
-    if ($_FILES['avatar']['tmp_name'] != '' && $_FILES['img'] != '' && $_FILES['img']['name'] != '') {
+    if ($_FILES['avatar']['tmp_name'] != '') {
         $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
         $move = move_uploaded_file($_FILES['img']['tmp_name'], 'assets/uploads/' . $filename);
         $avatar = $filename;
@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param(
                 $stmt,
-                "ssssssss",
+                "sssssssss",
                 $param_name,
                 $param_address,
                 $param_username,
@@ -166,8 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
-                $_SESSION['status'] = "Your account is sucessfully registered. You can now go to Login page.";
-                header("Location: register.php");
+                $_SESSION['success_status'] = "Your account is sucessfully registered. You can now go to login!";
+                header("location: login.php");
+                exit();
             } else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
@@ -194,6 +195,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="col-lg-3 d-none d-lg-block bg-register-image"></div>
                     <div class="col-lg-9" style="overflow: auto;max-height: 800px;">
                         <div class="p-3">
+                            <?php
+                                if (isset($_SESSION['success_status'])) {
+                                ?>
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                        <?php echo $_SESSION['success_status']; ?>
+                                    </div>
+                                <?php
+                                    unset($_SESSION['success_status']);
+                                }
+                            ?>
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-2 mt-4">Create an Account</h1>
                             </div>
