@@ -58,8 +58,8 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="#features">Site Features</a></li>
-          <li><a href="#pricing">Subscription</a></li>
           <li><a href="#testimonials">Feedbacks</a></li>
+          <li><a href="#pricing">Subscription</a></li>
           <li><a href="#faq">F.A.Q.</a></li>
           <li class="register">
             <a href="register.php">

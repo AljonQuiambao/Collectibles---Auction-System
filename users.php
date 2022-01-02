@@ -10,6 +10,8 @@
     $user_result = mysqli_query($link, $sql);
     $users = $user_result->fetch_all(MYSQLI_ASSOC);
 
+    //print_r($users);
+
     function filterByUserRole($users, $role)
     {
         return array_filter($users, function ($user) use ($role) {

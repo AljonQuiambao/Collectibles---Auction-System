@@ -8,7 +8,7 @@ session_start();
 $sql = "SELECT * FROM items
         JOIN item_status ON items.id = item_status.item_id
         JOIN users ON items.user_id = users.id
-        JOIN item_status_enum ON items.status = item_status_enum.item_status_enum_id
+        -- JOIN item_status_enum ON items.status = item_status_enum.item_status_enum_id
         JOIN item_category ON items.category = item_category.category_id";
 
 $result = mysqli_query($link, $sql);
@@ -23,11 +23,11 @@ function filterByStatus($items, $status)
     });
 }
 
-// print_r($items);
+//print_r($items);
 
-$pendingItems = filterByStatus($items, "Pending");
-$approvedItems = filterByStatus($items, "Approved");
-$soldItems = filterByStatus($items, "Reject");
+$pendingItems = filterByStatus($items, 1);
+$approvedItems = filterByStatus($items, 2);
+$soldItems = filterByStatus($items, 3);
 
 $image_sql = "SELECT * FROM images ORDER BY id DESC";
 $item_result = mysqli_query($link, $image_sql);
@@ -118,12 +118,11 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                 <thead>
                                                     <tr class="text-center">
                                                         <th class="col-2">Image</th>
-                                                        <th class="col-1">Item</th>
-                                                        <th class="col-2">Details</th>
-                                                        <th class="col-1">Category</th>
-                                                        <th class="col-1">Token</th>
-                                                        <th class="col-2">Bid date</th>
-                                                        <th class="col-2">
+                                                        <th class="col-2">Item</th>
+                                                        <th class="col-2">Category</th>
+                                                        <th class="col-2">Token</th>
+                                                        <th class="col-1">Bid date</th>
+                                                        <th class="col-3">
                                                             Actions
                                                         </th>
                                                     </tr>
@@ -162,15 +161,9 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 </td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
-                                                                <td><?php echo intval($item['token']); ?></td>
+                                                                <td><?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
-                                                                <td><?php echo $item['status']; ?></td>
                                                                 <td>
-                                                                    <?php if ($item['status'] === 2) { ?>
-                                                                        <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
-                                                                            Ready
-                                                                        </button>
-                                                                    <?php } ?>
                                                                     <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
                                                                         Cancel
                                                                     </button>
@@ -195,12 +188,14 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                             <table class="table table-bordered auction-table" id="approved-items" width="100%" cellspacing="0">
                                                 <thead>
                                                     <tr class="text-center">
-                                                        <th class="col-1">Item</th>
-                                                        <th class="col-3">Details</th>
-                                                        <th class="col-1">Category</th>
-                                                        <th class="col-1">Token</th>
-                                                        <th class="col-1">Bid Date</th>
-                                                        <th class="col-1">Actions</th>
+                                                        <th class="col-2">Image</th>
+                                                        <th class="col-2">Item</th>
+                                                        <th class="col-2">Category</th>
+                                                        <th class="col-2">Token</th>
+                                                        <th class="col-1">Bid date</th>
+                                                        <th class="col-3">
+                                                            Actions
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -237,15 +232,12 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 </td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
-                                                                <td><?php echo intval($item['token']); ?></td>
+                                                                <td><?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
-                                                                <td><?php echo $item['status']; ?></td>
                                                                 <td>
-                                                                    <?php if ($item['status'] === 2) { ?>
-                                                                        <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
-                                                                            Ready
-                                                                        </button>
-                                                                    <?php } ?>
+                                                                    <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
+                                                                        Ready
+                                                                    </button>
                                                                     <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
                                                                         Cancel
                                                                     </button>
@@ -272,7 +264,6 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     <tr class="text-center">
                                                         <th class="col-1">Image</th>
                                                         <th class="col-1">Item</th>
-                                                        <th class="col-1">Details</th>
                                                         <th class="col-1">Category</th>
                                                         <th class="col-1">Token</th>
                                                         <th class="col-1">Bid date</th>
@@ -317,13 +308,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td><?php echo intval($item['token']); ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
-                                                                <td><?php echo $item['status']; ?></td>
                                                                 <td>
-                                                                    <?php if ($item['status'] === 2) { ?>
-                                                                        <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
-                                                                            Ready
-                                                                        </button>
-                                                                    <?php } ?>
                                                                     <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
                                                                         Cancel
                                                                     </button>

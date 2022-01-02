@@ -115,12 +115,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = trim($_POST["role"]);
     }
 
-    if ($_FILES['avatar']['tmp_name'] != '') {
-        $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
-        $move = move_uploaded_file($_FILES['img']['tmp_name'], 'assets/uploads/' . $filename);
+    if(array_key_exists('img', $_FILES)) { 
+        if ($_FILES['avatar']['tmp_name'] != '') {
+            $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
+            $move = move_uploaded_file($_FILES['img']['tmp_name'], 'assets/uploads/' . $filename);
+            $avatar = $filename;
+        }
+    } else {
+        $filename = strtotime(date('y-m-d H:i'));
         $avatar = $filename;
     }
-
+   
     $validate = empty($name_err) &&
         empty($address_err) &&
         empty($username_err) &&

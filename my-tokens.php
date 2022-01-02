@@ -13,7 +13,7 @@
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    $display_token = number_format($token['token']);
+    $display_token = $token['token'];
 ?>
 
 <!DOCTYPE html>

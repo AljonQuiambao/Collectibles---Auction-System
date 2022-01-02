@@ -92,8 +92,8 @@
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo number_format($item['token']); ?></td>
-                                                                        <td><?php echo $item['bid_time']; ?></td>
+                                                                        <td><?php echo $item['token']; ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div><?php echo $item['name']; ?></div>
                                                                         </td>
@@ -107,10 +107,10 @@
                                                                                 <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
                                                                                 <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
                                                                                 <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
-                                                                                <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="item_proof" title="Delete">
-                                                                                    Delete
-                                                                                </button>
                                                                             </form>
+                                                                            <button class="btn btn-danger delete mt-2" data-id="<?php echo $item['item_id']; ?>" data-table-name="item_proof" title="Delete">
+                                                                                Delete
+                                                                            </button>
                                                                         </td>
                                                                     </tr>
 
@@ -135,7 +135,7 @@
                                                                 <th class="col-1">Token</th>
                                                                 <th class="col-1">Bid Date</th>
                                                                 <th class="col-2">Seller Information</th>
-                                                                <th class="col-1">
+                                                                <th class="col-2">
                                                                     Actions
                                                                 </th>
                                                             </tr>
@@ -147,8 +147,8 @@
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo number_format($item['token']); ?></td>
-                                                                        <td><?php echo $item['bid_time']; ?></td>
+                                                                        <td><?php echo $item['token']; ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
                                                                             <div>Age:
@@ -161,7 +161,13 @@
                                                                             </div>
                                                                         </td>
                                                                         <td>
-                                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" title="Delete">
+                                                                            <form action="services.php" method="POST">
+                                                                                <input class="user_id" type="hidden" name="user_id" value="<?php echo $item['user_id'] ?>">
+                                                                                <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
+                                                                                <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
+                                                                                <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
+                                                                            </form>
+                                                                            <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#deleteModal" title="Delete">
                                                                                 Delete
                                                                             </button>
                                                                         </td>

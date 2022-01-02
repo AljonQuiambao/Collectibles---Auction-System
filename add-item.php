@@ -22,6 +22,7 @@ if (isset($_POST['save_item_data'])) {
         $s_user_id = $user_id;
         $s_category = $category[$index];
         $s_details = $details[$index];
+        $s_item_images = strtotime(date('y-m-d H:i')) . '_' . $user_id;
         $s_token = $token[$index];
         $s_status = 1;
 
@@ -43,8 +44,8 @@ if (isset($_POST['save_item_data'])) {
             $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
 
             $statusMsg = $errorMsg = $insertValuesSQL = $errorUpload = $errorUploadType = '';
-            $fileNames = array_filter($_FILES['files']['name']);
-            if (!empty($fileNames)) {
+            if (!empty($_FILES)) {
+                $fileNames = array_filter($_FILES['files']['name']);
                 foreach ($_FILES['files']['name'] as $key => $val) {
                     // File upload path 
                     $fileName = basename($_FILES['files']['name'][$key]);
