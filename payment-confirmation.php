@@ -107,7 +107,8 @@
                                                                                 <input class="user_id" type="hidden" name="user_id" value="<?php echo $item['user_id'] ?>">
                                                                                 <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
                                                                                 <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
-                                                                                <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
+                                                                                <input class="amount" type="hidden" name="user_id" value="<?php echo $item['token'] ?>">
+                                                                                <input name="confirm_payment_bidder" type="submit" class="btn btn-success" value="Confirm">
                                                                             </form>
                                                                             <button class="btn btn-danger delete mt-2" data-id="<?php echo $item['item_id']; ?>" data-table-name="item_proof" title="Delete">
                                                                                 Delete
@@ -166,7 +167,7 @@
                                                                                 <input class="user_id" type="hidden" name="user_id" value="<?php echo $item['user_id'] ?>">
                                                                                 <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
                                                                                 <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
-                                                                                <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
+                                                                                <input name="confirm_payment_auctioneer" type="submit" class="btn btn-success" value="Confirm">
                                                                             </form>
                                                                             <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#deleteModal" title="Delete">
                                                                                 Delete
