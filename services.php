@@ -10,8 +10,9 @@
         $auctioneer_id = $_POST['user_id'];
         $category = $_POST['category'];
         $bidding_time = $_POST['bidding_time'];
+        $end_time = $_POST['end_time'];
 
-        $query = "INSERT INTO bidding_sessions(item_id, auctioneer_id, bidding_time) VALUES ('$item_id', '$auctioneer_id', '$bidding_time')"; 
+        $query = "INSERT INTO bidding_sessions(item_id, auctioneer_id, bidding_time, end_time) VALUES ('$item_id', '$auctioneer_id', '$bidding_time', '$end_time')"; 
         $query_run = mysqli_query($link, $query);
 
         if ($query_run) {
@@ -39,6 +40,42 @@
             exit();
         }
     }
+
+    if (isset($_POST['cancel_bid_item'])) {
+        $item_id = $_POST['item_id'];
+        $auctioneer_id = $_POST['user_id'];
+        $category = $_POST['category'];
+        $reason = $_POST['reason'];
+
+        $query = "INSERT INTO item_reason(item_id, auctioneer_id, reason) VALUES ('$item_id', '$auctioneer_id', '$reason')"; 
+        $query_run = mysqli_query($link, $query);
+
+        if ($query_run) {
+            $query_status = "UPDATE item_status SET status = 6 
+                            WHERE user_id = $auctioneer_id && 
+                            item_id = $item_id &&
+                            category = $category"; 
+            mysqli_query($link, $query_status);
+
+            if ($query_status) {
+                 //update notifications here
+                        $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                        VALUES ('$auctioneer_id', '$item_id', 2, 'Your item is being cancel.', 0, NOW())"; 
+                $run = mysqli_query($link, $query_sql);
+
+                $_SESSION['status'] = "'Your item is being cancel.";
+                header("location: my-auctions.php");
+                exit();
+            } else {
+                return false;
+            }
+        } else {
+            $_SESSION['status'] = "Item is not cancel sucessfully. Please try again!";
+            header("location: my-auctions.php");
+            exit();
+        }
+    }
+
 
     if (isset($_POST['counter_submit'])) { 
         $auctioneer_id = $_POST['auctioneer_id'];
@@ -255,14 +292,46 @@
         }
     }
 
-    if (isset($_POST['confirm_payment'])) { 
+    if (isset($_POST['confirm_payment_auctioneer'])) { 
         $user_id = $_POST['user_id'];
         $item_id = $_POST['item_id'];
         $category = $_POST['category'];
 
         $query = "INSERT INTO payment_confirmation(user_id, item_id, date_confirmed) 
-        VALUES ('$user_id', '$item_id', NOW())"; 
-        $query_run = mysqli_query($link, $query);
+            VALUES ('$user_id', '$item_id', NOW())"; 
+            $query_run = mysqli_query($link, $query);
+
+        if ($query_run) {
+            //$query_delete_status = "DELETE FROM payment_confirmation 
+                        //WHERE user_id = $auctioneer_id && 
+                        //item_id = $item_id "; 
+            //mysqli_query($link, $query_delete_status);
+
+            $query_status = "UPDATE item_status SET status = 5 
+                    WHERE user_id = $auctioneer_id && 
+                    item_id = $item_id &&
+                    category = $category"; 
+            mysqli_query($link, $query_status);
+
+            //insert computation of tokens here
+
+            if ($query_status) {
+                 //update notifications here
+                        $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                        VALUES ('$auctioneer_id', '$item_id', 2, 'Your item is being cancel.', 0, NOW())"; 
+                $run = mysqli_query($link, $query_sql);
+
+                $_SESSION['status'] = "The proof is already approved.";
+                header("location: my-auctions.php");
+                exit();
+            } else {
+                return false;
+            }
+        } else {
+            $_SESSION['status'] = "Proof is not approved. Please try again!";
+            header("location: my-auctions.php");
+            exit();
+        }
 
         if ($query_run) {
             //for bidder

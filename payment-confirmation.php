@@ -5,7 +5,7 @@
     // Initialize the session
     session_start();
 
-    $sql = "SELECT * FROM item_proof 
+    $sql = "SELECT * FROM item_proof
                 JOIN items ON item_proof.item_id = items.id
                 JOIN users ON item_proof.bidder_id = users.id
                 JOIN item_category ON items.category = item_category.category_id
@@ -13,6 +13,8 @@
 
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
+
+    //print_r($items);
 ?>
 
 
@@ -87,8 +89,7 @@
                                                         <tbody>
                                                             <?php if (array_filter($items) != []) {
                                                                 foreach ($items as $item) { ?>
-                                                                    <tr class="text-center">
-                                                                        
+                                                                    <tr class="text-center">                                                                    
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>

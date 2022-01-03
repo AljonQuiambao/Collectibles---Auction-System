@@ -34,12 +34,11 @@
     $items = filterByStatus($items, 4);
 
     // print_r($items);
-
-    $param_id = trim($_SESSION["id"]);
-    $token_sql = "SELECT * FROM tokens WHERE id = $param_id";
+    $user_id = trim($_SESSION["id"]);
+    $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    $display_token = !empty($token) ? $token['token'] : 0;
+    $display_token = $token['token'];
 ?>
 
 <!DOCTYPE html>

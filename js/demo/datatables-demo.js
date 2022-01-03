@@ -6,5 +6,9 @@ $(document).ready(function() {
   $('#approved-items').DataTable();
   $('#reject-items').DataTable();
   $('#cancel-items').DataTable();
+
+  $('#bidder-users').DataTable();
+  $('#auctioneer-users').DataTable();
+  $('#multi-users').DataTable();
 });
 

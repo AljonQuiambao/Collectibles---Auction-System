@@ -8,7 +8,7 @@
     $sql = "SELECT * FROM items 
                 JOIN item_status ON items.id = item_status.item_id
                 JOIN users ON items.user_id = users.id
-                -- JOIN item_images ON items.id = item_images.item_id
+                JOIN item_reason ON items.id = item_reason.item_id
                 JOIN item_category ON items.category = item_category.category_id
                 WHERE is_deleted = false";
 
@@ -29,6 +29,7 @@
     $pendingItems = filterByStatus($items, 1);
     $approvedItems = filterByStatus($items, 2);
     $rejectItems = filterByStatus($items, 3);
+    $cancelItems = filterByStatus($items, 6);
 ?>
 
 
@@ -285,8 +286,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <?php if (array_filter($rejectItems) != []) {
-                                                                foreach ($rejectItems as $item) { ?>
+                                                            <?php if (array_filter($cancelItems) != []) {
+                                                                foreach ($cancelItems as $item) { ?>
                                                                     <tr class="text-center">
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>

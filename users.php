@@ -23,6 +23,7 @@
 
     $bidders = filterByUserRole($users, 1);
     $auctioneers = filterByUserRole($users, 2);
+    $multirole = filterByUserRole($users, 4);
 ?>
 
 
@@ -66,20 +67,23 @@
                             <section id="tabs" class="project-tab">
                                 <nav>
                                     <div class="nav nav-tabs nav-fill mb-4" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active" style="text-align:left;" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                                        <a class="nav-item nav-link active" style="text-align:left;" id="nav-bidders-tab" data-toggle="tab" href="#nav-bidders" role="tab" aria-controls="nav-home" aria-selected="true">
                                             Bidders
                                         </a>
-                                        <a class="nav-item nav-link" style="text-align:left;" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
+                                        <a class="nav-item nav-link" style="text-align:left;" id="nav-auctioneers-tab" data-toggle="tab" href="#nav-auctioneers" role="tab" aria-controls="nav-profile" aria-selected="false">
                                             Auctioneers
+                                        </a>
+                                        <a class="nav-item nav-link" style="text-align:left;" id="nav-multi-tab" data-toggle="tab" href="#nav-multi" role="tab" aria-controls="nav-profile" aria-selected="false">
+                                            Multi-role
                                         </a>
                                     </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
-                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                    <div class="tab-pane fade show active" id="nav-bidders" role="tabpanel" aria-labelledby="nav-bidders-tab">
                                         <div class="card shadow mb-4">
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered auction-table" id="pending-items" width="100%" cellspacing="0">
+                                                    <table class="table table-bordered auction-table" id="bidder-users" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr class="text-center">
                                                                 <th class="col-2">Avatar</th>
@@ -127,11 +131,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                    <div class="tab-pane fade" id="nav-auctioneers" role="tabpanel" aria-labelledby="nav-auctioneers-tab">
                                         <div class="card shadow mb-4">
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered auction-table" id="approved-items" width="100%" cellspacing="0">
+                                                    <table class="table table-bordered auction-table" id="auctioneer-users" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr class="text-center">
                                                                 <th class="col-2">Avatar</th>
@@ -149,6 +153,58 @@
                                                         <tbody>
                                                             <?php if (array_filter($auctioneers) != []) {
                                                                 foreach ($auctioneers as $auctioneer) { ?>
+                                                                   <tr class="text-center">
+                                                                        <td>
+                                                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 12rem;"
+                                                                                src="assets/uploads/<?php echo $auctioneer['avatar'] ?>" alt="">
+                                                                        </td>
+                                                                        <td><?php echo $auctioneer['name']; ?></td>
+                                                                        <td><?php echo $auctioneer['address']; ?></td>
+                                                                        <td><?php echo $auctioneer['username']; ?></td>
+                                                                        <td><?php echo $auctioneer['date_of_birth']; ?></td>
+                                                                        <td>
+                                                                            <div><?php echo $auctioneer['gender']; ?></div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div><?php echo $auctioneer['contact']; ?></div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button class="btn btn-danger delete" data-id="<?php echo $auctioneer['id']; ?>" data-table-name="users" title="Delete">
+                                                                                Delete
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+
+                                                            <?php }
+                                                            } ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-multi" role="tabpanel" aria-labelledby="nav-multi-tab">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered auction-table" id="multi-users" width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <th class="col-2">Avatar</th>
+                                                                <th class="col-1">Name</th>
+                                                                <th class="col-2">Address</th>
+                                                                <th class="col-1">Username</th>
+                                                                <th class="col-1">Date of Birth</th>
+                                                                <th class="col-1">Gender</th>
+                                                                <th class="col-1">Contact</th>
+                                                                <th class="col-2">
+                                                                    Actions
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php if (array_filter($multirole) != []) {
+                                                                foreach ($multirole as $multi) { ?>
                                                                    <tr class="text-center">
                                                                         <td>
                                                                             <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 12rem;"

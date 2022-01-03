@@ -107,6 +107,10 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                     <span class="fas fa-fw fa-ban"></span>
                                     Reject
                                 </a>
+                                <a class="nav-item nav-link" style="text-align:left;" id="nav-cancel-tab" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-contact" aria-selected="false">
+                                    <span class="fas fa-fw fa-minus"></span>
+                                    Cancel
+                                </a>
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -235,10 +239,13 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <td><?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
-                                                                    <button class="btn btn-success" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
+                                                                    <input type="hidden" class="category" value="<?php echo $item['category']; ?>"/>
+                                                                    <input type="hidden" class="item_id" value="<?php echo $item['id']; ?>"/>
+                                                                    <input type="hidden" class="user_id" value="<?php echo $item['user_id']; ?>"/>
+                                                                    <button class="btn btn-success mb-2" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
                                                                         Ready
                                                                     </button>
-                                                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
+                                                                    <button class="btn btn-secondary mb-2" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
                                                                         Cancel
                                                                     </button>
                                                                     <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
@@ -326,6 +333,75 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="tab-pane fade" id="nav-cancel" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                <div class="card shadow mb-4">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered auction-table" id="cancel-items" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th class="col-1">Image</th>
+                                                        <th class="col-1">Item</th>
+                                                        <th class="col-1">Category</th>
+                                                        <th class="col-1">Token</th>
+                                                        <th class="col-1">Bid date</th>
+                                                        <th class="col-4">
+                                                            Actions
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if (array_filter($soldItems) != []) {
+                                                        foreach ($soldItems as $item) { ?>
+                                                            <tr class="text-center">
+                                                                <td>
+                                                                    <?php
+                                                                    $result = array();
+                                                                    foreach ($images as $element) {
+                                                                        $result[$element['item_id']][] = $element;
+                                                                    }
+
+                                                                    foreach ($result as $key => $image) { ?>
+                                                                        <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                                            <div class="carousel-inner">
+                                                                                <?php
+                                                                                foreach ($image as $id => $data) {
+                                                                                    if ($data['item_id'] === $item['item_id']) {
+                                                                                        $imageURL = 'uploads/' . $data["file_name"];
+                                                                                ?>
+                                                                                        <div class="carousel-item <?php if ($id === 0) {
+                                                                                                                        echo "active";
+                                                                                                                    } ?>">
+                                                                                            <img class="d-block item-slider w-100 h-100" src="<?php echo $imageURL; ?>">
+                                                                                        </div>
+                                                                                <?php
+                                                                                    }
+                                                                                } ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php
+                                                                    } ?>
+                                                                </td>
+                                                                <td class="item-details"><?php echo $item['details']; ?></td>
+                                                                <td><?php echo $item['category']; ?></td>
+                                                                <td><?php echo intval($item['token']); ?></td>
+                                                                <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                                <td>
+                                                                    <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
+                                                                        Delete
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                    <?php }
+                                                    } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>
@@ -354,6 +430,8 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                             <input class="category" type="hidden" name="category">
                             <label><strong>Set Bid Time</strong></label>
                             <input name="bidding_time" class="form-control" type="datetime-local" placeholder="Set Bid Time" required>
+                            <label class="mt-2"><strong>Set End Time</strong></label>
+                            <input name="end_time" class="form-control" type="datetime-local" placeholder="Set End Time" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -378,11 +456,15 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                 <div class="modal-body">
                     <div class="form-group col-12">
                         <p>Are you sure want to cancel this item?</p>
+                        <input class="item_id" type="hidden" name="item_id">
+                        <input class="user_id" type="hidden" name="user_id">
+                        <input class="category" type="hidden" name="category">
                         <textarea name="reason" class="form-control" placeholder="Write your reason here..." rows="5" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <input name="cancel_bid_item" type="submit" class="btn btn-success" value="Submit">
                 </div>
             </div>
         </div>
@@ -392,6 +474,19 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
     <script src="js/string-trim.js"></script>
     <script>
         $('#readyToBidModal').on('show.bs.modal', function(e) {
+            // get information to update quickly to modal view as loading begins
+            var $target = e.relatedTarget; //this holds the element who called the modal
+            var $item_id = $($target).parents('tr').find('.item_id').val();
+            var $user_id = $($target).parents('tr').find('.user_id').val();
+            var $category = $($target).parents('tr').find('.category').val();
+
+            //set the values
+            $(this).find('.user_id').val($user_id);
+            $(this).find('.item_id').val($item_id);
+            $(this).find('.category').val($category);
+        });
+
+        $('#cancelItemModal').on('show.bs.modal', function(e) {
             // get information to update quickly to modal view as loading begins
             var $target = e.relatedTarget; //this holds the element who called the modal
             var $item_id = $($target).parents('tr').find('.item_id').val();
