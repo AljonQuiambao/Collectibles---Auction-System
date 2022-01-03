@@ -170,7 +170,7 @@
                   <img src="assets/uploads/<?php echo $feedback["avatar"]; ?>" class="testimonial-img" alt="">
                   <h3><?php echo $feedback["name"]; ?></h3>
                   <h4><?php echo $feedback["feedback"]; ?></h4>
-                  <p>
+                  <p style="word-wrap: break-word;">
                     <i class="bx bxs-quote-alt-left quote-icon-left"></i>
                       <?php echo $feedback["comment"]; ?>
                     <i class="bx bxs-quote-alt-right quote-icon-right"></i>

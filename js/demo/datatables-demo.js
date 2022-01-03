@@ -5,5 +5,6 @@ $(document).ready(function() {
   $('#pending-items').DataTable();
   $('#approved-items').DataTable();
   $('#reject-items').DataTable();
+  $('#cancel-items').DataTable();
 });
 

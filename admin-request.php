@@ -93,6 +93,9 @@
                                         <a class="nav-item nav-link" style="text-align:left;" id="nav-reject-tab" data-toggle="tab" href="#nav-reject" role="tab" aria-controls="nav-reject" aria-selected="false">
                                             Reject Items
                                         </a>
+                                        <a class="nav-item nav-link" style="text-align:left;" id="nav-cancel-tab" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-reject" aria-selected="false">
+                                            Cancel Items
+                                        </a>
                                     </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -221,6 +224,61 @@
                                                                 <th class="col-1">Bid Date</th>
                                                                 <th class="col-1">Seller Information</th>
                                                                 <th class="col-1">Reason for Rejecting</th>
+                                                                <th class="col-1">
+                                                                    Actions
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php if (array_filter($rejectItems) != []) {
+                                                                foreach ($rejectItems as $item) { ?>
+                                                                    <tr class="text-center">
+                                                                        <td><?php echo $item['title']; ?></td>
+                                                                        <td class="item-details"><?php echo $item['details']; ?></td>
+                                                                        <td><?php echo $item['category']; ?></td>
+                                                                        <td><?php echo number_format($item['token']); ?></td>
+                                                                        <td><?php echo $item['bid_time']; ?></td>
+                                                                        <td>
+                                                                            <div>Name: <?php echo $item['name']; ?></div>
+                                                                            <div>Age:
+                                                                                <?php echo
+                                                                                date_diff(
+                                                                                    date_create($item['date_of_birth']),
+                                                                                    date_create(date_default_timezone_get())
+                                                                                )->y;
+                                                                                ?>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td><?php echo $item['reason']; ?></td>
+                                                                        <td>
+                                                                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" title="Delete">
+                                                                                Delete
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                            <?php }
+                                                            } ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="nav-cancel" role="tabpanel" aria-labelledby="nav-cancel-tab">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered auction-table" id="cancel-items" width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <th class="col-1">Item</th>
+                                                                <th class="col-5">Details</th>
+                                                                <th class="col-1">Category</th>
+                                                                <th class="col-1">Token</th>
+                                                                <th class="col-1">Bid Date</th>
+                                                                <th class="col-1">Seller Information</th>
+                                                                <th class="col-1">Reason for Cancelling</th>
                                                                 <th class="col-1">
                                                                     Actions
                                                                 </th>
