@@ -1,9 +1,13 @@
 (function($) {
     "use strict"; // Start of use strict
 
-    function countDownDate(dateTime, $target) {
+    function countDownDate(bidTime, endTime,  $target) {
          // Set the date we're counting down to
-        var countDownDate = new Date(dateTime).getTime();
+        var bidTimeDate = new Date(bidTime).getTime();
+        var endTimeDate = new Date(endTime).getTime();
+
+        console.log(bidTimeDate);
+        console.log(endTimeDate);
 
         // Update the count down every 1 second
         var x = setInterval(function() {
@@ -12,7 +16,9 @@
             var now = new Date().getTime();
                 
             // Find the distance between now and the count down date
-            var distance = countDownDate - now;
+            var distance = endTimeDate - now;
+
+            console.log("distance", distance);
                 
             // Time calculations for days, hours, minutes and seconds
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -46,7 +52,7 @@
         const target = $('.counter');
         const element = $(target)[index];
 
-        countDownDate($(element).data('date-time'), $(element));
+        countDownDate($(element).data('bid-time'), $(element).data('end-time'), $(element));
     }
 
   })(jQuery); // End of use strict

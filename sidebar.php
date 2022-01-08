@@ -129,7 +129,7 @@ $user = $result->fetch_array(MYSQLI_ASSOC);
         <li class="nav-item <?php if ($_SERVER['PHP_SELF'] == '/collectibles/payment-confirmation.php') { ?>active <?php } ?>">
             <a class="nav-link" href="payment-confirmation.php">
                 <i class="fas fa-fw fa-check"></i>
-                <span>Confirm Payment</span></a>
+                <span>Payment Confirmation</span></a>
         </li>
     <?php } ?>
 

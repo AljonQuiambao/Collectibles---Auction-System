@@ -8,14 +8,13 @@
     $sql = "SELECT * FROM items 
                 JOIN item_status ON items.id = item_status.item_id
                 JOIN users ON items.user_id = users.id
-                JOIN item_reason ON items.id = item_reason.item_id
                 JOIN item_category ON items.category = item_category.category_id
                 WHERE is_deleted = false";
 
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
 
-    // print_r($items);
+    //print_r($items);
 
     function filterByStatus($items, $status)
     {
@@ -125,8 +124,8 @@
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo number_format($item['token']); ?></td>
-                                                                        <td><?php echo $item['bid_time']; ?></td>
+                                                                        <td><?php echo $item['token']; ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
                                                                             <div>Age:
@@ -184,8 +183,8 @@
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo number_format($item['token']); ?></td>
-                                                                        <td><?php echo $item['bid_time']; ?></td>
+                                                                        <td><?php echo $item['token']; ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
                                                                             <div>Age:
@@ -237,8 +236,8 @@
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo number_format($item['token']); ?></td>
-                                                                        <td><?php echo $item['bid_time']; ?></td>
+                                                                        <td><?php echo $item['token']; ?></td>
+                                                                         <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
                                                                             <div>Age:
@@ -292,8 +291,8 @@
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo number_format($item['token']); ?></td>
-                                                                        <td><?php echo $item['bid_time']; ?></td>
+                                                                        <td><?php echo $item['token']; ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
                                                                             <div>Age:

@@ -4,13 +4,25 @@ require_once "config.php";
 
 // Define variables and initialize with empty values
 $name = $address = $username = $password = $confirm_password =
-    $date_of_birth = $gender = $contact = $role = $avatar = "";
+    $date_of_birth = $gender = $contact = $role = $avatar =
+    $subscription = $payment_option = "";
 
 $name_err = $address_err = $username_err = $password_err =
-    $confirm_password_err = $date_of_birth_err = $gender_err = $contact_err = $role_err = "";
+    $confirm_password_err = $date_of_birth_err = $gender_err = $contact_err = $role_err = $subscription_err = $payment_option_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if(!isset($subscription)) {
+        $subscription = trim($_POST["subscription"]);
+    }
+
+    if(!isset($payment_option)) {
+        $payment_option = trim($_POST["payment_option"]); 
+    }
+
+    // $subscription = $_POST["subscription"];
+    // $payment_option = $_POST["payment_option"];
 
     //Validate name
     if (empty(trim($_POST["name"]))) {
@@ -115,6 +127,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = trim($_POST["role"]);
     }
 
+    // //validate subscription
+    // if (empty($_POST['subscription'])) {
+    //     $subscription_err = "Please select a subscription";
+    // } else {
+    //     $subscription = trim($_POST["subscription"]);
+    // }
+
+    //  //validate subscription
+    // if (empty($_POST['payment_option'])) {
+    //     $payment_option_err = "Please select a payment option";
+    // } else {
+    //     $payment_option = trim($_POST["payment_option"]);
+    // }
+
     if(array_key_exists('img', $_FILES)) { 
         if ($_FILES['avatar']['tmp_name'] != '') {
             $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
@@ -123,8 +149,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         $filename = strtotime(date('y-m-d H:i'));
+        // $move = move_uploaded_file($_FILES['files']['tmp_name'], 'assets/uploads/' . $filename);
         $avatar = $filename;
     }
+
+    // $subscription = $_POST["subscription"];
+    // $payment_option = $_POST["payment_option"];
    
     $validate = empty($name_err) &&
         empty($address_err) &&
@@ -139,14 +169,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check input errors before inserting in database
     if ($validate) {
         // Prepare an insert statement
-        $sql = "INSERT INTO users (name, address, username, password, date_of_birth, gender, role, contact, avatar)
-                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (name, address, username, password, date_of_birth, gender, role, contact, avatar, subscription, payment_option)
+                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param(
                 $stmt,
-                "sssssssss",
+                "sssssssssss",
                 $param_name,
                 $param_address,
                 $param_username,
@@ -155,7 +185,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $param_gender,
                 $param_role,
                 $param_contact,
-                $param_avatar
+                $param_avatar, 
+                $param_subscription,
+                $param_payment_option
             );
 
             // Set parameters
@@ -168,12 +200,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $param_role = $role;
             $param_contact = $contact;
             $param_avatar = $avatar;
+            $param_subscription = $subscription;
+            $param_payment_option = $payment_option;
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
                 $_SESSION['success_status'] = "Your account is sucessfully registered. You can now go to login!";
                 header("location: login.php");
                 exit();
+
             } else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
@@ -226,7 +261,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
-                                        <input type="text" name="name" placeholder="Name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $name; ?>" required>
+                                        <input type="text" name="name" placeholder="Name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $name; ?>" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" required>
                                         <!-- <span class="invalid-feedback ml-2"><?php echo $name_err; ?></span> -->
                                     </div>
                                 </div>
@@ -243,7 +278,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $password; ?>" required>
+                                        <input type="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $password; ?>" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
                                         <span class="invalid-feedback ml-2"><?php echo $password_err; ?></span>
                                     </div>
                                     <div class="col-sm-6">
@@ -289,7 +324,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </select>
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <select id="payment" class="form-control select-control-user hidden">
+                                        <select id="payment_option" class="form-control select-control-user hidden">
                                             <option value="" selected disabled hidden>Payment Option</option>
                                             <option value="1">Cash</option>
                                             <option value="2">Card</option>
@@ -313,6 +348,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="text-center mb-2">
                             <a class="small" href="login.php">Already have an account? Login!</a>
+                        </div>
+                        <div class="text-center mt-4 mb-2">
+                            <a href="landing.php" class="btn btn-sm btn-secondary">
+                                <span class="text">
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                    Back to Home Page
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -361,23 +404,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $('#subscription').removeClass('hidden');
         } else {
             $('#subscription').addClass('hidden');
-            $('#payment').addClass('hidden');
+            $('#payment_option').addClass('hidden');
         }
     });
 
     $("#subscription").change(function() {
         if ($(this).val() === "2") {
-            $('#payment').removeClass('hidden');
+            $('#payment_option').removeClass('hidden');
         } else {
-            $('#payment').addClass('hidden');
+            $('#payment_option').addClass('hidden');
         }
     });
 
-    $("#payment").change(function() {
+    $("#payment_option").change(function() {
         if ($(this).val() === "2") {
             $("#payment-options").removeClass("hidden");
         } else {
             $('#payment-options').addClass('hidden');
         }
     });
+
+    function keypresshandler(event) {
+        console.log('test!');
+         var charCode = event.keyCode;
+         //Non-numeric character range
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+         return false;
+    }
 </script>

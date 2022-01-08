@@ -15,6 +15,8 @@
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
 
     //print_r($items);
+
+    //$user_sql = "SELECT * FROM users WHERE id = $item_id";
 ?>
 
 
@@ -55,135 +57,84 @@
                                 unset($_SESSION['status']);
                             }
                             ?>
-                            <section id="tabs" class="project-tab">
-                                <nav>
-                                    <div class="nav nav-tabs nav-fill mb-4" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active" style="text-align:left;" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                                            Bidders
-                                        </a>
-                                        <a class="nav-item nav-link" style="text-align:left;" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
-                                            Auctioneers
-                                        </a>
-                                    </div>
-                                </nav>
-                                <div class="tab-content" id="nav-tabContent">
-                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                        <div class="card shadow mb-4">
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered auction-table" id="pending-items" width="100%" cellspacing="0">
-                                                        <thead>
-                                                            <tr class="text-center">
-                                                                <th class="col-1">Item</th>
-                                                                <th class="col-2">Details</th>
-                                                                <th class="col-1">Category</th>
-                                                                <th class="col-1">Token</th>
-                                                                <th class="col-1">Bid Date</th>
-                                                                <th class="col-2">Bidder</th>
-                                                                <th class="col-2">Proof</th>
-                                                                <th class="col-2">
-                                                                    Actions
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php if (array_filter($items) != []) {
-                                                                foreach ($items as $item) { ?>
-                                                                    <tr class="text-center">                                                                    
-                                                                        <td><?php echo $item['title']; ?></td>
-                                                                        <td class="item-details"><?php echo $item['details']; ?></td>
-                                                                        <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo $item['token']; ?></td>
-                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
-                                                                        <td>
-                                                                            <div><?php echo $item['name']; ?></div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 12rem;"
-                                                                                src="data:image/png;charset=utf8;base64,<?php echo base64_encode($item['proof']); ?>" /> 
-                                                                        </td>
-                                                                        <td>
-                                                                            <form action="services.php" method="POST">
-                                                                                <input class="user_id" type="hidden" name="user_id" value="<?php echo $item['user_id'] ?>">
-                                                                                <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
-                                                                                <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
-                                                                                <input class="amount" type="hidden" name="user_id" value="<?php echo $item['token'] ?>">
-                                                                                <input name="confirm_payment_bidder" type="submit" class="btn btn-success" value="Confirm">
-                                                                            </form>
-                                                                            <button class="btn btn-danger delete mt-2" data-id="<?php echo $item['item_id']; ?>" data-table-name="item_proof" title="Delete">
-                                                                                Delete
-                                                                            </button>
-                                                                        </td>
-                                                                    </tr>
 
-                                                            <?php }
-                                                            } ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                        <div class="card shadow mb-4">
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered auction-table" id="approved-items" width="100%" cellspacing="0">
-                                                        <thead>
-                                                            <tr class="text-center">
-                                                                <th class="col-1">Item</th>
-                                                                <th class="col-3">Details</th>
-                                                                <th class="col-1">Category</th>
-                                                                <th class="col-1">Token</th>
-                                                                <th class="col-1">Bid Date</th>
-                                                                <th class="col-2">Seller Information</th>
-                                                                <th class="col-2">
-                                                                    Actions
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php if (array_filter($items) != []) {
-                                                                foreach ($items as $item) { ?>
-                                                                    <tr class="text-center">
-                                                                        <td><?php echo $item['title']; ?></td>
-                                                                        <td class="item-details"><?php echo $item['details']; ?></td>
-                                                                        <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo $item['token']; ?></td>
-                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
-                                                                        <td>
-                                                                            <div>Name: <?php echo $item['name']; ?></div>
-                                                                            <div>Age:
-                                                                                <?php echo
-                                                                                date_diff(
-                                                                                    date_create($item['date_of_birth']),
-                                                                                    date_create(date_default_timezone_get())
-                                                                                )->y;
-                                                                                ?>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <form action="services.php" method="POST">
-                                                                                <input class="user_id" type="hidden" name="user_id" value="<?php echo $item['user_id'] ?>">
-                                                                                <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
-                                                                                <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
-                                                                                <input name="confirm_payment_auctioneer" type="submit" class="btn btn-success" value="Confirm">
-                                                                            </form>
-                                                                            <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#deleteModal" title="Delete">
-                                                                                Delete
-                                                                            </button>
-                                                                        </td>
-                                                                    </tr>
-                                                            <?php }
-                                                            } ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered auction-table" id="pending-items" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th class="col-1">Item</th>
+                                                    <th class="col-2">Details</th>
+                                                    <th class="col-1">Category</th>
+                                                    <th class="col-1">Token</th>
+                                                    <th class="col-1">Bid Date</th>
+                                                    <th class="col-2">Bidder</th>
+                                                    <th class="col-2">Seller Information</th>
+                                                    <th class="col-2">Proof</th>
+                                                    <th class="col-2">
+                                                        Actions
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php if (array_filter($items) != []) {
+                                                    foreach ($items as $item) { ?>
+                                                        <tr class="text-center">                                                                    
+                                                            <td><?php echo $item['title']; ?></td>
+                                                            <td class="item-details"><?php echo $item['details']; ?></td>
+                                                            <td><?php echo $item['category']; ?></td>
+                                                            <td>
+                                                                <?php echo $item['token']; ?>
+                                                                <!-- <?php echo $item['token'] * 0.10 ;?> -->
+                                                            </td>
+                                                            <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                            <td>
+                                                                <div><?php echo $item['name']; ?></div>
+                                                            </td>
+                                                              <td>
+                                                                <div>Name:
+                                                                     <?php
+                                                                        //$sql = "SELECT * FROM users WHERE id = $item['auctioneer_id']";
+                                                                        echo $item['auctioneer_id'];
+                                                                    ?>
+                                                                </div>
+                                                                <div>Age:
+                                                                    <!-- <?php echo $item['date_of_birth']; ?> -->
+                                                                    <?php echo
+                                                                        date_diff(
+                                                                            date_create($item['date_of_birth']),
+                                                                            date_create(date_default_timezone_get())
+                                                                        )->y;
+                                                                    ?>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 12rem;"
+                                                                    src="data:image/png;charset=utf8;base64,<?php echo base64_encode($item['proof']); ?>" /> 
+                                                            </td>
+                                                            <td>
+                                                                <form action="services.php" method="POST">
+                                                                    <input class="bidder_id" type="hidden" name="bidder_id" value="<?php echo $item['bidder_id'] ?>">
+                                                                    <input class="auctioneer_id" type="hidden" name="auctioneer_id" value="<?php echo $item['auctioneer_id'] ?>">
+                                                                    <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
+                                                                    <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
+                                                                    <input class="amount" type="hidden" name="amount" value="<?php echo $item['token'] ?>">
+                                                                    <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
+                                                                </form>
+                                                              <!--   <button class="btn btn-danger delete mt-2" data-id="<?php echo $item['item_id']; ?>" data-table-name="item_proof" title="Delete">
+                                                                    Delete
+                                                                </button> -->
+                                                            </td>
+                                                        </tr>
+
+                                                <?php }
+                                                } ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 </div>

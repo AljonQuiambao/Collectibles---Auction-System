@@ -119,6 +119,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <body class="bg-gradient-primary">
     <div class="container h-100">
+        <?php
+            if (isset($_SESSION['success_status'])) {
+            ?>
+                <div class="alert alert-success alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <?php echo $_SESSION['success_status']; ?>
+                </div>
+            <?php
+                unset($_SESSION['success_status']);
+            }
+        ?>
         <div class="row h-100 justify-content-center align-items-center" style="padding-top: 10rem;">
             <div class="col-xl-10 col-lg-12 col-md-9">
                 <div class="card o-hidden border-0 shadow-lg my-5">
@@ -153,6 +164,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                     </div>
                                     <div class="text-center">
                                         <a class="small" href="register.php">Create an Account!</a>
+                                    </div>
+                                     <div class="text-center mt-4">
+                                         <a href="landing.php" class="btn btn-sm btn-secondary">
+                                            <span class="text">
+                                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                                Back to Home Page
+                                            </span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

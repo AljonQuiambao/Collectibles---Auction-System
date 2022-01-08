@@ -6,6 +6,7 @@
     session_start();
 
     $item_id = $_GET['item_id'];
+    //print($item_id);
 
     $sql = "SELECT * FROM items 
             JOIN item_status ON items.id = item_status.item_id
@@ -16,10 +17,14 @@
     $item_result = mysqli_query($link, $sql);
     $item = $item_result->fetch_array(MYSQLI_ASSOC);
 
+    //print_r($item);
+
     if (array_filter($item) !== []) {
         $bid_session_sql = "SELECT * FROM bidding_sessions WHERE item_id = $item_id";
         $bid_session_result = mysqli_query($link, $bid_session_sql);
         $bid_session = $bid_session_result->fetch_array(MYSQLI_ASSOC);
+
+        //print_r($bid_session);
 
         $bidding_session_id = $bid_session['id'];
         $bid_history_count = 0;
@@ -45,7 +50,7 @@
         $auctioneer = $user_result->fetch_array(MYSQLI_ASSOC);
 
         $bid_err = "";
-        $current_bid = intval($bid_session['current_bid']);
+        $current_bid = $bid_session['current_bid'];
 
         if (isset($_POST['put_bid'])) {
             $current_user_id = trim($_SESSION["id"]);
@@ -80,7 +85,7 @@
     $token_sql = "SELECT * FROM tokens WHERE id = $param_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    $display_token = intval($token['token']);
+    $display_token = $token['token'];
 
     $sql = "SELECT * FROM images WHERE item_id = $item_id ORDER BY id DESC";
     $item_result = mysqli_query($link, $sql);
@@ -129,14 +134,13 @@
                                                 <input class="hidden" id="counter_submit" name="counter_submit" type="submit">
                                             </form>
                                             Auction Started : Time Remaining <strong> <span class="counter" 
-                                            data-date-time="<?php echo $bid_session['bidding_time']; ?>"></span></strong>
+                                            data-bid-time="<?php echo $bid_session['bidding_time']; ?>" data-end-time="<?php echo $bid_session['end_time']; ?>"></span></strong>
                                         </h3>
                                         <h5>
                                             Available Balance:
                                             <span id="available-token">
-                                                <strong><?php echo $display_token;?></strong>
+                                                <strong>₱ <?php echo $display_token;?></strong>
                                             </span>
-                                            token(s)
                                         </h5>
                                     </div>
                                 </div>
@@ -206,7 +210,7 @@
                                                 Current Bid
                                                 <h4 id="bid-payment">
                                                     <span id="current-bid">
-                                                        <strong> <?php echo intval($bid_session['current_bid']); ?>
+                                                        <strong> ₱ <?php echo number_format((float)$bid_session['current_bid'], 2, '.', ''); ?>
                                                         </strong>
                                                     </span>
                                                 </h4>

@@ -208,20 +208,20 @@
                                                                    <tr class="text-center">
                                                                         <td>
                                                                             <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 12rem;"
-                                                                                src="assets/uploads/<?php echo $auctioneer['avatar'] ?>" alt="">
+                                                                                src="assets/uploads/<?php echo $multirole['avatar'] ?>" alt="">
                                                                         </td>
-                                                                        <td><?php echo $auctioneer['name']; ?></td>
-                                                                        <td><?php echo $auctioneer['address']; ?></td>
-                                                                        <td><?php echo $auctioneer['username']; ?></td>
-                                                                        <td><?php echo $auctioneer['date_of_birth']; ?></td>
+                                                                        <td><?php echo $multirole['name']; ?></td>
+                                                                        <td><?php echo $multirole['address']; ?></td>
+                                                                        <td><?php echo $multirole['username']; ?></td>
+                                                                        <td><?php echo $multirole['date_of_birth']; ?></td>
                                                                         <td>
-                                                                            <div><?php echo $auctioneer['gender']; ?></div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div><?php echo $auctioneer['contact']; ?></div>
+                                                                            <div><?php echo $multirole['gender']; ?></div>
                                                                         </td>
                                                                         <td>
-                                                                            <button class="btn btn-danger delete" data-id="<?php echo $auctioneer['id']; ?>" data-table-name="users" title="Delete">
+                                                                            <div><?php echo $multirole['contact']; ?></div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button class="btn btn-danger delete" data-id="<?php echo $multirole['id']; ?>" data-table-name="users" title="Delete">
                                                                                 Delete
                                                                             </button>
                                                                         </td>

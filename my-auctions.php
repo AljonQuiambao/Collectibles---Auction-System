@@ -5,6 +5,9 @@ require_once "config.php";
 // Initialize the session
 session_start();
 
+$current_user_id = trim($_SESSION["id"]);
+//print($current_user_id);
+
 $sql = "SELECT * FROM items
         JOIN item_status ON items.id = item_status.item_id
         JOIN users ON items.user_id = users.id
@@ -13,6 +16,19 @@ $sql = "SELECT * FROM items
 
 $result = mysqli_query($link, $sql);
 $items = $result->fetch_all(MYSQLI_ASSOC);
+
+//print_r($items);
+
+function filterByUser($items, $user_id)
+{
+    return array_filter($items, function ($item) use ($user_id) {
+        if ($item['user_id'] == $user_id) {
+            return true;
+        }
+    });
+}
+
+$filterItems = filterByUser($items, $current_user_id);
 
 function filterByStatus($items, $status)
 {
@@ -25,9 +41,10 @@ function filterByStatus($items, $status)
 
 //print_r($items);
 
-$pendingItems = filterByStatus($items, 1);
-$approvedItems = filterByStatus($items, 2);
-$soldItems = filterByStatus($items, 3);
+$pendingItems = filterByStatus($filterItems, 1);
+$approvedItems = filterByStatus($filterItems, 2);
+$rejectItems = filterByStatus($filterItems, 3);
+$cancelItems = filterByStatus($filterItems, 6);
 
 $image_sql = "SELECT * FROM images ORDER BY id DESC";
 $item_result = mysqli_query($link, $image_sql);
@@ -108,7 +125,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                     Reject
                                 </a>
                                 <a class="nav-item nav-link" style="text-align:left;" id="nav-cancel-tab" data-toggle="tab" href="#nav-cancel" role="tab" aria-controls="nav-contact" aria-selected="false">
-                                    <span class="fas fa-fw fa-minus"></span>
+                                    <span class="fas fa-fw fa-window-close""></span>
                                     Cancel
                                 </a>
                             </div>
@@ -165,9 +182,12 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 </td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
-                                                                <td><?php echo $item['token']; ?></td>
+                                                                <td>₱ <?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
+                                                                    <input type="hidden" class="category" value="<?php echo $item['category']; ?>"/>
+                                                                    <input type="hidden" class="item_id" value="<?php echo $item['item_id']; ?>"/>
+                                                                    <input type="hidden" class="user_id" value="<?php echo $item['user_id']; ?>"/>
                                                                     <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
                                                                         Cancel
                                                                     </button>
@@ -194,7 +214,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     <tr class="text-center">
                                                         <th class="col-2">Image</th>
                                                         <th class="col-2">Item</th>
-                                                        <th class="col-2">Category</th>
+                                                        <th class="col-1">Category</th>
                                                         <th class="col-2">Token</th>
                                                         <th class="col-1">Bid date</th>
                                                         <th class="col-3">
@@ -236,11 +256,11 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 </td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
-                                                                <td><?php echo $item['token']; ?></td>
+                                                                <td>₱ <?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
                                                                     <input type="hidden" class="category" value="<?php echo $item['category']; ?>"/>
-                                                                    <input type="hidden" class="item_id" value="<?php echo $item['id']; ?>"/>
+                                                                    <input type="hidden" class="item_id" value="<?php echo $item['item_id']; ?>"/>
                                                                     <input type="hidden" class="user_id" value="<?php echo $item['user_id']; ?>"/>
                                                                     <button class="btn btn-success mb-2" data-toggle="modal" data-target="#readyToBidModal" title="Ready to Bid">
                                                                         Ready
@@ -280,8 +300,8 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php if (array_filter($soldItems) != []) {
-                                                        foreach ($soldItems as $item) { ?>
+                                                    <?php if (array_filter($rejectItems) != []) {
+                                                        foreach ($rejectItems as $item) { ?>
                                                             <tr class="text-center">
                                                                 <td>
                                                                     <?php
@@ -313,7 +333,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 </td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
-                                                                <td><?php echo intval($item['token']); ?></td>
+                                                                <td>₱ <?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
                                                                     <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
@@ -352,8 +372,8 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php if (array_filter($soldItems) != []) {
-                                                        foreach ($soldItems as $item) { ?>
+                                                    <?php if (array_filter($cancelItems) != []) {
+                                                        foreach ($cancelItems as $item) { ?>
                                                             <tr class="text-center">
                                                                 <td>
                                                                     <?php
@@ -385,7 +405,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 </td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
-                                                                <td><?php echo intval($item['token']); ?></td>
+                                                                <td>₱ <?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
                                                                     <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
@@ -453,19 +473,21 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group col-12">
-                        <p>Are you sure want to cancel this item?</p>
-                        <input class="item_id" type="hidden" name="item_id">
-                        <input class="user_id" type="hidden" name="user_id">
-                        <input class="category" type="hidden" name="category">
-                        <textarea name="reason" class="form-control" placeholder="Write your reason here..." rows="5" required></textarea>
+                <form action="services.php" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group col-12">
+                            <p>Are you sure want to cancel this item?</p>
+                            <input class="item_id" type="hidden" name="item_id">
+                            <input class="user_id" type="hidden" name="user_id">
+                            <input class="category" type="hidden" name="category">
+                            <textarea name="reason" class="form-control" placeholder="Write your reason here..." rows="5" required></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                    <input name="cancel_bid_item" type="submit" class="btn btn-success" value="Submit">
-                </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                        <input name="cancel_bid_item" type="submit" class="btn btn-success" value="Submit">
+                    </div>
+            </form>
             </div>
         </div>
     </div>

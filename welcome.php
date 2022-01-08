@@ -11,16 +11,24 @@
         exit;
     }
 
-    //get items ready for bid
-    $sql = "SELECT * FROM items 
-            JOIN bidding_sessions ON items.id = bidding_sessions.item_id
-            JOIN item_status ON items.id = item_status.item_id
-            JOIN users ON items.user_id = users.id
-            JOIN item_images ON items.id = item_images.item_id
-            JOIN item_category ON items.category = item_category.category_id";
+    // get items ready for bid
+    // $sql = "SELECT * FROM items 
+    //         JOIN bidding_sessions ON items.id = bidding_sessions.item_id
+    //         JOIN item_status ON items.id = item_status.item_id
+    //         JOIN users ON items.user_id = users.id
+    //         JOIN item_images ON items.id = item_images.item_id
+    //         JOIN item_category ON items.category = item_category.category_id";
+
+    $sql = "SELECT * FROM bidding_sessions
+                JOIN items ON bidding_sessions.item_id = items.id
+                JOIN item_images ON items.id = item_images.item_id
+                JOIN item_category ON items.category = item_category.category_id";
 
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
+
+    //print_r($items);
+
 
     function filterByStatus($items, $status)
     {
@@ -31,9 +39,10 @@
         });
     }
 
-    $items = filterByStatus($items, 4);
+    //$items = filterByStatus($items, 4);
 
-    // print_r($items);
+    //print_r($items);
+
     $user_id = trim($_SESSION["id"]);
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
@@ -89,7 +98,7 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <h6 class="mb-0 mt-2">
-                                Available Balance: <strong> <?php echo $display_token; ?></strong> token(s)
+                                Available Balance: <strong>₱ <?php echo $display_token; ?></strong>
                             </h6>
                         </div>
                     </div>
@@ -98,11 +107,11 @@
                         <?php
                         if (array_filter($items) != []) {
                             foreach ($items as $item) { ?>
-                             <div class="item col-lg-3">
+                             <div class="item col-lg-4">
                                     <div class="thumbnail card shadow mb-4">
                                         <div class="ml-4">
                                             <span class="badge badge-danger badge-counter">
-                                                Ends in <span class="counter" data-date-time="<?php echo $item['bidding_time']; ?>"></span>
+                                                Ends in <span class="counter" data-bid-time="<?php echo $item['bidding_time']; ?>" data-end-time="<?php echo $item['end_time']; ?>"></span>
                                             </span>
                                         </div>
                                         <div class="card-header py-3 text-center">
@@ -127,7 +136,7 @@
                                             <div class="details">
                                                 <div class="mb-2">
                                                     <span class="badge badge-primary badge-counter">
-                                                        Current bid <?php echo intval($item['current_bid']); ?>
+                                                        Current bid ₱ <?php echo number_format((float)$item['current_bid'], 2, '.', ''); ?>
                                                     </span>
                                                 </div>
                                                 <div>

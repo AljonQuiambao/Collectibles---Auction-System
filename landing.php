@@ -89,7 +89,7 @@
           </div>
         </div>
         <div class="col-lg-6 d-lg-flex flex-lg-column align-items-stretch order-1 order-lg-2 hero-img" data-aos="fade-up">
-          <img src="landing-assets/img/hero-img.png" class="img-fluid" alt="">
+          <img src="landing-assets/img/landing_display.png" class="img-fluid" alt="">
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@
             </div>
           </div>
           <div class="image col-xl-5 d-flex align-items-stretch justify-content-center order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
-            <img src="landing-assets/img/features.svg" class="img-fluid" alt="">
+            <img src="landing-assets/img/bidding.png" class="img-fluid" alt="">
           </div>
         </div>
 

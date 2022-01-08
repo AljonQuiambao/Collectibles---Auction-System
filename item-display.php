@@ -39,6 +39,10 @@ $items = $results->fetch_all(MYSQLI_ASSOC);
                         <p class="mb-4">
                             Online Auction is where everyone goes to shop, sell, and give, while discovering variety and affordability.
                         </p>
+                        <a href="landing.php" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            Back to Homepage
+                        </a>
                         <a href="register.php" class="btn btn-primary">Register Now</a>
                     </div>
 
@@ -63,7 +67,7 @@ $items = $results->fetch_all(MYSQLI_ASSOC);
                                 <div class="card shadow mb-4">
                                     <div class="ml-2">
                                         <span class="badge badge-danger badge-counter">
-                                            Ends in <span class="counter" data-date-time="<?php echo $item['bidding_time']; ?>"></span>
+                                            Ends in <span class="counter" data-bid-time="<?php echo $item['bidding_time']; ?>" data-end-time="<?php echo $item['end_time']; ?>"></span>
                                         </span>
                                     </div>
                                     <div class="card-header py-3 text-center">
@@ -81,7 +85,7 @@ $items = $results->fetch_all(MYSQLI_ASSOC);
                                     </div>
                                     <div class="card-footer text-center">
                                         <span class="badge badge-primary badge-counter">
-                                            Current bid <?php echo intval($item['current_bid']); ?>
+                                            Current bid ₱ <?php echo number_format($item['current_bid'], 2, '.', ''); ?>
                                         </span>
                                         <div class="mt-2">
                                             <a href="item-display-details.php?item_id=<?php echo $item['item_id']; ?>" class="btn btn-secondary">
