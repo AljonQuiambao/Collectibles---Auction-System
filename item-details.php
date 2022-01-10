@@ -17,7 +17,7 @@
     $item_result = mysqli_query($link, $sql);
     $item = $item_result->fetch_array(MYSQLI_ASSOC);
 
-    //print_r($item);
+    //print(is_array($item));
 
     if (array_filter($item) !== []) {
         $bid_session_sql = "SELECT * FROM bidding_sessions WHERE item_id = $item_id";

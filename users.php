@@ -23,7 +23,7 @@
 
     $bidders = filterByUserRole($users, 1);
     $auctioneers = filterByUserRole($users, 2);
-    $multirole = filterByUserRole($users, 4);
+    $multiroles = filterByUserRole($users, 4);
 ?>
 
 
@@ -203,8 +203,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <?php if (array_filter($multirole) != []) {
-                                                                foreach ($multirole as $multi) { ?>
+                                                            <?php if (array_filter($multiroles) != []) {
+                                                                foreach ($multiroles as $multirole) { ?>
                                                                    <tr class="text-center">
                                                                         <td>
                                                                             <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 12rem;"

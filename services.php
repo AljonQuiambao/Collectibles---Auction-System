@@ -419,7 +419,7 @@
             } 
 
             //for admin
-            $admin = mysqli_query($link, "SELECT * FROM tokens WHERE user_id = 3";
+            $admin = mysqli_query($link, "SELECT * FROM tokens WHERE user_id = 3");
             $adminRecords = mysqli_num_rows($auctioneer);
     
             if ($adminRecords > 0) {
