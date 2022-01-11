@@ -87,11 +87,27 @@ if (isset($_POST['save_item_data'])) {
                 $statusMsg = 'Please select a file to upload.';
             }
             //update notifications here
-            $query_sql = "insert into notifications (user_id, item_id, type, notification, status, date_posted) 
+            $query_sql = "Insert into notifications (user_id, item_id, type, notification, status, date_posted) 
                     values ('$user_id', '$item_id', 1, 'Your item ($s_title) is successfully added. 
                     just wait for approval of admin for this item.
                     you may check the status of the item on the my auction page.', 0, now())";
             $run = mysqli_query($link, $query_sql);
+            
+            //update notification status
+            $checkRecord = mysqli_query($link, "SELECT * FROM alert_status WHERE user_id=" . $user_id);
+            $totalrows = mysqli_num_rows($checkRecord);
+    
+            if ($totalrows > 0) {
+                $query_update = "UPDATE alert_status SET visited = 0 
+                    WHERE user_id = $user_id"; 
+    
+                $query_update_run = mysqli_query($link, $query_update); 
+            } else {
+                $query_update = "INSERT INTO alert_status(user_id, visited) 
+                VALUES ('$user_id', 0)";
+    
+                $query_update_run = mysqli_query($link, $query_update); 
+            }
         }
     }
 

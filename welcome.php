@@ -29,13 +29,13 @@
 
     $items = filterByDate($items, $date_now);
 
-    // print_r($items);
+    // /print_r($items);
 
     $user_id = trim($_SESSION["id"]);
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    $display_token = $token['token'];
+    $display_token = $token['token'] ? $token['token'] : 0;
 
     $image_sql = "SELECT * FROM images ORDER BY id DESC";
     $item_result = mysqli_query($link, $image_sql);
@@ -90,7 +90,7 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <h6 class="mb-0 mt-2">
-                                Available Balance: <strong>₱ <?php echo $display_token; ?></strong>
+                                Available Balance: <strong>₱ <?php echo number_format((float)$display_token, 2, '.', ''); ?></strong>
                             </h6>
                         </div>
                     </div>

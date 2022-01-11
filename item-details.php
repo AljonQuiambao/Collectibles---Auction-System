@@ -45,6 +45,8 @@
             $top_bidders = array_slice($bid_history, 0, 5);
         }
 
+        //print_r($top_bidders);
+
         $auctioneer_id = $bid_session['auctioneer_id'];
         $user_sql = "SELECT * FROM users WHERE id = $auctioneer_id";
         $user_result = mysqli_query($link, $user_sql);
@@ -195,6 +197,11 @@
                                             </div>
                                             <div class="mt-3">
                                                 <span style="font-size: small;">
+                                                    Starting Price: ₱ <?php echo number_format((float)$item['token'], 2, '.', ''); ?>
+                                                </span>
+                                            </div>
+                                            <div class="mt-3">
+                                                <span style="font-size: small;">
                                                     Date Posted: <?php echo date('m-d-Y', strtotime($item['date_added'])); ?>
                                                 </span>
                                             </div>
@@ -261,7 +268,7 @@
                                                                 <?php echo $index + 1;?>                                                  
                                                             </span>
                                                             <span class="ml-4 mr-4">
-                                                                <?php echo $top_bidder['name'];?>                                                  
+                                                                <?php echo $top_bidder['username'];?>                                                  
                                                             </span>
                                                             <span class="ml-4">
                                                                 <?php echo intval($top_bidder['bid_token']);?>                                                  
