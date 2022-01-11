@@ -195,7 +195,7 @@
         <div class="row no-gutters">
           <div class="col-lg-6 box featured" data-aos="fade-up">
             <h3>Premium</h3>
-            <h4>199<span>per month</span></h4>
+            <h4>₱ 199.00<span>per month</span></h4>
             <ul>
             <li><i class="bx bx-check"></i> Can view auction item(s)</li>
               <li><i class="bx bx-check"></i> Can check details of the item(s)</li>
@@ -210,7 +210,7 @@
 
           <div class="col-lg-6 box" data-aos="fade-left">
             <h3>Standard</h3>
-            <h4>0<span>per month</span></h4>
+            <h4>₱ 0.00<span>per month</span></h4>
             <ul>
             <li><i class="bx bx-check"></i> Can view auction item(s)</li>
               <li><i class="bx bx-check"></i> Can check details of the item(s)</li>

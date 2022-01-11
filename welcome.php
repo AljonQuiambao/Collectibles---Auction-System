@@ -11,43 +11,35 @@
         exit;
     }
 
-    // get items ready for bid
-    // $sql = "SELECT * FROM items 
-    //         JOIN bidding_sessions ON items.id = bidding_sessions.item_id
-    //         JOIN item_status ON items.id = item_status.item_id
-    //         JOIN users ON items.user_id = users.id
-    //         JOIN item_images ON items.id = item_images.item_id
-    //         JOIN item_category ON items.category = item_category.category_id";
-
+    $date_now = date("Y-m-d H:i:s");
     $sql = "SELECT * FROM bidding_sessions
-                JOIN items ON bidding_sessions.item_id = items.id
-                JOIN item_images ON items.id = item_images.item_id
-                JOIN item_category ON items.category = item_category.category_id";
+                JOIN items ON bidding_sessions.id = items.id";
 
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
 
-    //print_r($items);
-
-
-    function filterByStatus($items, $status)
+    function filterByDate($items, $dateNow)
     {
-        return array_filter($items, function ($item) use ($status) {
-            if ($item['status'] == $status) {
+        return array_filter($items, function ($item) use ($dateNow) {
+            if ($item['end_time'] >= $dateNow) {
                 return true;
             }
         });
     }
 
-    //$items = filterByStatus($items, 4);
+    $items = filterByDate($items, $date_now);
 
-    //print_r($items);
+    // print_r($items);
 
     $user_id = trim($_SESSION["id"]);
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
     $display_token = $token['token'];
+
+    $image_sql = "SELECT * FROM images ORDER BY id DESC";
+    $item_result = mysqli_query($link, $image_sql);
+    $images = $item_result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -116,8 +108,34 @@
                                         </div>
                                         <div class="card-header py-3 text-center">
                                             <div class="img-event">
-                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 18rem;"
-                                                         src="data:image/png;charset=utf8;base64,<?php echo base64_encode($item['image']); ?>" /> 
+                                            <?php
+                                                    $result = array();
+                                                    foreach ($images as $element) {
+                                                        $result[$element['item_id']][] = $element;
+                                                    }
+
+                                                    foreach ($result as $key => $image) { ?>
+                                                        <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                            <div class="carousel-inner">
+                                                                <?php
+                                                                foreach ($image as $id => $data) {
+                                                                    if ($data['item_id'] === $item['item_id']) {
+                                                                        $imageURL = 'uploads/' . $data["file_name"];
+                                                                ?>
+                                                                        <div class="carousel-item <?php if ($id === 0) {
+                                                                                                        echo "active";
+                                                                                                    } ?>">
+                                                                            <img class="d-block item-slider w-100 h-100 img-welcome" src="<?php echo $imageURL; ?>">
+                                                                        </div>
+                                                                <?php
+                                                                    }
+                                                                } ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php
+                                            } ?>
+                                            <!-- <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 18rem;"
+                                                         src="data:image/png;charset=utf8;base64,<?php echo base64_encode($item['item_images']); ?>" />  -->
                                                 <!-- <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 18rem;"
                                                     src="img/product_thumbnail.jpg" alt="..."> -->
                                             </div>

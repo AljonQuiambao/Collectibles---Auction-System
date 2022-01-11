@@ -33,7 +33,9 @@
         });
     }
 
-    $myBidItems = filterByStatus($item_list, 4);
+    //print_r($items);
+
+    $myBidItems = filterByStatus($items, 4);
     $bidHistoryItems = filterByStatus($items, 5);
     $wonItems = filterByStatus($items, 5);
 
@@ -112,9 +114,9 @@
                                                     <table class="table table-bordered auction-table" id="pending-items" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr class="text-center">
-                                                                <th class="col-2">Image</th>
-                                                                <th class="col-1">Item</th>
-                                                                <th class="col-4">Details</th>
+                                                                <th class="col-3">Image</th>
+                                                                <th class="col-4">Item</th>
+                                                                <th class="col-2">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
                                                                 <th class="col-1">Bid Date</th>
@@ -157,10 +159,10 @@
                                                                                 <?php echo $item['title']; ?>
                                                                             </a>
                                                                         </td>
-                                                                        <td class="item-details"><?php echo $item['details']; ?></td>
+                                                                        <td class="item-details" style="word-wrap: break-word;"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo intval($item['token']); ?></td>
-                                                                        <td><?php echo $item['bid_time']; ?></td>
+                                                                        <td>₱ <?php echo number_format((float)$item['token'], 2, '.', ''); ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                     </tr>
 
                                                             <?php }

@@ -17,9 +17,10 @@
     $item_result = mysqli_query($link, $sql);
     $item = $item_result->fetch_array(MYSQLI_ASSOC);
 
-    //print(is_array($item));
-
-    if (array_filter($item) !== []) {
+    //print_r($item);
+    $filter_item = is_array($item) ? array_filter($item) : array_filter([$item]);
+    
+    if (array_filter($filter_item) !== []) {
         $bid_session_sql = "SELECT * FROM bidding_sessions WHERE item_id = $item_id";
         $bid_session_result = mysqli_query($link, $bid_session_sql);
         $bid_session = $bid_session_result->fetch_array(MYSQLI_ASSOC);
@@ -194,7 +195,7 @@
                                             </div>
                                             <div class="mt-3">
                                                 <span style="font-size: small;">
-                                                    Date Posted: <?php echo $item['date_added']; ?>
+                                                    Date Posted: <?php echo date('m-d-Y', strtotime($item['date_added'])); ?>
                                                 </span>
                                             </div>
                                             <div class="mt-4">

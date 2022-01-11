@@ -201,7 +201,15 @@ if (isset($_POST['save_item_data'])) {
                                 <textarea name="details[]" class="form-control" rows="6" placeholder="Details" minlength="50" required></textarea>\
                             </div>\
                             <div class="form-group">\
-                                <input name="token[]" class="form-control" type="number" placeholder="Price/ Token" required>\
+                                <div class="input-group mb-3">\
+                                    <div class="input-group-prepend">\
+                                        <div class="input-group-text">₱</div>\
+                                    </div>\
+                                    <input name="token[]" class="form-control" type="number" placeholder="Price/ Token" required>\
+                                    <div class="input-group-append">\
+                                        <div class="input-group-text">.00</div>\
+                                    </div>\
+                                </div>\
                             </div>\
                             <div class="row form-group">\
                                 <div class="col-12 col-md-12">\

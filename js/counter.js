@@ -6,8 +6,8 @@
         var bidTimeDate = new Date(bidTime).getTime();
         var endTimeDate = new Date(endTime).getTime();
 
-        console.log(bidTimeDate);
-        console.log(endTimeDate);
+        // console.log(bidTimeDate);
+        // console.log(endTimeDate);
 
         // Update the count down every 1 second
         var x = setInterval(function() {
@@ -18,7 +18,7 @@
             // Find the distance between now and the count down date
             var distance = endTimeDate - now;
 
-            console.log("distance", distance);
+            // console.log("distance", distance);
                 
             // Time calculations for days, hours, minutes and seconds
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
