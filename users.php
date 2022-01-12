@@ -161,7 +161,7 @@
                                                                         <td><?php echo $auctioneer['name']; ?></td>
                                                                         <td><?php echo $auctioneer['address']; ?></td>
                                                                         <td><?php echo $auctioneer['username']; ?></td>
-                                                                        <td><?php echo $auctioneer['date_of_birth']; ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($auctioneer['date_of_birth'])); ?></td>
                                                                         <td>
                                                                             <div><?php echo $auctioneer['gender']; ?></div>
                                                                         </td>
@@ -213,7 +213,7 @@
                                                                         <td><?php echo $multirole['name']; ?></td>
                                                                         <td><?php echo $multirole['address']; ?></td>
                                                                         <td><?php echo $multirole['username']; ?></td>
-                                                                        <td><?php echo $multirole['date_of_birth']; ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($multirole['date_of_birth'])); ?></td>
                                                                         <td>
                                                                             <div><?php echo $multirole['gender']; ?></div>
                                                                         </td>

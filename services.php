@@ -295,88 +295,6 @@
         }
     }
 
-    // if (isset($_POST['confirm_payment_auctioneer'])) { 
-    //     $user_id = $_POST['user_id'];
-    //     $item_id = $_POST['item_id'];
-    //     $category = $_POST['category'];
-    //     $amount = $_POST['amount'];
-
-    //     $query = "INSERT INTO payment_confirmation(user_id, item_id, date_confirmed) 
-    //         VALUES ('$user_id', '$item_id', NOW())"; 
-    //         $query_run = mysqli_query($link, $query);
-
-    //     if ($query_run) {
-    //         //$query_delete_status = "DELETE FROM payment_confirmation 
-    //                     //WHERE user_id = $auctioneer_id && 
-    //                     //item_id = $item_id "; 
-    //         //mysqli_query($link, $query_delete_status);
-
-    //         $query_status = "UPDATE item_status SET status = 5 
-    //                 WHERE user_id = $auctioneer_id && 
-    //                 item_id = $item_id &&
-    //                 category = $category"; 
-    //         mysqli_query($link, $query_status);
-
-    //         //insert computation of tokens here
-    //         $checkRecord = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $user_id);
-    //         $totalrows = mysqli_num_rows($checkRecord);
-
-    //         $commission = $amount * 0.10;
-    //         $net_pay = $amount - $commission;
-    
-    //         if ($totalrows > 0) {
-    //             $final_amount = $checkRecord->fetch_array()['token'] + $net_pay;
-    //             $query_update = "UPDATE tokens SET token = $final_amount 
-    //                 WHERE user_id = $user_id"; 
-    
-    //             $query_update_run = mysqli_query($link, $query_update); 
-    //         } 
-
-    //         //for admin
-    //         // $checkRecord = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $user_id);
-    //         // $totalrows = mysqli_num_rows($checkRecord);
-
-    //         // $final_amount = $checkRecord->fetch_array()['token'] + $net_pay;
-    //         // $query_update = "UPDATE tokens SET token = $final_amount 
-    //         //     WHERE user_id = $user_id"; 
-
-    //         // $query_update_run = mysqli_query($link, $query_update); 
-
-    //         if ($query_status) {
-    //              //update notifications here
-    //                     $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
-    //                     VALUES ('$auctioneer_id', '$item_id', 2, 'Your item is being cancel.', 0, NOW())"; 
-    //             $run = mysqli_query($link, $query_sql);
-
-    //             $_SESSION['status'] = "The proof is already approved.";
-    //             header("location: my-auctions.php");
-    //             exit();
-    //         } else {
-    //             return false;
-    //         }
-    //     } else {
-    //         $_SESSION['status'] = "Proof is not approved. Please try again!";
-    //         header("location: my-auctions.php");
-    //         exit();
-    //     }
-
-    //     if ($query_run) {
-    //         //for bidder
-    //         $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
-    //             VALUES ('$user_id', '$item_id', 2, 'The proof is already approved.', 0, NOW())"; 
-    //         $run = mysqli_query($link, $query_sql);
-
-    //         $_SESSION['status'] = "The proof is already approved.";
-    //         header("location: payment-confirmation.php");
-    //         exit();
-    //     }
-    //     else {
-    //         $_SESSION['status'] = "Proof is not approved. Please try again!";
-    //         header("location: payment-confirmation.php");
-    //         exit();
-    //     }
-    // }
-
     if (isset($_POST['confirm_payment'])) { 
         $bidder_id = $_POST['bidder_id'];
         $auctioneer_id = $_POST['auctioneer_id'];
@@ -384,11 +302,16 @@
         $category = $_POST['category'];
         $amount = $_POST['amount'];
 
-        if ($query_run) {
-            $query_status = "UPDATE item_status SET status = 5 
-                    WHERE item_id = $item_id"; 
+        $query_payment_status = "UPDATE item_proof SET is_deleted = TRUE
+                WHERE item_id = $item_id"; 
 
-            mysqli_query($link, $query_status);
+        $query_payment_run = mysqli_query($link, $query_payment_status);
+
+        if ($query_payment_run) {
+            $query_status = "UPDATE item_status SET status = 5 
+            WHERE item_id = $item_id"; 
+
+            $query_run = mysqli_query($link, $query_status);
 
             //insert computation of tokens here
             $admin_commission = $amount * 0.10;
@@ -401,10 +324,16 @@
             if ($bidderRecords > 0) {
                 $final_amount = $bidder->fetch_array()['token'] - $amount;
                 $query_update = "UPDATE tokens SET token = $final_amount 
-                    WHERE user_id = $user_id"; 
+                    WHERE user_id = $bidder_id"; 
     
                 $query_update_run = mysqli_query($link, $query_update); 
-            } 
+            } else {
+                $final_amount = $bidder->fetch_array()['token'] - $amount;
+                $query_update = "INSERT INTO tokens(user_id, token) 
+                    VALUES ('$bidder_id', '$amount')";
+    
+                $query_update_run = mysqli_query($link, $query_update); 
+            }
 
             //for auctioneer
             $auctioneer = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $auctioneer_id);
@@ -413,10 +342,16 @@
             if ($auctioneerRecords > 0) {
                 $final_amount = $auctioneer->fetch_array()['token'] + $auctioneer_receivable;
                 $query_update = "UPDATE tokens SET token = $final_amount 
-                    WHERE user_id = $user_id"; 
+                    WHERE user_id = $auctioneer_id"; 
     
                 $query_update_run = mysqli_query($link, $query_update); 
-            } 
+            } else {
+                $final_amount = $auctioneer->fetch_array()['token'] + $auctioneer_receivable;
+                $query_update = "INSERT INTO tokens(user_id, token) 
+                    VALUES ('$auctioneer_id', '$amount')";
+    
+                $query_update_run = mysqli_query($link, $query_update); 
+            }
 
             //for admin
             $admin = mysqli_query($link, "SELECT * FROM tokens WHERE user_id = 3");
@@ -425,26 +360,28 @@
             if ($adminRecords > 0) {
                 $final_amount = $admin->fetch_array()['token'] + $admin_commission;
                 $query_update = "UPDATE tokens SET token = $final_amount 
-                    WHERE user_id = $user_id"; 
+                    WHERE user_id = 3"; 
     
                 $query_update_run = mysqli_query($link, $query_update); 
-            } 
 
-            if ($query_status) {
-                 //update notifications here
-                        $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
-                        VALUES ('$auctioneer_id', '$item_id', 2, 'Your item is being cancel.', 0, NOW())"; 
+            } else {
+                $final_amount = $admin->fetch_array()['token'] + $admin_commission;
+                $query_update = "INSERT INTO tokens(user_id, token) 
+                    VALUES (3, '$amount')";
+    
+                $query_update_run = mysqli_query($link, $query_update); 
+            }
+
+            if ($query_update_run) {
+                //update notifications here
+                $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                             VALUES ('$auctioneer_id', '$item_id', 2, 'Your item is being cancel.', 0, NOW())"; 
                 $run = mysqli_query($link, $query_sql);
 
                 $_SESSION['status'] = "The proof is already approved.";
                 header("location: payment-confirmation.php");
                 exit();
-                
-            } else {
-                 $_SESSION['status'] = "Proof is not approved. Please try again!";
-                header("location: payment-confirmation.php");
-                exit();
-            }
+            } 
         } else {
             $_SESSION['status'] = "Proof is not approved. Please try again!";
             header("location: payment-confirmation.php");

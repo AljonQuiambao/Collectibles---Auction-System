@@ -140,7 +140,7 @@
                                                     src="img/product_thumbnail.jpg" alt="..."> -->
                                             </div>
                                         </div>
-                                        <div class="caption card-body">
+                                        <div class="caption card-body card-body-display">
                                             <h5 class="group text-center card-title inner list-group-item-heading">
                                                 <strong>
                                                     <?php echo $item['title']; ?>

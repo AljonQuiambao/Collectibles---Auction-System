@@ -6,11 +6,27 @@ $category_sql = "SELECT * FROM item_category";
 $result = mysqli_query($link, $category_sql);
 $categories = $result->fetch_all(MYSQLI_ASSOC);
 
-$items_sql = "SELECT * FROM items       
-        JOIN bidding_sessions ON items.id = bidding_sessions.item_id
-        JOIN item_images ON items.id = item_images.item_id";
+$date_now = date("Y-m-d H:i:s");
+$items_sql = "SELECT * FROM bidding_sessions
+    JOIN items ON bidding_sessions.id = items.id";
+
 $results = mysqli_query($link, $items_sql);
 $items = $results->fetch_all(MYSQLI_ASSOC);
+
+function filterByDate($items, $dateNow)
+{
+    return array_filter($items, function ($item) use ($dateNow) {
+        if ($item['end_time'] >= $dateNow) {
+            return true;
+        }
+    });
+}
+
+$items = filterByDate($items, $date_now);
+
+$image_sql = "SELECT * FROM images ORDER BY id DESC";
+$item_result = mysqli_query($link, $image_sql);
+$images = $item_result->fetch_all(MYSQLI_ASSOC);
 
 // print_r($items);
 ?>
@@ -27,8 +43,7 @@ $items = $results->fetch_all(MYSQLI_ASSOC);
                 <?php include 'navbar.php' ?>
 
                 <div class="container-fluid">
-                    <div class="jumbotron text-white jumbotron-image shadow" 
-                        style="background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
+                    <div class="jumbotron text-white jumbotron-image shadow" style="background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
                             url(img/background-template.jpg);
                             background-position: center; 
                             background-repeat: no-repeat; 
@@ -71,8 +86,33 @@ $items = $results->fetch_all(MYSQLI_ASSOC);
                                         </span>
                                     </div>
                                     <div class="card-header py-3 text-center">
-                                        <div>
-                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 18rem; max-height: 14rem;" src="data:image/png;charset=utf8;base64,<?php echo base64_encode($item['image']); ?>" />
+                                        <div class="img-event">
+                                            <?php
+                                            $result = array();
+                                            foreach ($images as $element) {
+                                                $result[$element['item_id']][] = $element;
+                                            }
+
+                                            foreach ($result as $key => $image) { ?>
+                                                <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                    <div class="carousel-inner">
+                                                        <?php
+                                                        foreach ($image as $id => $data) {
+                                                            if ($data['item_id'] === $item['item_id']) {
+                                                                $imageURL = 'uploads/' . $data["file_name"];
+                                                        ?>
+                                                                <div class="carousel-item <?php if ($id === 0) {
+                                                                                                echo "active";
+                                                                                            } ?>">
+                                                                    <img class="d-block item-slider w-100 h-100 img-welcome" src="<?php echo $imageURL; ?>">
+                                                                </div>
+                                                        <?php
+                                                            }
+                                                        } ?>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                            } ?>
                                         </div>
                                     </div>
                                     <div class="caption card-body card-body-display">
@@ -124,7 +164,7 @@ $items = $results->fetch_all(MYSQLI_ASSOC);
                 }
             }
 
-            $(function() { 
+            $(function() {
                 $(".feedback").addClass("hidden");
             });
         </script>

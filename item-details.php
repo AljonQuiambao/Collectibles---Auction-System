@@ -223,67 +223,82 @@
                                                     </span>
                                                 </h4>
                                             </div>
-
-                                            <form action="<?php echo 'item-details.php?item_id='.$item_id; ?>" method="post">
-                                                <span id="success" class="alert-success hidden">
-                                                    <strong>Congratulations!</strong> You are the highest bidder.
-                                                </span>
-                                                <span id="greater" class="alert-danger hidden">
-                                                    <strong>Opps!</strong> You must input greater than the current bid.
-                                                </span>
-                                                <span id="no-input" class="alert-danger hidden">
-                                                    Kindly place your bid.
-                                                </span>
-                                                <span id="must-100-input" class="alert-warning hidden">
-                                                    Please input your bid greater than 100 to the current bid.
-                                                </span>
-                                                <div class="form-group row mb-2 mt-2">
-                                                    <div class="col-sm-6 mb-3">
-                                                        <input name="bid_token" type="text" class="form-control form-control-user" id="bid-textbox" placeholder="Your Max Bid">
+                                            
+                                            <?php if (intval($display_token) > $bid_session['current_bid'] || 
+                                                    intval($display_token) > $item['token']) { 
+                                                ?>
+                                                <form action="<?php echo 'item-details.php?item_id='.$item_id; ?>" method="post">
+                                                    <span id="success" class="alert-success hidden">
+                                                        <strong>Congratulations!</strong> You are the highest bidder.
+                                                    </span>
+                                                    <span id="greater" class="alert-danger hidden">
+                                                        <strong>Opps!</strong> You must input greater than the current bid.
+                                                    </span>
+                                                    <span id="no-input" class="alert-danger hidden">
+                                                        Kindly place your bid.
+                                                    </span>
+                                                    <span id="must-100-input" class="alert-warning hidden">
+                                                        Please input your bid greater than 100 to the current bid.
+                                                    </span>
+                                                    <div class="form-group row mb-2 mt-2">
+                                                        <div class="col-sm-6 mb-3">
+                                                            <input name="bid_token" type="text" class="form-control form-control-user" id="bid-textbox" placeholder="Your Max Bid">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <input id="place-bid" name="put_bid" type="submit" class="btn btn-primary" value="Place Bid">
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <span class="random"></span>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <input id="place-bid" name="put_bid" type="submit" class="btn btn-primary" value="Place Bid">
-                                                    </div>
-                                                    <div class="col-sm-12">
-                                                        <span class="random"></span>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            <?php } ?>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="panel panel-default card shadow p-4">
-                                                <div class="panel-heading">
+                                                <div class="panel-heading mb-2">
                                                     <h4 class="text-center">
                                                         <i class="fas fa-crown"></i>
                                                         Top Bidders
                                                     </h4>
                                                 </div>
-                                                <ul class="list-group list-group-flush">
-                                                    <?php
-                                                         if (array_filter($top_bidders) != []) {
-                                                             foreach ($top_bidders as $index => $top_bidder) { ?>
-                                                        <li class="list-group-item">
-                                                            <span class="badge badge-success badge-counter p-4">
-                                                                <?php echo $index + 1;?>                                                  
-                                                            </span>
-                                                            <span class="ml-4 mr-4">
-                                                                <?php echo $top_bidder['username'];?>                                                  
-                                                            </span>
-                                                            <span class="ml-4">
-                                                                <?php echo intval($top_bidder['bid_token']);?>                                                  
-                                                            </span>
-                                                        </li>
-                                                    <?php  } 
-                                                    } ?>
-                                                    <div class="row mt-2 no-data-available <?php echo array_filter($top_bidders) === [] ? "" : "hidden";?>">
-                                                        <div class="col-lg-12">
-                                                            <div class="alert alert-primary" role="alert">
-                                                                No bidders yet.
-                                                            </div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                        <th scope="col">Rank</th>
+                                                        <th scope="col">Username</th>
+                                                        <th scope="col">Bid</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                            if (array_filter($top_bidders) != []) {
+                                                                foreach ($top_bidders as $index => $top_bidder) { ?>
+                                                                <tr>
+                                                                    <th scope="row">
+                                                                        <span class="badge badge-success badge-counter p-4">
+                                                                            <?php echo $index + 1;?>                                                  
+                                                                        </span>
+                                                                    </th>
+                                                                    <td>
+                                                                        <?php echo $top_bidder['username'];?>   
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo intval($top_bidder['bid_token']);?>      
+                                                                    </td>
+                                                                </tr>
+                                                            <?php  } 
+                                                        } ?>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row mt-2 no-data-available <?php echo array_filter($top_bidders) === [] ? "" : "hidden";?>">
+                                                    <div class="col-lg-12">
+                                                        <div class="alert alert-primary" role="alert">
+                                                            No bidders yet.
                                                         </div>
                                                     </div>
-                                                </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

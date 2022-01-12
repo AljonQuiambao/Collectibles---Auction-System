@@ -8,11 +8,23 @@
     $sql = "SELECT * FROM item_proof
                 JOIN items ON item_proof.item_id = items.id
                 JOIN users ON item_proof.bidder_id = users.id
-                JOIN item_category ON items.category = item_category.category_id
-                WHERE is_deleted = false";
+                JOIN item_category ON items.category = item_category.category_id";
 
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
+
+    //print_r($items);
+
+    function filterByStatus($items, $isDeleted)
+    {
+        return array_filter($items, function ($item) use ($isDeleted) {
+            if ($item['is_deleted'] = $isDeleted) {
+                return true;
+            }
+        });
+    }
+
+    $items = filterByStatus($items, 1);
 
     //print_r($items);
 
@@ -85,7 +97,7 @@
                                                             <td class="item-details"><?php echo $item['details']; ?></td>
                                                             <td><?php echo $item['category']; ?></td>
                                                             <td>
-                                                                <?php echo $item['token']; ?>
+                                                                ₱ <?php echo $item['token']; ?>
                                                                 <!-- <?php echo $item['token'] * 0.10 ;?> -->
                                                             </td>
                                                             <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
@@ -101,11 +113,15 @@
                                                                 </div>
                                                                 <div>Age:
                                                                     <!-- <?php echo $item['date_of_birth']; ?> -->
-                                                                    <?php echo
+                                                                    <!-- <?php echo
                                                                         date_diff(
                                                                             date_create($item['date_of_birth']),
                                                                             date_create(date_default_timezone_get())
                                                                         )->y;
+                                                                    ?> -->
+                                                                     <?php echo
+                                                                        date_diff(date_create($item['date_of_birth']),
+                                                                        date_create('now'))->y;
                                                                     ?>
                                                                 </div>
                                                             </td>
