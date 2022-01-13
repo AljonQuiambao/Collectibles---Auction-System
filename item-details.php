@@ -6,6 +6,7 @@
     session_start();
 
     $item_id = $_GET['item_id'];
+    $user_id = trim($_SESSION["id"]);
     //print($item_id);
 
     $sql = "SELECT * FROM items 
@@ -60,8 +61,8 @@
             $bid_token = $_POST['bid_token'];
             $item_title = $item[0]['title'];
 
-            $query_sql = "INSERT INTO bidding_history(bidding_session_id, item_id, auctioneer_id, bidder_id, bid_token)
-                             VALUES ('$bidding_session_id', '$item_id', '$auctioneer_id', '$current_user_id', '$bid_token')"; 
+            $query_sql = "INSERT INTO bidding_history(bidding_session_id, item_id, auctioneer_id, bidder_id, bid_token, date_bid)
+                             VALUES ('$bidding_session_id', '$item_id', '$auctioneer_id', '$current_user_id', '$bid_token', NOW())"; 
             $query_sql_run = mysqli_query($link, $query_sql);
 
             if ($query_sql_run) {
@@ -85,10 +86,10 @@
     }
 
     $param_id = trim($_SESSION["id"]);
-    $token_sql = "SELECT * FROM tokens WHERE id = $param_id";
+    $token_sql = "SELECT * FROM tokens WHERE user_id = $param_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    $display_token = $token['token'];
+    $display_token = $token['token'] ? $token['token'] : 0;
 
     $sql = "SELECT * FROM images WHERE item_id = $item_id ORDER BY id DESC";
     $item_result = mysqli_query($link, $sql);
@@ -99,7 +100,7 @@
     $comment_err = "";
     $sql = "SELECT * FROM comments
                 JOIN users ON comments.user_id = users.id
-                WHERE item_id = $item_id and user_id = $param_id ORDER BY date_posted desc";
+                WHERE item_id = $item_id ORDER BY date_posted desc";
 
     $result = mysqli_query($link, $sql);
     $comments = $result->fetch_all(MYSQLI_ASSOC);
@@ -142,7 +143,7 @@
                                         <h5>
                                             Available Balance:
                                             <span id="available-token">
-                                                <strong>₱ <?php echo $display_token;?></strong>
+                                                <strong>₱ <?php echo number_format((float)$display_token, 2, '.', ''); ?></strong>
                                             </span>
                                         </h5>
                                     </div>
@@ -224,8 +225,9 @@
                                                 </h4>
                                             </div>
                                             
-                                            <?php if (intval($display_token) > $bid_session['current_bid'] || 
-                                                    intval($display_token) > $item['token']) { 
+                                            <?php if ($item['user_id'] !=  $param_id &&
+                                                    (intval($display_token) > $bid_session['current_bid'] || 
+                                                    intval($display_token) > $item['token'])) { 
                                                 ?>
                                                 <form action="<?php echo 'item-details.php?item_id='.$item_id; ?>" method="post">
                                                     <span id="success" class="alert-success hidden">

@@ -81,7 +81,7 @@
                                                         <div>
                                                             <?php echo $notification['notification']; ?>
                                                             <div class="small text-gray-500">
-                                                                <?php echo $notification['date_posted']; ?>
+                                                                <?php echo date('m-d-Y', strtotime($notification['date_posted'])); ?>
                                                             </div>
                                                         </div>
                                                     </td>
