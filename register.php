@@ -13,17 +13,6 @@ $name_err = $address_err = $username_err = $password_err =
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if(!isset($subscription)) {
-        $subscription = trim($_POST["subscription"]);
-    }
-
-    if(!isset($payment_option)) {
-        $payment_option = trim($_POST["payment_option"]); 
-    }
-
-    // $subscription = $_POST["subscription"];
-    // $payment_option = $_POST["payment_option"];
-
     //Validate name
     if (empty(trim($_POST["name"]))) {
         $name_err = "Please enter a name.";
@@ -95,7 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     //Validate date of birth
-    //Validate gender
     if (empty(trim($_POST["date_of_birth"]))) {
         $date_of_birth_err = "Please select a birthday.";
     } else {
@@ -127,34 +115,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = trim($_POST["role"]);
     }
 
-    // //validate subscription
-    // if (empty($_POST['subscription'])) {
-    //     $subscription_err = "Please select a subscription";
-    // } else {
-    //     $subscription = trim($_POST["subscription"]);
-    // }
-
-    //  //validate subscription
-    // if (empty($_POST['payment_option'])) {
-    //     $payment_option_err = "Please select a payment option";
-    // } else {
-    //     $payment_option = trim($_POST["payment_option"]);
-    // }
-
-    if(array_key_exists('img', $_FILES)) { 
+    if(array_key_exists('avatar', $_FILES)) { 
         if ($_FILES['avatar']['tmp_name'] != '') {
-            $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
-            $move = move_uploaded_file($_FILES['img']['tmp_name'], 'assets/uploads/' . $filename);
+            $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['avatar']['name'];
+            $move = move_uploaded_file($_FILES['avatar']['tmp_name'], 'assets/uploads/' . $filename);
             $avatar = $filename;
         }
     } else {
         $filename = strtotime(date('y-m-d H:i'));
-        // $move = move_uploaded_file($_FILES['files']['tmp_name'], 'assets/uploads/' . $filename);
         $avatar = $filename;
     }
 
-    // $subscription = $_POST["subscription"];
-    // $payment_option = $_POST["payment_option"];
+    if(!empty($_POST["subscription"])) {
+        $subscription = trim($_POST["subscription"]);
+    }
+
+    if(!empty($_POST["payment_option"])) {
+        $payment_option = trim($_POST["payment_option"]); 
+    }
    
     $validate = empty($name_err) &&
         empty($address_err) &&
@@ -317,14 +295,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <select id="subscription" class="form-control select-control-user hidden">
+                                        <select id="subscription" class="form-control select-control-user hidden" name="subscription">
                                             <option value="" selected disabled hidden>Subscription</option>
                                             <option value="1">Standard</option>
                                             <option value="2">Premium</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <select id="payment_option" class="form-control select-control-user hidden">
+                                        <select id="payment_option" class="form-control select-control-user hidden" name="payment_option">
                                             <option value="" selected disabled hidden>Payment Option</option>
                                             <option value="1">Cash</option>
                                             <option value="2">Card</option>

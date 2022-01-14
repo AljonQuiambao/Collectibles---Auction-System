@@ -13,7 +13,7 @@
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    $display_token = $token['token'];
+    $display_token = $token['token'] ? $token['token'] : 0;
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +67,7 @@
                                 <h4>
                                     Available Balance :
                                     <strong>
-                                        <?php echo $display_token; ?> tokens
+                                        ₱ <?php echo number_format((float)$display_token, 2, '.', ''); ?> tokens
                                     </strong>
                                 </h4>
                             </div>

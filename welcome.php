@@ -13,7 +13,7 @@
 
     $date_now = date("Y-m-d H:i:s");
     $sql = "SELECT * FROM bidding_sessions
-                JOIN items ON bidding_sessions.id = items.id";
+                JOIN items ON bidding_sessions.item_id = items.id";
 
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);

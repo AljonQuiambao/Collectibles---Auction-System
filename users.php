@@ -5,7 +5,7 @@
     // Initialize the session
     session_start();
 
-    $sql = "SELECT * FROM users";
+    $sql = "SELECT * FROM users ORDER BY date_added DESC";
 
     $user_result = mysqli_query($link, $sql);
     $users = $user_result->fetch_all(MYSQLI_ASSOC);
@@ -289,7 +289,7 @@
         });
     </script>
     <script src="js/string-trim.js"></script>
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             // Delete 
             $('.delete').click(function() {
@@ -326,7 +326,7 @@
             });
 
         });
-    </script>
+    </script> -->
     
 </body>
 </html>

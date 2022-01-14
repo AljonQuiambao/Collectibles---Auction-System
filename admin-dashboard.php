@@ -43,6 +43,12 @@ function filterByUserRole($users, $role)
 
 $bidders = filterByUserRole($users, 1);
 $auctioneers = filterByUserRole($users, 2);
+
+$user_id = trim($_SESSION["id"]);
+$token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
+$token_result = mysqli_query($link, $token_sql);
+$token = $token_result->fetch_array(MYSQLI_ASSOC);
+$display_token = $token['token'] ? $token['token'] : 0;
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +73,14 @@ $auctioneers = filterByUserRole($users, 2);
                         <h1 class="h3 mb-0 text-gray-800">
                             Admin Dashboard
                         </h1>
+                    </div>
+                    <div class="mt-2">
+                        <h4>
+                            Available Balance :
+                            <strong>
+                                ₱ <?php echo number_format((float)$display_token, 2, '.', ''); ?> tokens
+                            </strong>
+                        </h4>
                     </div>
 
                     <div class="row">

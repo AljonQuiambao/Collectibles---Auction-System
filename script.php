@@ -20,7 +20,40 @@
 <script src="js/demo/chart-pie-demo.js"></script>
 
 <script>
-    $("#alertsDropdown").on("click", function() {
-        // alert("test!");
-    });
+       $(document).ready(function() {
+            // Delete 
+            $('.delete').click(function() {
+                var el = this;
+
+                var deleteId = $(this).data('id');
+                var tableName = $(this).data('table-name');
+
+                var confirmalert = confirm("Are you sure you want to delete?");
+                if (confirmalert == true) {
+                    // AJAX Request
+                    $.ajax({
+                        url: 'remove.php',
+                        type: 'POST',
+                        data: {
+                            id: deleteId,
+                            tableName: tableName
+                        },
+                        success: function(response) {
+                            if (response == 1) {
+                                // Remove row from HTML Table
+                                $(el).closest('tr').css('background', 'tomato');
+                                $(el).closest('tr').fadeOut(800, function() {
+                                    $(this).remove();
+                                });
+                            } else {
+                                alert('Invalid data id.');
+                            }
+
+                        }
+                    });
+                }
+
+            });
+
+        });
 </script>

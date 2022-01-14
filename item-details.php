@@ -59,7 +59,7 @@
         if (isset($_POST['put_bid'])) {
             $current_user_id = trim($_SESSION["id"]);
             $bid_token = $_POST['bid_token'];
-            $item_title = $item[0]['title'];
+            $item_title = $item['title'];
 
             $query_sql = "INSERT INTO bidding_history(bidding_session_id, item_id, auctioneer_id, bidder_id, bid_token, date_bid)
                              VALUES ('$bidding_session_id', '$item_id', '$auctioneer_id', '$current_user_id', '$bid_token', NOW())"; 
@@ -81,6 +81,10 @@
                 $bid_notif_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                                 VALUES ('$current_user_id', '$item_id', 2, 'Congratulations! Your are the highest bidder for the item ($item_title).', 0, NOW())"; 
                 $bid_notif_run = mysqli_query($link, $bid_notif_sql);
+
+                $_SESSION['success_status'] = "Your bid is successfully save.";
+                header("Location: item-details.php?item_id=" + $item_id);
+                exit();
             }
         }
     }
@@ -137,6 +141,17 @@
                                                 <input name="category" value="<?php echo $item['category_id']; ?>" type="hidden">
                                                 <input class="hidden" id="counter_submit" name="counter_submit" type="submit">
                                             </form>
+                                            <?php
+                                                if (isset($_SESSION['success_status'])) {
+                                                ?>
+                                                    <div class="alert alert-success alert-dismissable">
+                                                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                                        <?php echo $_SESSION['success_status']; ?>
+                                                    </div>
+                                                <?php
+                                                    unset($_SESSION['success_status']);
+                                                }
+                                            ?>
                                             Auction Started : Time Remaining <strong> <span class="counter" 
                                             data-bid-time="<?php echo $bid_session['bidding_time']; ?>" data-end-time="<?php echo $bid_session['end_time']; ?>"></span></strong>
                                         </h3>

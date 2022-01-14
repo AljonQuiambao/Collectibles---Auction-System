@@ -174,7 +174,7 @@
                                                                         <td class="item-details" style="word-wrap: break-word;"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
-                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                     </tr>
 
                                                             <?php }
@@ -212,7 +212,7 @@
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td><?php echo intval($item['token']); ?></td>
-                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                         <td>
                                                                             <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
                                                                                 Delete
@@ -288,7 +288,7 @@
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td><?php echo intval($item['token']); ?></td>
-                                                                        <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                         <td>
                                                                             <button id="btn-submit" class="btn btn-success mb-2" data-toggle="modal" data-target="#submitProofModal" title="Ready to Bid">
                                                                                 Submit Proof

@@ -9,6 +9,12 @@ $sql = "SELECT * FROM images ORDER BY id DESC";
 $item_result = mysqli_query($link, $sql);
 $images = $item_result->fetch_all(MYSQLI_ASSOC);
 
+$param_id = trim($_SESSION["id"]);
+$user_sql = "SELECT * FROM tokens WHERE user_id = $param_id";
+$user_result = mysqli_query($link, $user_sql);
+$user = $user_result->fetch_array(MYSQLI_ASSOC);
+
+
 //Save auction data
 if (isset($_POST['save_item_data'])) {
     $user_id = trim($_SESSION["id"]);
@@ -48,7 +54,7 @@ if (isset($_POST['save_item_data'])) {
                 $fileNames = array_filter($_FILES['files']['name']);
                 foreach ($_FILES['files']['name'] as $key => $val) {
                     // File upload path 
-                    $fileName = basename($_FILES['files']['name'][$key]);
+                    $fileName = strtotime(date('y-m-d H:i')) . '_' . basename($_FILES['files']['name'][$key]);
                     $targetFilePath = $targetDir . $fileName;
 
                     // Check whether file type is valid 
@@ -157,6 +163,7 @@ if (isset($_POST['save_item_data'])) {
                             <i class="fas fa-plus"></i>
                             Add More Item
                         </button>
+                        <input type="hidden" id="user_subscription" name="user_subscription" value="<?php echo $user['subscription'] ;?>"/>
                     </div>
 
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
@@ -252,8 +259,10 @@ if (isset($_POST['save_item_data'])) {
                 $card.appendTo($parentPanel);
                 $parentPanel.appendTo('#content-panel');
 
-                if ($('.card').length > 4) {
-                    $("#add-more-items").attr('disabled', 'disabled');
+                if ($('#user_subscription').val() != 2) {
+                    if ($('.card').length > 4) {
+                        $("#add-more-items").attr('disabled', 'disabled');
+                    }
                 }
             }
 

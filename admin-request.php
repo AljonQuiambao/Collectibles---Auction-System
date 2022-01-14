@@ -7,6 +7,7 @@
 
     $sql = "SELECT * FROM items 
                 JOIN item_status ON items.id = item_status.item_id
+                -- JOIN item_reason on items.id = item_reason.item_id
                 JOIN users ON items.user_id = users.id
                 JOIN item_category ON items.category = item_category.category_id
                 WHERE is_deleted = false";
@@ -197,7 +198,7 @@
                                                                             </div>
                                                                         </td>
                                                                         <td>
-                                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" title="Delete">
+                                                                            <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
                                                                                 Delete
                                                                             </button>
                                                                         </td>
@@ -251,7 +252,7 @@
                                                                         </td>
                                                                         <td><?php echo $item['reason']; ?></td>
                                                                         <td>
-                                                                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" title="Delete">
+                                                                            <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
                                                                                 Delete
                                                                             </button>
                                                                         </td>
@@ -306,7 +307,7 @@
                                                                         </td>
                                                                         <td><?php echo $item['reason']; ?></td>
                                                                         <td>
-                                                                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" title="Delete">
+                                                                            <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
                                                                                 Delete
                                                                             </button>
                                                                         </td>

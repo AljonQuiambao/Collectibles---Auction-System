@@ -56,7 +56,7 @@
                         } ?>
                     </div>
                     <div>
-                        <div class="small text-gray-500"><?php echo $notification['date_posted']; ?></div>
+                        <div class="small text-gray-500"><?php echo date('m-d-Y', strtotime($notification['date_posted'])); ?></div>
                         <span class="font-weight-bold"><?php echo $notification['notification']; ?></span>
                     </div>
                 </a>
