@@ -5,35 +5,15 @@
     // Initialize the session
     session_start();
 
-    $sql = "SELECT * FROM items 
-                    LEFT JOIN item_status ON items.id = item_status.item_id
-                    LEFT JOIN users ON items.user_id = users.id
-                    LEFT JOIN item_images ON items.id = item_images.item_id
-                    LEFT JOIN item_category ON items.category = item_category.category_id
-                    WHERE is_deleted = false";
-
-    $item_result = mysqli_query($link, $sql);
-    $item_list = $item_result->fetch_all(MYSQLI_ASSOC);
-
     $param_id = trim($_SESSION["id"]);
-    $sql = "SELECT * FROM bid_items 
-                JOIN items ON items.id = bid_items.item_id
-                JOIN item_status ON items.id = item_status.item_id
-                JOIN item_category ON items.category = item_category.category_id
-                WHERE bidder_id = $param_id";
-    $result = mysqli_query($link, $sql);
-    $items = $result->fetch_all(MYSQLI_ASSOC);
-
     $bid_history_sql = "SELECT * FROM bidding_history 
             JOIN items ON items.id = bidding_history.item_id
+            JOIN item_status ON items.id = item_status.item_id
             JOIN item_category ON items.category = item_category.category_id
-            WHERE bidder_id = $param_id";
+            WHERE bidder_id = $param_id ORDER BY date_bid DESC";
 
     $bid_history_result = mysqli_query($link, $bid_history_sql);
     $bid_history_items = $bid_history_result->fetch_all(MYSQLI_ASSOC);
-
-    // print($param_id);
-    //print_r($bid_history_items);
 
     function filterByStatus($items, $status)
     {
@@ -44,17 +24,14 @@
         });
     }
 
-    //print_r($items);
-
-    // $myBidItems = filterByStatus($items, 4);
     $myBidItems = $bid_history_items;
     $bidHistoryItems = $bid_history_items;
-    $wonItems = filterByStatus($items, 5);
+    $wonItems = filterByStatus($bid_history_items, 5);
 
     $query_sql = "SELECT * FROM images ORDER BY id DESC";
     $item_result = mysqli_query($link, $query_sql);
     $images = $item_result->fetch_all(MYSQLI_ASSOC);
-    ?>
+?>
 
 
 <!DOCTYPE html>
@@ -211,7 +188,7 @@
                                                                         </td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo intval($item['token']); ?></td>
+                                                                        <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                         <td>
                                                                             <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
@@ -287,7 +264,7 @@
                                                                         </td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo intval($item['token']); ?></td>
+                                                                        <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                         <td>
                                                                             <button id="btn-submit" class="btn btn-success mb-2" data-toggle="modal" data-target="#submitProofModal" title="Ready to Bid">

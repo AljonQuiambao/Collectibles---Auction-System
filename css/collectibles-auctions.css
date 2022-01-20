@@ -11579,4 +11579,29 @@ img.item-slider {
   margin-right: auto;
 }
 
+ul.pwd-restrictions {
+  list-style: none !important;
+}
+
+:root {
+  --borderWidth: 5px;
+  --height: 18px;
+  --width: 9px;
+  --borderColor: #78b13f;
+}
+
+.pwd-restriction-checked {
+    display: inline-block;
+    transform: rotate(45deg);
+    height: var(--height);
+    width: var(--width);
+    border-bottom: var(--borderWidth) solid var(--borderColor);
+    border-right: var(--borderWidth) solid var(--borderColor);
+    margin-right: 0.5rem;
+}
+
+.pwd-restrictions > li {
+  font-size: 12px;
+}
+
 

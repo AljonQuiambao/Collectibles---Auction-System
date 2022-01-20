@@ -74,16 +74,28 @@ $display_token = $token['token'] ? $token['token'] : 0;
                             Admin Dashboard
                         </h1>
                     </div>
-                    <div class="mt-2">
-                        <h4>
-                            Available Balance :
-                            <strong>
-                                ₱ <?php echo number_format((float)$display_token, 2, '.', ''); ?> tokens
-                            </strong>
-                        </h4>
-                    </div>
 
                     <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Available Balance
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                ₱ <?php echo number_format((float)$display_token, 2, '.', ''); ?> tokens
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-money-bill-alt fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
@@ -148,23 +160,6 @@ $display_token = $token['token'] ? $token['token'] : 0;
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>

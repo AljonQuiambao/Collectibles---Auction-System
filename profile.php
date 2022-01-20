@@ -96,7 +96,7 @@
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                     <div class="form-group">
                                                         <label>Full Name</label>
-                                                        <input type="text" class="form-control" name="name" placeholder="Enter full name" value="<?php echo $currentUser['name']; ?>" required>
+                                                        <input type="text" class="form-control" name="name" placeholder="Enter full name" value="<?php echo $currentUser['name']; ?>" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -108,19 +108,19 @@
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                     <div class="form-group">
                                                         <label>Username</label>
-                                                        <input type="text" class="form-control" name="username" placeholder="Enter Username" value="<?php echo $currentUser['username']; ?>" required>
+                                                        <input type="text" class="form-control" name="username" placeholder="Enter Username" value="<?php echo $currentUser['username']; ?>" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                     <div class="form-group">
                                                         <label>Date of Birth</label>
-                                                        <input type="text" class="form-control" name="date_of_birth" placeholder="Enter date of birth" value="<?php echo date('m-d-Y', strtotime($currentUser['date_of_birth'])); ?>" required>
+                                                        <input type="text" class="form-control" name="date_of_birth" placeholder="Enter date of birth" value="<?php echo date('m-d-Y', strtotime($currentUser['date_of_birth'])); ?>" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                     <div class="form-group">
                                                         <label>Gender</label>
-                                                        <input type="text" class="form-control" name="gender" placeholder="Enter gender" value="<?php echo $currentUser['gender']; ?>" required>
+                                                        <input type="text" class="form-control" name="gender" placeholder="Enter gender" value="<?php echo $currentUser['gender']; ?>" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">

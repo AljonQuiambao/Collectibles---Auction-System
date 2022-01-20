@@ -302,14 +302,14 @@
         $category = $_POST['category'];
         $amount = $_POST['amount'];
 
-        $query_payment_status = "UPDATE item_proof SET is_deleted = TRUE
+        $query_payment_status = "DELETE FROM item_proof
                 WHERE item_id = $item_id"; 
 
         $query_payment_run = mysqli_query($link, $query_payment_status);
 
         if ($query_payment_run) {
             $query_status = "UPDATE item_status SET status = 5 
-            WHERE item_id = $item_id"; 
+                WHERE item_id = $item_id"; 
 
             $query_run = mysqli_query($link, $query_status);
 
@@ -355,7 +355,7 @@
 
             //for admin
             $admin = mysqli_query($link, "SELECT * FROM tokens WHERE user_id = 3");
-            $adminRecords = mysqli_num_rows($auctioneer);
+            $adminRecords = mysqli_num_rows($admin);
     
             if ($adminRecords > 0) {
                 $final_amount = $admin->fetch_array()['token'] + $admin_commission;
@@ -377,6 +377,30 @@
                 $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                              VALUES ('$auctioneer_id', '$item_id', 2, 'Your item is being cancel.', 0, NOW())"; 
                 $run = mysqli_query($link, $query_sql);
+
+                //for auctioneer
+                $auctioneer = mysqli_query($link, "SELECT * FROM users WHERE user_id=" . $auctioneer_id);
+                $auctioneerRecord = mysqli_num_rows($auctioneer);
+
+                if ($auctioneerRecord > 0) { 
+                    $auctioneerName = $auctioneer->fetch_array()['name'] ? $auctioneer->fetch_array()['name'] : 'auctioneer';
+                    $query_user_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                        VALUES ('$auctioneer_id', '$item_id', 2, 'The transaction is done the token has already been received by $auctioneerName.', 0, NOW())"; 
+                    
+                    $run = mysqli_query($link, $query_user_sql);
+                }  
+                
+                //for bidder
+                $bidder = mysqli_query($link, "SELECT * FROM users WHERE user_id=" . $bidder_id);
+                $bidderRecord = mysqli_num_rows($bidder);
+
+                if ($bidderRecord > 0) { 
+                    $bidderName = $bidder->fetch_array()['name'] ? $bidder->fetch_array()['name'] : 'auctioneer';
+                    $query_user_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                        VALUES ('$bidder_id', '$item_id', 2, '$bidderName proof is already approved.', 0, NOW())"; 
+                    
+                    $run = mysqli_query($link, $query_user_sql);
+                }   
 
                 $_SESSION['status'] = "The proof is already approved.";
                 header("location: payment-confirmation.php");
@@ -402,6 +426,32 @@
             $_SESSION['status'] = "Proof is not approved. Please try again!";
             header("location: payment-confirmation.php");
             exit();
+        }
+    }
+
+    if (isset($_POST['payment_subscription'])) { 
+        $user_id = 3;
+        $amount = $_POST['amount'];
+
+        $checkRecord = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $user_id);
+        $totalrows = mysqli_num_rows($checkRecord);
+
+        if ($totalrows > 0) {
+            $query_update = "UPDATE tokens SET token = $amount
+                WHERE user_id = $user_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
+        } else {
+            $query_update = "INSERT INTO tokens(user_id, token) 
+            VALUES ('$user_id', '$amount')";
+
+            $query_update_run = mysqli_query($link, $query_update); 
+        }
+
+        if ($query_update_run) {
+            $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                 VALUES ('$user_id', '$item_id', 2, 'Successfully paid the account.', 0, NOW())"; 
+            $run = mysqli_query($link, $query_sql);
         }
     }
 ?>

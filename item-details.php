@@ -59,7 +59,14 @@
         if (isset($_POST['put_bid'])) {
             $current_user_id = trim($_SESSION["id"]);
             $bid_token = $_POST['bid_token'];
+            $start_bid = $_POST['start_bid'];
             $item_title = $item['title'];
+
+            if ($bid_token < $start_bid) {
+                $_SESSION['error_status'] = "Your bid is less than the starting price.";
+                header("Location: item-details.php?item_id=" . $item_id);
+                exit();
+            }
 
             $query_sql = "INSERT INTO bidding_history(bidding_session_id, item_id, auctioneer_id, bidder_id, bid_token, date_bid)
                              VALUES ('$bidding_session_id', '$item_id', '$auctioneer_id', '$current_user_id', '$bid_token', NOW())"; 
@@ -83,7 +90,7 @@
                 $bid_notif_run = mysqli_query($link, $bid_notif_sql);
 
                 $_SESSION['success_status'] = "Your bid is successfully save.";
-                header("Location: item-details.php?item_id=" + $item_id);
+                header("Location: item-details.php?item_id=" . $item_id);
                 exit();
             }
         }
@@ -132,15 +139,17 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <div>
-                                        <h3>
-                                            <form id="counter" action="services.php" method="POST">
-                                                <input type="hidden" class="indicator-status" value="<?php echo $item['status']; ?>">
-                                                <input name="auctioneer_id" value="<?php echo $auctioneer['id']; ?>" type="hidden">
-                                                <input name="bidder_id" value="<?php echo $top_bidders[0]['id']; ?>" type="hidden">
-                                                <input name="item_id" value="<?php echo $item_id; ?>" type="hidden">
-                                                <input name="category" value="<?php echo $item['category_id']; ?>" type="hidden">
-                                                <input class="hidden" id="counter_submit" name="counter_submit" type="submit">
-                                            </form>
+                                        <?php
+                                            if (isset($_SESSION['error_status'])) {
+                                            ?>
+                                                <div class="alert alert-danger alert-dismissable">
+                                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                                    <?php echo $_SESSION['error_status']; ?>
+                                                </div>
+                                            <?php
+                                                unset($_SESSION['error_status']);
+                                            }
+                                            ?>
                                             <?php
                                                 if (isset($_SESSION['success_status'])) {
                                                 ?>
@@ -152,9 +161,19 @@
                                                     unset($_SESSION['success_status']);
                                                 }
                                             ?>
+                                        <h3>
+                                            <form id="counter" action="services.php" method="POST">
+                                                <input type="hidden" class="indicator-status" value="<?php echo $item['status']; ?>">
+                                                <input name="auctioneer_id" value="<?php echo $auctioneer['id']; ?>" type="hidden">
+                                                <input name="bidder_id" value="<?php echo $top_bidders[0]['id']; ?>" type="hidden">
+                                                <input name="item_id" value="<?php echo $item_id; ?>" type="hidden">
+                                                <input name="category" value="<?php echo $item['category_id']; ?>" type="hidden">
+                                                <input class="hidden" id="counter_submit" name="counter_submit" type="submit">
+                                            </form>
                                             Auction Started : Time Remaining <strong> <span class="counter" 
                                             data-bid-time="<?php echo $bid_session['bidding_time']; ?>" data-end-time="<?php echo $bid_session['end_time']; ?>"></span></strong>
                                         </h3>
+
                                         <h5>
                                             Available Balance:
                                             <span id="available-token">
@@ -259,6 +278,7 @@
                                                     </span>
                                                     <div class="form-group row mb-2 mt-2">
                                                         <div class="col-sm-6 mb-3">
+                                                            <input name="start_bid" type="hidden" class="form-control" id="start-bid-textbox" value="<?php echo intval($item['token']); ?>">
                                                             <input name="bid_token" type="text" class="form-control form-control-user" id="bid-textbox" placeholder="Your Max Bid">
                                                         </div>
                                                         <div class="col-sm-6">

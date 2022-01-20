@@ -13,18 +13,19 @@
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
 
-    //print_r($items);
+    // function filterByStatus($items, $isDeleted)
+    // {
+    //     return array_filter($items, function ($item) use ($isDeleted) {
+    //         if ($item['is_deleted'] = TRUE) {
+    //             return true;
+    //         }
+    //     });
+    // }
 
-    function filterByStatus($items, $isDeleted)
-    {
-        return array_filter($items, function ($item) use ($isDeleted) {
-            if ($item['is_deleted'] = $isDeleted) {
-                return true;
-            }
-        });
-    }
+    // $items = filterByStatus($items, 0);
 
-    $items = filterByStatus($items, 1);
+    // $test = filter_var($items, 0);
+    // print_r($test);
 
     //print_r($items);
 
@@ -107,7 +108,6 @@
                                                               <td>
                                                                 <div>Name:
                                                                      <?php
-                                                                        //$sql = "SELECT * FROM users WHERE id = $item['auctioneer_id']";
                                                                         echo $item['auctioneer_id'];
                                                                     ?>
                                                                 </div>
@@ -138,9 +138,6 @@
                                                                     <input class="amount" type="hidden" name="amount" value="<?php echo $item['token'] ?>">
                                                                     <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
                                                                 </form>
-                                                              <!--   <button class="btn btn-danger delete mt-2" data-id="<?php echo $item['item_id']; ?>" data-table-name="item_proof" title="Delete">
-                                                                    Delete
-                                                                </button> -->
                                                             </td>
                                                         </tr>
 

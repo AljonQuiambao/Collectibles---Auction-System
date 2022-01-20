@@ -352,7 +352,7 @@
           Copyright &copy; <strong><span>Collectibles</span></strong>
       </div>
       <div class="credits">
-        Auction System - 2021
+        Auction System - <?php echo date("Y"); ?>
       </div>
     </div>
   </footer><!-- End Footer -->

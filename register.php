@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = trim($_POST["role"]);
     }
 
-    if(array_key_exists('avatar', $_FILES)) { 
+    if (array_key_exists('avatar', $_FILES)) {
         if ($_FILES['avatar']['tmp_name'] != '') {
             $filename = strtotime(date('y-m-d H:i')) . '_' . $_FILES['avatar']['name'];
             $move = move_uploaded_file($_FILES['avatar']['tmp_name'], 'assets/uploads/' . $filename);
@@ -126,14 +126,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $avatar = $filename;
     }
 
-    if(!empty($_POST["subscription"])) {
+    if (!empty($_POST["subscription"])) {
         $subscription = trim($_POST["subscription"]);
     }
 
-    if(!empty($_POST["payment_option"])) {
-        $payment_option = trim($_POST["payment_option"]); 
+    if (!empty($_POST["payment_option"])) {
+        $payment_option = trim($_POST["payment_option"]);
     }
-   
+
     $validate = empty($name_err) &&
         empty($address_err) &&
         empty($username_err) &&
@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $param_gender,
                 $param_role,
                 $param_contact,
-                $param_avatar, 
+                $param_avatar,
                 $param_subscription,
                 $param_payment_option
             );
@@ -186,7 +186,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['success_status'] = "Your account is sucessfully registered. You can now go to login!";
                 header("location: login.php");
                 exit();
-
             } else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
@@ -214,15 +213,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="col-lg-9" style="overflow: auto;max-height: 800px;">
                         <div class="p-3">
                             <?php
-                                if (isset($_SESSION['success_status'])) {
-                                ?>
-                                    <div class="alert alert-success alert-dismissable">
-                                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                        <?php echo $_SESSION['success_status']; ?>
-                                    </div>
-                                <?php
-                                    unset($_SESSION['success_status']);
-                                }
+                            if (isset($_SESSION['success_status'])) {
+                            ?>
+                                <div class="alert alert-success alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    <?php echo $_SESSION['success_status']; ?>
+                                </div>
+                            <?php
+                                unset($_SESSION['success_status']);
+                            }
                             ?>
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-2 mt-4">Create an Account</h1>
@@ -238,16 +237,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" name="name" placeholder="Name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $name; ?>" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)" required>
                                         <!-- <span class="invalid-feedback ml-2"><?php echo $name_err; ?></span> -->
                                     </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" name="address" placeholder="Address" class="form-control <?php echo (!empty($address_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $address; ?>" required>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="text" name="address" placeholder="Address" class="form-control <?php echo (!empty($address_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $address; ?>" required>
-                                    <!-- <span class="invalid-feedback ml-2"><?php echo $address_err; ?></span> -->
-                                </div>
-
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
                                         <input type="text" name="username" placeholder="Username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $username; ?>" required>
@@ -256,14 +253,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $password; ?>" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                        <input type="password" id="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $password; ?>" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
                                         <span class="invalid-feedback ml-2"><?php echo $password_err; ?></span>
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?> form-control-user" value="<?php echo $confirm_password; ?>" required>
                                         <span class="invalid-feedback ml-2"><?php echo $confirm_password_err; ?></span>
+                                        <span id="password-match-label"></span>
                                     </div>
+             
                                 </div>
+                                <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <ul class="pwd-restrictions">
+                                                <li><span id="pwd-restriction-length"></span>Be between 10-16 characters in length</li>
+                                                <li><span id="pwd-restriction-upperlower"></span>Contain at least 1 lowercase and 1 uppercase letter</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <ul class="pwd-restrictions">
+                                                <li><span id="pwd-restriction-number"></span>Contain at least 1 number (0–9)</li>
+                                                <li><span id="pwd-restriction-special"></span>Contain at least 1 special character (!@#$%^&()'[]"?+-/*)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="date" class="form-control form-control-user" id="date-of-birth" placeholder="Date of Birth" name="date_of_birth" required>
@@ -309,16 +322,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </select>
                                     </div>
                                 </div>
+                        </div>
+                        <div class="form-group row mt-2 mb-3">
+                            <div class="col-sm-12 mb-3 mb-sm-0 text-center">
+                                <input type="checkbox" required name="terms"> I accept the
+                                <a href="terms-conditions.php">Terms and Conditions</a>
                             </div>
-                            <div class="form-group row mt-2 mb-3">
-                                <div class="col-sm-12 mb-3 mb-sm-0 text-center">
-                                    By continuing, I accept the
-                                    <a href="terms-conditions.php">Terms and Conditions</a>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-primary btn-user btn-block" value="Register Account">
-                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary btn-user btn-block" value="Register Account">
+                        </div>
                         </form>
                         <hr>
                         <div class="text-center">
@@ -348,16 +361,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Payment Subscription</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Are you sure you want to Logout?</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
-                </div>
+                <form role="form" action="services.php" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="user_id" class="form-control" value="<?php echo $user_id; ?>">
+                            <input type="text" name="name" placeholder="Account Name" required class="form-control ">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" name="gcashNumber" placeholder="Gcash number" class="form-control" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text text-muted">
+                                        <i class="fas fa-phone-square-alt mx-1"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text text-muted">₱</span>
+                                </div>
+                                <input type="number" name="amount" placeholder="Amount" class="form-control" value="200" readonly>
+                                <div class="input-group-append">
+                                    <span class="input-group-text text-muted">.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <input type="submit" name="payment_subscription" class="subscribe btn btn-primary btn-md shadow-sm" value="Payment">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -389,6 +430,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $("#subscription").change(function() {
         if ($(this).val() === "2") {
             $('#payment_option').removeClass('hidden');
+            $('#paymentModal').modal('show')
         } else {
             $('#payment_option').addClass('hidden');
         }
@@ -404,9 +446,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     function keypresshandler(event) {
         console.log('test!');
-         var charCode = event.keyCode;
-         //Non-numeric character range
-         if (charCode > 31 && (charCode < 48 || charCode > 57))
-         return false;
+        var charCode = event.keyCode;
+        //Non-numeric character range
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
     }
+
+    $(document).ready(function() {
+        $('#password').keyup(function() {
+            var s = $('#password').val();
+            var pwdLength = /^.{10,16}$/;
+            var pwdUpper = /[A-Z]+/;
+            var pwdLower = /[a-z]+/;
+            var pwdNumber = /[0-9]+/;
+            var pwdSpecial = /[!@#$%^&()'[\]"?+-/*={}.,;:_]+/;
+
+            if (pwdLength.test(s)) {
+                $('#pwd-restriction-length').addClass('pwd-restriction-checked');
+            } else {
+                $('#pwd-restriction-length').removeClass('pwd-restriction-checked');
+            }
+            if (pwdUpper.test(s) && pwdLower.test(s)) {
+                $('#pwd-restriction-upperlower').addClass('pwd-restriction-checked');
+            } else {
+                $('#pwd-restriction-upperlower').removeClass('pwd-restriction-checked');
+            }
+            if (pwdNumber.test(s)) {
+                $('#pwd-restriction-number').addClass('pwd-restriction-checked');
+            } else {
+                $('#pwd-restriction-number').removeClass('pwd-restriction-checked');
+            }
+            if (pwdSpecial.test(s)) {
+                $('#pwd-restriction-special').addClass('pwd-restriction-checked');
+            } else {
+                $('#pwd-restriction-special').removeClass('pwd-restriction-checked');
+            }
+        });
+
+        function updatePasswordsMatchLabel() {
+            if ($('#password').val() == $('#confirm-password').val()) {
+                $('#password-match-label').text('Super! Your passwords match');
+            } else {
+                $('#password-match-label').text('Your passwords do not match');
+            }
+        }
+
+        $('#confirm-password').keyup(function () {
+            updatePasswordsMatchLabel();
+        });
+
+        if ($('#password-match-label').text().length > 0) {
+            updatePasswordsMatchLabel();
+        }
+    });
 </script>

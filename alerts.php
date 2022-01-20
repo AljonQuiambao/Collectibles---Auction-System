@@ -8,16 +8,28 @@
     $filteredNotifications = $query->fetch_all(MYSQLI_ASSOC);
     $top_notif = array_slice($filteredNotifications, 0, 3);
 
+    $user = mysqli_query($link, "SELECT * FROM users WHERE id=" . $current_user);
+    $totalrows = mysqli_num_rows($user);
+
+    $alert_status = 0;
+    $message_status = 0;
+
+    $user_sql = "SELECT * FROM users WHERE id = $current_user";
+    $user_query = mysqli_query($link, $user_sql);
+    $user = $user_query->fetch_array(MYSQLI_ASSOC);
+
     $thread_count = $link->query("SELECT * from thread where concat('[',REPLACE(user_ids,',','],['),']') like '%[{$_SESSION['login_id']}]%' ");
 ?>
 
 <li class="nav-item dropdown no-arrow mx-1">
-    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" data-user-id="<?php echo $current_user; ?>"  href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-bell fa-fw"></i>
         <!-- Counter - Alerts -->
-        <span class="badge badge-danger badge-counter">
-            <?php echo count($filteredNotifications); ?>
-        </span>
+        <?php if ($user['alert_status'] == 0) { ?>
+            <span class="badge badge-danger badge-counter">
+                <?php echo count($filteredNotifications); ?>
+            </span>
+        <?php } ?>
     </a>
     <!-- Dropdown - Alerts -->
     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
@@ -69,12 +81,14 @@
 
 <!-- Nav Item - Messages -->
 <li class="nav-item dropdown no-arrow mx-1">
-    <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" data-user-id="<?php echo $current_user; ?>"  href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-envelope fa-fw"></i>
         <!-- Counter - Messages -->
-        <span class="badge badge-danger badge-counter">
-            <?php echo count($thread_count->fetch_all()); ?>
-        </span>
+        <?php if ($user['message_status'] == 0) { ?>
+            <span class="badge badge-danger badge-counter">
+                <?php echo count($thread_count->fetch_all()); ?>
+            </span>
+        <?php } ?>
     </a>
     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
         <h6 class="dropdown-header">
