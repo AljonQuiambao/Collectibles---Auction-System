@@ -14,6 +14,25 @@
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
     $display_token = $token['token'] ? $token['token'] : 0;
+
+    $date_now = date("Y-m-d H:i:s");
+    $bid_history_sql = "SELECT * FROM bidding_history 
+        JOIN items ON items.id = bidding_history.item_id 
+        WHERE bidder_id = $user_id";
+
+    $bid_history_result = mysqli_query($link, $bid_history_sql);
+    $bid_history_items = $bid_history_result->fetch_all(MYSQLI_ASSOC);
+
+    function filterByDate($bid_history_items, $dateNow)
+    {
+        return array_filter($bid_history_items, function ($item) use ($dateNow) {
+            if ($item['date_bid'] > $dateNow) {
+                return true;
+            }
+        });
+    }
+
+    $items = filterByDate($bid_history_items, $date_now);
 ?>
 
 <!DOCTYPE html>
@@ -81,11 +100,14 @@
                                         Cash In
                                     </span>
                                 </a>
-                                <a href="gcash-cashout.php" class="btn btn-secondary">
-                                    <span class="text">
-                                        Cash Out
-                                    </span>
-                                </a>
+
+                                <?php if (empty($items)) { ?>
+                                    <a href="gcash-cashout.php" class="btn btn-secondary">
+                                        <span class="text">
+                                            Cash Out
+                                        </span>
+                                    </a>
+                                <?php } ?>
                             </div>
                         </div>
 

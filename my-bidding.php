@@ -24,7 +24,17 @@
         });
     }
 
-    $myBidItems = $bid_history_items;
+    $date_now = date("Y-m-d H:i:s");
+    function filterByDate($items, $dateNow)
+    {
+        return array_filter($items, function ($item) use ($dateNow) {
+            if ($item['date_bid'] >= $dateNow) {
+                return true;
+            }
+        });
+    }
+
+    $myBidItems = filterByDate($bid_history_items, $date_now);
     $bidHistoryItems = $bid_history_items;
     $wonItems = filterByStatus($bid_history_items, 5);
 
@@ -83,7 +93,7 @@
                                     <div class="nav nav-tabs nav-fill mb-4" id="nav-tab" role="tablist">
                                         <a class="nav-item nav-link active" style="text-align:left;" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
                                             <span class="fas fa-fw fa-search-dollar"></span>
-                                            My Bids
+                                            Ongoing Bidding
                                         </a>
                                         <a class="nav-item nav-link" style="text-align:left;" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
                                             <span class="fas fa-fw fa-user-clock"></span>
