@@ -72,6 +72,13 @@ if (array_filter($item) !== []) {
             $bid_notif_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                                 VALUES ('$current_user_id', '$item_id', 2, 'Congratulations! Your are the highest bidder for the item ($item_title).', 0, NOW())";
             $bid_notif_run = mysqli_query($link, $bid_notif_sql);
+
+            
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $current_user_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
         }
     }
 }

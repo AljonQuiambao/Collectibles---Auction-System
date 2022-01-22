@@ -361,7 +361,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Payment Subscription</h5>
+                    <h5 class="modal-title" id="paymentModallabel">Payment Subscription</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -391,6 +391,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="input-group-append">
                                     <span class="input-group-text text-muted">.00</span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="password" maxlength="6" name="pin" placeholder="PIN" class="form-control" require>
                             </div>
                         </div>
                     </div>

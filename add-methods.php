@@ -56,6 +56,12 @@
 
             $run = mysqli_query($link, $query_sql);
 
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $user_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
+
             $_SESSION['success_status'] = "Item accept sucessfully.";
             header("location: admin-request.php");
             exit();
@@ -87,6 +93,12 @@
             $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                         VALUES ('$user_id', '$item_id', 3, 'Unfortunately, Your item is rejected by admin.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
+
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $user_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
 
             $_SESSION['status'] = "Item rejected sucessfully.";
             header("location: admin-request.php");

@@ -68,6 +68,16 @@
                 exit();
             }
 
+            $result = mysqli_query($link, "SELECT MAX(current_bid) 
+                FROM bidding_sessions WHERE item_id =  $item_id");
+            $row = mysqli_fetch_array($result);
+
+            if ($bid_token < $row[0]) {
+                $_SESSION['error_status'] = "Your bid is less than the highest price.";
+                header("Location: item-details.php?item_id=" . $item_id);
+                exit();
+            }
+
             $query_sql = "INSERT INTO bidding_history(bidding_session_id, item_id, auctioneer_id, bidder_id, bid_token, date_bid)
                              VALUES ('$bidding_session_id', '$item_id', '$auctioneer_id', '$current_user_id', '$bid_token', NOW())"; 
             $query_sql_run = mysqli_query($link, $query_sql);
@@ -88,6 +98,12 @@
                 $bid_notif_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                                 VALUES ('$current_user_id', '$item_id', 2, 'Congratulations! Your are the highest bidder for the item ($item_title).', 0, NOW())"; 
                 $bid_notif_run = mysqli_query($link, $bid_notif_sql);
+
+                //update notification status
+                $query_update = "UPDATE users SET alert_status = 0 
+                    WHERE id = $current_user_id"; 
+
+                $query_update_run = mysqli_query($link, $query_update); 
 
                 $_SESSION['success_status'] = "Your bid is successfully save.";
                 header("Location: item-details.php?item_id=" . $item_id);

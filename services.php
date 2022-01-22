@@ -27,6 +27,12 @@
 
                 $run = mysqli_query($link, $query_sql);
 
+                //update notification status
+                $query_update = "UPDATE users SET alert_status = 0 
+                    WHERE id = $auctioneer_id"; 
+
+                $query_update_run = mysqli_query($link, $query_update); 
+
                 $_SESSION['success_status'] = "Your item is now available for bidding. Bidders can now see and start to bid.";
                 header("location: my-auctions.php");
                 exit();
@@ -62,6 +68,12 @@
                 VALUES ('$auctioneer_id', '$item_id', 2, 'Your item is being cancel.', 0, NOW())"; 
 
                 $run = mysqli_query($link, $query_sql);
+
+                //update notification status
+                $query_update = "UPDATE users SET alert_status = 0 
+                    WHERE id = $auctioneer_id"; 
+ 
+                $query_update_run = mysqli_query($link, $query_update); 
 
                 $_SESSION['success_status'] = "Your item is being cancel.";
                 header("location: my-auctions.php");
@@ -139,6 +151,12 @@
                  VALUES ('$bidder_id', '$item_id', 2, 'Your proof already submitted to administrator.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $bidder_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
+
             $_SESSION['status'] = "Your proof already submitted to administrator.";
             header("location: my-bidding.php");
             exit();
@@ -178,6 +196,12 @@
                  VALUES ('$bidder_id', '$item_id', 2, 'You update your profile successfully!', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $bidder_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
+
             $_SESSION['success_status'] = "You update your profile successfully!";
             header("location: profile.php");
             exit();
@@ -213,6 +237,12 @@
             $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                  VALUES ('$bidder_id', '$item_id', 2, 'Successfully cash in your account.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
+
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $bidder_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
             
             $_SESSION['success_status'] = "Successfully cash in your account!";
             header("location: my-tokens.php");
@@ -254,6 +284,12 @@
             $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                  VALUES ('$bidder_id', '$item_id', 2, 'Successfully cash out your account.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
+
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $bidder_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
             
             $_SESSION['success_status'] = "Successfully cash out your account!";
             header("location: my-tokens.php");
@@ -283,6 +319,12 @@
             $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                  VALUES ('$user_id', 0, 2, 'Successfully activated multirole in your account.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
+
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $user_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
             
             $_SESSION['success_status'] = "Successfully activated multirole in your account!";
             header("location: profile.php");
@@ -315,7 +357,7 @@
 
             //insert computation of tokens here
             $admin_commission = $amount * 0.10;
-            $auctioneer_receivable = $amount - $commission;
+            $auctioneer_receivable = $amount - $admin_commission;
 
             //for bidder
             $bidder = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $bidder_id);
@@ -389,6 +431,12 @@
                     
                     $run = mysqli_query($link, $query_user_sql);
                 }  
+
+                //update notification status
+                $query_update = "UPDATE users SET alert_status = 0 
+                    WHERE id = $auctioneer_id"; 
+
+                $query_update_run = mysqli_query($link, $query_update); 
                 
                 //for bidder
                 $bidder = mysqli_query($link, "SELECT * FROM users WHERE user_id=" . $bidder_id);
@@ -401,6 +449,12 @@
                     
                     $run = mysqli_query($link, $query_user_sql);
                 }   
+
+                //update notification status
+                $query_update = "UPDATE users SET alert_status = 0 
+                    WHERE id = $bidder_id"; 
+
+                $query_update_run = mysqli_query($link, $query_update); 
 
                 $_SESSION['status'] = "The proof is already approved.";
                 header("location: payment-confirmation.php");
@@ -417,6 +471,12 @@
             $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
                 VALUES ('$user_id', '$item_id', 2, 'The proof is already approved.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
+
+            //update notification status
+            $query_update = "UPDATE users SET alert_status = 0 
+                WHERE id = $user_id"; 
+
+            $query_update_run = mysqli_query($link, $query_update); 
 
             $_SESSION['status'] = "The proof is already approved.";
             header("location: payment-confirmation.php");
@@ -450,8 +510,14 @@
 
         if ($query_update_run) {
             $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
-                 VALUES ('$user_id', '$item_id', 2, 'Successfully paid the account.', 0, NOW())"; 
+                 VALUES ('$user_id', '$user_id', 2, 'Successfully paid the account.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
         }
+
+        //update notification status
+        $query_update = "UPDATE users SET alert_status = 0 
+            WHERE id = $user_id"; 
+
+        $run = mysqli_query($link, $query_update); 
     }
 ?>

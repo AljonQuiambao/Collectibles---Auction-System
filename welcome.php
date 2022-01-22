@@ -29,6 +29,8 @@
 
     $items = filterByDate($items, $date_now);
 
+
+
     // /print_r($items);
 
     $user_id = trim($_SESSION["id"]);
@@ -134,10 +136,6 @@
                                                         </div>
                                                     <?php
                                             } ?>
-                                            <!-- <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 18rem;"
-                                                         src="data:image/png;charset=utf8;base64,<?php echo base64_encode($item['item_images']); ?>" />  -->
-                                                <!-- <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 18rem;"
-                                                    src="img/product_thumbnail.jpg" alt="..."> -->
                                             </div>
                                         </div>
                                         <div class="caption card-body card-body-display">
@@ -153,8 +151,14 @@
                                         <div class="card-footer text-center">
                                             <div class="details">
                                                 <div class="mb-2">
+                                                    <?php  
+                                                        $item_id = $item['item_id']; 
+                                                        $result = mysqli_query($link, "SELECT MAX(current_bid) 
+                                                            FROM bidding_sessions WHERE item_id =  $item_id");
+                                                        $row = mysqli_fetch_array($result);
+                                                    ?>
                                                     <span class="badge badge-primary badge-counter">
-                                                        Current bid ₱ <?php echo number_format((float)$item['current_bid'], 2, '.', ''); ?>
+                                                        Current bid ₱ <?php echo number_format((float)$row[0], 2, '.', ''); ?>
                                                     </span>
                                                 </div>
                                                 <div>

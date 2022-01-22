@@ -69,6 +69,11 @@ $display_token = number_format($token['token']);
                                         <div class="form-group">
                                             <input type="number" name="amount" placeholder="Amount" required class="form-control ">
                                         </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="password" maxlength="6" name="pin" placeholder="PIN" class="form-control" require>
+                                            </div>
+                                        </div>
                                         <div class="card-footer"> 
                                             <input type="submit" name="cashin" class="subscribe btn btn-primary btn-md shadow-sm" value="Cash In"> 
                                         </div>
