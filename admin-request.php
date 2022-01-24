@@ -128,7 +128,13 @@
                                                                         <td><?php echo $item['token']; ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
-                                                                            <div>Name: <?php echo $item['name']; ?></div>
+                                                                            <?php
+                                                                                $user_id = $item['user_id']; 
+                                                                                $sql = "SELECT * FROM users WHERE id = $user_id";
+                                                                                $result = mysqli_query($link, $sql);
+                                                                                $currentUser = $result->fetch_array(MYSQLI_ASSOC);
+                                                                            ?>
+                                                                            <div>Name: <?php echo $currentUser["name"]; ?></div>
                                                                             <div>Age:
                                                                                 <?php echo
                                                                                 date_diff(
@@ -143,7 +149,7 @@
                                                                                 <input class="user_id" type="hidden" name="user_id" value="<?php echo $item['user_id'] ?>">
                                                                                 <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
                                                                                 <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
-                                                                                <input name="accept_item" type="submit" class="btn btn-success" value="Accept">
+                                                                                <input name="accept_item" type="submit" class="btn btn-success" value="Accept"  onclick="return confirm('Are you sure you want to accept this item?')">
                                                                                 <button type="button" class="btn btn-danger btn-reject" data-toggle="modal" data-target="#rejectModal" title="Reject">
                                                                                      Reject
                                                                                 </button>

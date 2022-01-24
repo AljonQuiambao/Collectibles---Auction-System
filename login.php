@@ -160,9 +160,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="reset-password.php">Forgot Password?</a>
-                                    </div>
-                                    <div class="text-center">
                                         <a class="small" href="register.php">Create an Account!</a>
                                     </div>
                                      <div class="text-center mt-4">

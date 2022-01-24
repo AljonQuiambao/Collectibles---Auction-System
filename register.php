@@ -134,6 +134,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $payment_option = trim($_POST["payment_option"]);
     }
 
+    //payment subscription
+    $admin_role = 3;
+    $sql = "SELECT * FROM users WHERE role = $admin_role";
+    $result = mysqli_query($link, $sql);
+    $currentUser = $result->fetch_array(MYSQLI_ASSOC);
+    $currentUser_id = $currentUser["id"];
+
+    $checkRecord = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" .  $currentUser_id);
+    $totalrows = mysqli_num_rows($checkRecord);
+
+    if ($totalrows > 0) {
+        $final_amount = $checkRecord->fetch_array()['token'] + 200;
+        $query_update = "UPDATE tokens SET token = $final_amount
+            WHERE user_id = $currentUser_id"; 
+
+        $query_update_run = mysqli_query($link, $query_update); 
+    } else {
+        $query_update = "INSERT INTO tokens(user_id, token) 
+        VALUES ('$currentUser_id', '$final_amount')";
+
+        $query_update_run = mysqli_query($link, $query_update); 
+    }
+
+    if ($query_update_run) {
+        $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
+                VALUES ('$currentUser_id', '$currentUser_id', 2, 'Successfully paid the account.', 0, NOW())"; 
+        $run = mysqli_query($link, $query_sql);
+    }
+
+    //update notification status
+    $query_update = "UPDATE users SET alert_status = 0 
+        WHERE id = $currentUser_id"; 
+    $run = mysqli_query($link, $query_update); 
+
     $validate = empty($name_err) &&
         empty($address_err) &&
         empty($username_err) &&
@@ -322,6 +356,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </select>
                                     </div>
                                 </div>
+                                <div id="payment" class="form-group row hidden">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" name="account_name" placeholder="Account Name" class="form-control form-control-user" required>
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" name="gcash_number" placeholder="Gcash Number" class="form-control form-control-user" required>
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0 mt-4">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text text-muted">₱</span>
+                                            </div>
+                                            <input type="number" name="amount" placeholder="Amount" class="form-control form-control-user" value="200" readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text text-muted">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0 mt-4">
+                                        <input type="password" name="pin"  maxlength="6" placeholder="PIN" class="form-control form-control-user" required>
+                                    </div>
+                                </div>
                         </div>
                         <div class="form-group row mt-2 mb-3">
                             <div class="col-sm-12 mb-3 mb-sm-0 text-center">
@@ -334,9 +390,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         </form>
                         <hr>
-                        <div class="text-center">
-                            <a class="small" href="reset-password.php">Forgot Password?</a>
-                        </div>
                         <div class="text-center mb-2">
                             <a class="small" href="login.php">Already have an account? Login!</a>
                         </div>
@@ -435,9 +488,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $("#subscription").change(function() {
         if ($(this).val() === "2") {
             $('#payment_option').removeClass('hidden');
-            $('#paymentModal').modal('show')
+            $('#payment').removeClass('hidden');
         } else {
-            $('#payment_option').addClass('hidden');
+            $('#payment').addClass('hidden');
         }
     });
 
@@ -450,7 +503,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     });
 
     function keypresshandler(event) {
-        console.log('test!');
         var charCode = event.keyCode;
         //Non-numeric character range
         if (charCode > 31 && (charCode < 48 || charCode > 57))

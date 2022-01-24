@@ -10915,7 +10915,6 @@ form.user .custom-checkbox.small label {
 
 form.user .form-control-user {
   font-size: 0.8rem;
-  border-radius: 10rem;
   padding: 1.5rem 1rem;
 }
 
@@ -11328,7 +11327,6 @@ body.sidebar-toggled footer.sticky-footer {
 .dropdown-control-user {
     padding: 1rem 1rem;
     font-size: 0.8rem;
-    border-radius: 10rem;
     color: #6e707e;
     border: 1px solid #d1d3e2;
     background-color: #fff;
@@ -11344,7 +11342,6 @@ body.sidebar-toggled footer.sticky-footer {
 
 .select-control-user {
     font-size: 0.8rem;
-    border-radius: 10rem;
     height: calc(2.3rem + 0.75rem + 2px);
 }
 

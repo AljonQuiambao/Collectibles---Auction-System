@@ -12,8 +12,7 @@ $sql = "SELECT * FROM items
         JOIN item_status ON items.id = item_status.item_id
         JOIN users ON items.user_id = users.id
         -- JOIN item_status_enum ON items.status = item_status_enum.item_status_enum_id
-        JOIN item_category ON items.category = item_category.category_id 
-        ORDER BY date_added DESC";
+        JOIN item_category ON items.category = item_category.category_id";
 
 $result = mysqli_query($link, $sql);
 $items = $result->fetch_all(MYSQLI_ASSOC);
