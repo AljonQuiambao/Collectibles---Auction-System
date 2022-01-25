@@ -29,10 +29,6 @@
 
     $items = filterByDate($items, $date_now);
 
-
-
-    // /print_r($items);
-
     $user_id = trim($_SESSION["id"]);
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);

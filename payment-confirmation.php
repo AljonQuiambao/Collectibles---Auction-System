@@ -12,24 +12,6 @@
 
     $item_result = mysqli_query($link, $sql);
     $items = $item_result->fetch_all(MYSQLI_ASSOC);
-
-    // function filterByStatus($items, $isDeleted)
-    // {
-    //     return array_filter($items, function ($item) use ($isDeleted) {
-    //         if ($item['is_deleted'] = TRUE) {
-    //             return true;
-    //         }
-    //     });
-    // }
-
-    // $items = filterByStatus($items, 0);
-
-    // $test = filter_var($items, 0);
-    // print_r($test);
-
-    //print_r($items);
-
-    //$user_sql = "SELECT * FROM users WHERE id = $item_id";
 ?>
 
 
@@ -98,27 +80,31 @@
                                                             <td class="item-details"><?php echo $item['details']; ?></td>
                                                             <td><?php echo $item['category']; ?></td>
                                                             <td>
-                                                                ₱ <?php echo $item['token']; ?>
-                                                                <!-- <?php echo $item['token'] * 0.10 ;?> -->
+                                                                <?php
+                                                                    $item_id = $item['item_id'];
+                                                                    $result = mysqli_query($link, "SELECT MAX(current_bid) 
+                                                                        FROM bidding_sessions WHERE item_id =  $item_id");
+                                                                    $row = mysqli_fetch_array($result);
+                                                                ?>
+                                                                ₱ <?php echo $row[0]; ?>
                                                             </td>
                                                             <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                             <td>
                                                                 <div><?php echo $item['name']; ?></div>
                                                             </td>
                                                               <td>
+                                                                <?php
+                                                                    $auctioneer_id = $item['auctioneer_id']; 
+                                                                    $sql = "SELECT * FROM users WHERE id = $auctioneer_id";
+                                                                    $result = mysqli_query($link, $sql);
+                                                                    $currentUser = $result->fetch_array(MYSQLI_ASSOC);
+                                                                ?>
                                                                 <div>Name:
                                                                      <?php
-                                                                        echo $item['auctioneer_id'];
+                                                                        echo $currentUser['name'];
                                                                     ?>
                                                                 </div>
                                                                 <div>Age:
-                                                                    <!-- <?php echo $item['date_of_birth']; ?> -->
-                                                                    <!-- <?php echo
-                                                                        date_diff(
-                                                                            date_create($item['date_of_birth']),
-                                                                            date_create(date_default_timezone_get())
-                                                                        )->y;
-                                                                    ?> -->
                                                                      <?php echo
                                                                         date_diff(date_create($item['date_of_birth']),
                                                                         date_create('now'))->y;
@@ -135,7 +121,7 @@
                                                                     <input class="auctioneer_id" type="hidden" name="auctioneer_id" value="<?php echo $item['auctioneer_id'] ?>">
                                                                     <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
                                                                     <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
-                                                                    <input class="amount" type="hidden" name="amount" value="<?php echo $item['token'] ?>">
+                                                                    <input class="amount" type="hidden" name="amount" value="<?php echo $row[0]; ?>">
                                                                     <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
                                                                 </form>
                                                             </td>

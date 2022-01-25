@@ -127,7 +127,7 @@ $comment_count =  count($comments);
                                                 <input name="category" value="<?php echo $item['category_id']; ?>" type="hidden">
                                                 <input class="hidden" id="counter_submit" name="counter_submit" type="submit">
                                             </form>
-                                            Auction Started : Time Remaining <strong> <span class="counter" data-date-time="<?php echo $bid_session['bidding_time']; ?>"></span></strong>
+                                            Auction Started : Time Remaining <strong> <span class="counter" data-bid-time="<?php echo $bid_session['bidding_time']; ?>" data-end-time="<?php echo $bid_session['end_time']; ?>"></span></strong>
                                         </h3>
                                     </div>
                                 </div>
@@ -183,7 +183,7 @@ $comment_count =  count($comments);
                                             </div>
                                             <div class="mt-3">
                                                 <span style="font-size: small;">
-                                                    Date Posted: <?php echo $item['date_added']; ?>
+                                                    Date Posted: <?php echo date('m-d-Y', strtotime($item['date_added'])); ?>
                                                 </span>
                                             </div>
                                             <div class="mt-4">
@@ -199,8 +199,7 @@ $comment_count =  count($comments);
                                                 Current Bid
                                                 <h4 id="bid-payment">
                                                     <span id="current-bid">
-                                                        <strong> <?php echo intval($bid_session['current_bid']); ?>
-                                                        </strong>
+                                                        <strong>₱ <?php echo number_format((float)$bid_session['current_bid'], 2, '.', ''); ?></strong>
                                                     </span>
                                                 </h4>
                                             </div>

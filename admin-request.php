@@ -137,10 +137,8 @@
                                                                             <div>Name: <?php echo $currentUser["name"]; ?></div>
                                                                             <div>Age:
                                                                                 <?php echo
-                                                                                date_diff(
-                                                                                    date_create($item['date_of_birth']),
-                                                                                    date_create(date_default_timezone_get())
-                                                                                )->y;
+                                                                                    date_diff(date_create($item['date_of_birth']),
+                                                                                    date_create('now'))->y;
                                                                                 ?>
                                                                             </div>
                                                                         </td>
@@ -195,11 +193,9 @@
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
                                                                             <div>Age:
-                                                                                <?php echo
-                                                                                date_diff(
-                                                                                    date_create($item['date_of_birth']),
-                                                                                    date_create(date_default_timezone_get())
-                                                                                )->y;
+                                                                                 <?php echo
+                                                                                    date_diff(date_create($item['date_of_birth']),
+                                                                                    date_create('now'))->y;
                                                                                 ?>
                                                                             </div>
                                                                         </td>
@@ -248,11 +244,9 @@
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
                                                                             <div>Age:
-                                                                                <?php echo
-                                                                                date_diff(
-                                                                                    date_create($item['date_of_birth']),
-                                                                                    date_create(date_default_timezone_get())
-                                                                                )->y;
+                                                                                 <?php echo
+                                                                                    date_diff(date_create($item['date_of_birth']),
+                                                                                    date_create('now'))->y;
                                                                                 ?>
                                                                             </div>
                                                                         </td>
@@ -304,14 +298,20 @@
                                                                             <div>Name: <?php echo $item['name']; ?></div>
                                                                             <div>Age:
                                                                                 <?php echo
-                                                                                date_diff(
-                                                                                    date_create($item['date_of_birth']),
-                                                                                    date_create(date_default_timezone_get())
-                                                                                )->y;
+                                                                                    date_diff(date_create($item['date_of_birth']),
+                                                                                    date_create('now'))->y;
                                                                                 ?>
                                                                             </div>
                                                                         </td>
-                                                                        <td><?php echo $item['reason']; ?></td>
+                                                                        <?php
+                                                                            $item_id = $item['item_id']; 
+                                                                            $sql = "SELECT * FROM item_reason WHERE item_id = $item_id";
+                                                                            $result = mysqli_query($link, $sql);
+                                                                            $item_reason = $result->fetch_array(MYSQLI_ASSOC);
+                                                                        ?>
+                                                                        <td>
+                                                                            <?php echo $item_reason['reason']; ?>
+                                                                        </td>
                                                                         <td>
                                                                             <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
                                                                                 Delete

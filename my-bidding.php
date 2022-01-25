@@ -103,6 +103,10 @@
                                             <span class="fas fa-fw fa-tags"></span>
                                             Won Items
                                         </a>
+                                        <a class="nav-item nav-link" style="text-align:left;" id="nav-bought-tab" data-toggle="tab" href="#nav-bought" role="tab" aria-controls="nav-contact" aria-selected="false">
+                                            <span class="fas fa-fw fa-tags"></span>
+                                            Bought Items
+                                        </a>
                                     </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -110,7 +114,7 @@
                                         <div class="card shadow mb-4">
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered auction-table" id="pending-items" width="100%" cellspacing="0">
+                                                    <table class="table table-bordered auction-table" id="ongoing-bidding" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr class="text-center">
                                                                 <th class="col-4">Image</th>
@@ -176,7 +180,7 @@
                                         <div class="card shadow mb-4">
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered auction-table" id="approved-items" width="100%" cellspacing="0">
+                                                    <table class="table table-bordered auction-table" id="bidding-history" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr class="text-center">
                                                                 <th class="col-1">Item</th>
@@ -284,6 +288,76 @@
                                                                                 Delete
                                                                             </button>
                                                                         </td>
+                                                                    </tr>
+                                                            <?php }
+                                                            } ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="nav-bought" role="tabpanel" aria-labelledby="nav-bought-tab">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered auction-table" id="bought-items" width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <th class="col-1">Image</th>
+                                                                <th class="col-1">Item</th>
+                                                                <th class="col-1">Details</th>
+                                                                <th class="col-1">Category</th>
+                                                                <th class="col-1">Token</th>
+                                                                <th class="col-1">Bid date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php if (array_filter($wonItems) != []) {
+                                                                foreach ($wonItems as $item) { ?>
+                                                                    <tr class="text-center">
+                                                                        <td>
+                                                                            <?php
+                                                                            $result = array();
+                                                                            foreach ($images as $element) {
+                                                                                $result[$element['item_id']][] = $element;
+                                                                            }
+
+                                                                            foreach ($result as $key => $image) { ?>
+                                                                                <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                                                    <div class="carousel-inner">
+                                                                                        <?php
+                                                                                        foreach ($image as $id => $data) {
+                                                                                            if ($data['item_id'] === $item['item_id']) {
+                                                                                                $imageURL = 'uploads/' . $data["file_name"];
+                                                                                        ?>
+                                                                                                <div class="carousel-item <?php if ($id === 0) {
+                                                                                                                                echo "active";
+                                                                                                                            } ?>">
+                                                                                                    <img class="table-slider w-100 h-100 img-welcome" src="<?php echo $imageURL; ?>">
+                                                                                                </div>
+                                                                                        <?php
+                                                                                            }
+                                                                                        } ?>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <?php
+                                                                            } ?>
+                                                                        </td>
+                                                                        <td class="title">
+                                                                            <input name="auctioneer_id" type="hidden" value="<?php echo $item['user_id']; ?>">
+                                                                            <input name="bidder_id" type="hidden" value="<?php echo $param_id; ?>">
+                                                                            <input name="item_id" type="hidden" value="<?php echo  $item['id']; ?>">
+                                                                            <a href="item-details.php?item_id=<?php echo $item['id']; ?>" target="_blank">
+                                                                                <?php echo $item['title']; ?>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td class="item-details"><?php echo $item['details']; ?></td>
+                                                                        <td><?php echo $item['category']; ?></td>
+                                                                        <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
+                                                                        <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
+
                                                                     </tr>
                                                             <?php }
                                                             } ?>

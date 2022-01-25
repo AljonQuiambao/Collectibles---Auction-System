@@ -62,6 +62,12 @@
             $start_bid = $_POST['start_bid'];
             $item_title = $item['title'];
 
+            if ($bid_token < 49) {
+                $_SESSION['error_status'] = "Your input must be higher than 50.";
+                header("Location: item-details.php?item_id=" . $item_id);
+                exit();
+            }
+
             if ($bid_token < $start_bid) {
                 $_SESSION['error_status'] = "Your bid is less than the starting price.";
                 header("Location: item-details.php?item_id=" . $item_id);

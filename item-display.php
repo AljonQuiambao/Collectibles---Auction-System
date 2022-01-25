@@ -8,7 +8,7 @@ $categories = $result->fetch_all(MYSQLI_ASSOC);
 
 $date_now = date("Y-m-d H:i:s");
 $items_sql = "SELECT * FROM bidding_sessions
-    JOIN items ON bidding_sessions.id = items.id";
+    JOIN items ON bidding_sessions.item_id = items.id";
 
 $results = mysqli_query($link, $items_sql);
 $items = $results->fetch_all(MYSQLI_ASSOC);

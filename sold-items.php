@@ -9,7 +9,7 @@
         JOIN item_status ON items.id = item_status.item_id
         JOIN users ON items.user_id = users.id
         JOIN item_category ON items.category = item_category.category_id
-        JOIN item_status_enum ON items.status = item_status_enum.item_status_enum_id
+        -- JOIN item_status_enum ON items.status = item_status_enum.item_status_enum_id
         WHERE is_deleted = false";
 
     $result = mysqli_query($link, $sql);
@@ -68,10 +68,6 @@
                                             <th class="col-1">Category</th>
                                             <th class="col-1">Token</th>
                                             <th class="col-2">Bid date</th>
-                                            <th class="col-1">Status</th>
-                                            <th class="col-3">
-                                                Actions
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,31 +75,31 @@
                                             <tr class="text-center">
                                                 <td>
                                                 <div id="image-container">
-                                                            <?php
-                                                                $result = array();
-                                                                foreach ($images as $element) {
-                                                                    $result[$element['item_id']][] = $element;
-                                                                }        
-                                                                
-                                                                foreach ($result as $key => $image) { 
-                                                                    ?>
-                                                                    <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
-                                                                        <div class="carousel-inner">
-                                                                            <?php
-                                                                            foreach ($image as $id => $data) {
-                                                                                if ($data['item_id'] === $item['item_id'])  {
-                                                                                    $imageURL = 'uploads/' . $data["file_name"];
-                                                                                    ?>
-                                                                                    <div class="carousel-item <?php if ($id === 0) { echo "active";} ?>">
-                                                                                        <img class="d-block slider w-100 h-100" src="<?php echo $imageURL; ?>">
-                                                                                    </div>
-                                                                                <?php 
-                                                                                }  
-                                                                            } ?>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php 
-                                                            } ?>
+                                                    <?php
+                                                        $result = array();
+                                                        foreach ($images as $element) {
+                                                            $result[$element['item_id']][] = $element;
+                                                        }        
+                                                        
+                                                        foreach ($result as $key => $image) { 
+                                                            ?>
+                                                            <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                                <div class="carousel-inner">
+                                                                    <?php
+                                                                    foreach ($image as $id => $data) {
+                                                                        if ($data['item_id'] === $item['item_id'])  {
+                                                                            $imageURL = 'uploads/' . $data["file_name"];
+                                                                            ?>
+                                                                            <div class="carousel-item <?php if ($id === 0) { echo "active";} ?>">
+                                                                                <img class="d-block slider w-100 h-100" src="<?php echo $imageURL; ?>">
+                                                                            </div>
+                                                                        <?php 
+                                                                        }  
+                                                                    } ?>
+                                                                </div>
+                                                            </div>
+                                                        <?php 
+                                                    } ?>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -114,14 +110,10 @@
                                                 </td>
                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                 <td><?php echo $item['category']; ?></td>
-                                                <td><?php echo number_format($item['token']); ?></td>
-                                                <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
-                                                <td><?php echo $item['status']; ?></td>
                                                 <td>
-                                                    <button id="btn-submit" class="btn btn-success" data-toggle="modal" data-target="#submitProofModal" title="Ready to Bid">
-                                                        Submit Proof
-                                                    </button>
+                                                    ₱ <?php echo number_format((float)$item['token'], 2, '.', ''); ?>
                                                 </td>
+                                                <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                             </tr>
                                             <?php
                                             }

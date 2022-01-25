@@ -421,7 +421,7 @@
                 $run = mysqli_query($link, $query_sql);
 
                 //for auctioneer
-                $auctioneer = mysqli_query($link, "SELECT * FROM users WHERE user_id=" . $auctioneer_id);
+                $auctioneer = mysqli_query($link, "SELECT * FROM users WHERE id=" . $auctioneer_id);
                 $auctioneerRecord = mysqli_num_rows($auctioneer);
 
                 if ($auctioneerRecord > 0) { 
@@ -439,7 +439,7 @@
                 $query_update_run = mysqli_query($link, $query_update); 
                 
                 //for bidder
-                $bidder = mysqli_query($link, "SELECT * FROM users WHERE user_id=" . $bidder_id);
+                $bidder = mysqli_query($link, "SELECT * FROM users WHERE id=" . $bidder_id);
                 $bidderRecord = mysqli_num_rows($bidder);
 
                 if ($bidderRecord > 0) { 

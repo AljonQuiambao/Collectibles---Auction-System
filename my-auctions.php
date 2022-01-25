@@ -140,9 +140,10 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     <tr class="text-center">
                                                         <th class="col-2">Image</th>
                                                         <th class="col-2">Item</th>
+                                                        <th class="col-2">Details</th>
                                                         <th class="col-2">Category</th>
                                                         <th class="col-2">Token</th>
-                                                        <th class="col-1">Bid date</th>
+                                                        <th class="col-1">Date Added</th>
                                                         <th class="col-3">
                                                             Actions
                                                         </th>
@@ -180,6 +181,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                     <?php
                                                                     } ?>
                                                                 </td>
+                                                                <td class="item-details"><?php echo $item['title']; ?></td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
@@ -188,7 +190,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                     <input type="hidden" class="category" value="<?php echo $item['category']; ?>"/>
                                                                     <input type="hidden" class="item_id" value="<?php echo $item['item_id']; ?>"/>
                                                                     <input type="hidden" class="user_id" value="<?php echo $item['user_id']; ?>"/>
-                                                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
+                                                                    <button class="btn btn-secondary mb-2" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
                                                                         Cancel
                                                                     </button>
                                                                     <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
@@ -214,6 +216,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     <tr class="text-center">
                                                         <th class="col-2">Image</th>
                                                         <th class="col-2">Item</th>
+                                                        <th class="col-2">Details</th>
                                                         <th class="col-1">Category</th>
                                                         <th class="col-2">Token</th>
                                                         <th class="col-1">Bid date</th>
@@ -254,6 +257,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                     <?php
                                                                     } ?>
                                                                 </td>
+                                                                <td class="item-details"><?php echo $item['title']; ?></td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
@@ -291,6 +295,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     <tr class="text-center">
                                                         <th class="col-1">Image</th>
                                                         <th class="col-1">Item</th>
+                                                        <th class="col-1">Details</th>
                                                         <th class="col-1">Category</th>
                                                         <th class="col-1">Token</th>
                                                         <th class="col-1">Bid date</th>
@@ -331,12 +336,13 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                     <?php
                                                                     } ?>
                                                                 </td>
+                                                                <td class="item-details"><?php echo $item['title']; ?></td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
-                                                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
+                                                                    <button class="btn btn-secondary mb-2" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
                                                                         Cancel
                                                                     </button>
                                                                     <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
@@ -363,6 +369,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     <tr class="text-center">
                                                         <th class="col-1">Image</th>
                                                         <th class="col-1">Item</th>
+                                                        <th class="col-1">Details</th>
                                                         <th class="col-1">Category</th>
                                                         <th class="col-1">Token</th>
                                                         <th class="col-1">Bid date</th>
@@ -403,6 +410,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                     <?php
                                                                     } ?>
                                                                 </td>
+                                                                <td class="item-details"><?php echo $item['title']; ?></td>
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
