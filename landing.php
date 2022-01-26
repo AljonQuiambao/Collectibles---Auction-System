@@ -195,7 +195,7 @@
         <div class="row no-gutters">
           <div class="col-lg-6 box featured" data-aos="fade-up">
             <h3>Premium</h3>
-            <h4>₱ 199.00<span>per month</span></h4>
+            <h4>₱ 199.00<span>life time</span></h4>
             <ul>
             <li><i class="bx bx-check"></i> Can view auction item(s)</li>
               <li><i class="bx bx-check"></i> Can check details of the item(s)</li>
@@ -203,7 +203,6 @@
               <li><i class="bx bx-check"></i> <span>Can submit/add item(s) to be auctions</span></li>
               <li><i class="bx bx-check"></i> <span>Can start bidding session</span></li>
               <li><i class="bx bx-check"></i> <span>You can add unlimited item(s)</span></li>
-              <li><i class="bx bx-check"></i> <span>Auction item(s) are placed on the top search</span></li>
             </ul>
             <a href="register.php" class="get-started-btn">Get Started</a>
           </div>
@@ -218,7 +217,6 @@
               <li><i class="bx bx-check"></i> <span>Can submit/add item(s) to be auctions</span></li>
               <li><i class="bx bx-check"></i> <span>Can start bidding session</span></li>
               <li><i class="bx bx-check"></i> <span>You can only add five (5) item(s) per month</span></li>
-              <li class="na"><i class="bx bx-x"></i> <span>Auction item(s) are placed on the top search</span></li>
             </ul>
             <a href="register.php" class="get-started-btn">Get Started</a>
           </div>

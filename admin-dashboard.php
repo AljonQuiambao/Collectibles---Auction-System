@@ -82,7 +82,7 @@ $display_token = $token['token'] ? $token['token'] : 0;
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Available Balance
+                                                Commission
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 ₱ <?php echo number_format((float)$display_token, 2, '.', ''); ?> tokens

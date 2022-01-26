@@ -354,13 +354,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <option value="2">Premium</option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <select id="payment_option" class="form-control select-control-user hidden" name="payment_option">
-                                            <option value="" selected disabled hidden>Payment Option</option>
-                                            <option value="1">Cash</option>
-                                            <option value="2">Card</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div id="payment" class="form-group row hidden">
                                     <div class="col-sm-6 mb-3 mb-sm-0">

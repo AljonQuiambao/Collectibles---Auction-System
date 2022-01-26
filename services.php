@@ -383,7 +383,7 @@
         $auctioneer_id = $_POST['auctioneer_id'];
         $item_id = $_POST['item_id'];
         $category = $_POST['category'];
-        $amount = $_POST['amount'];
+        $amount = intval($_POST['amount']);
 
         $query_payment_status = "DELETE FROM item_proof
                 WHERE item_id = $item_id"; 
@@ -397,8 +397,8 @@
             $query_run = mysqli_query($link, $query_status);
 
             //insert computation of tokens here
-            $admin_commission = intval($amount) * 0.10;
-            $auctioneer_receivable = intval($amount) - $admin_commission;
+            $admin_commission = $amount * 0.10;
+            $auctioneer_receivable = $amount - $admin_commission;
 
             //for bidder
             $bidder = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $bidder_id);

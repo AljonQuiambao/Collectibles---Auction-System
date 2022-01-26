@@ -370,7 +370,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                     <table class="table table-bordered auction-table" id="cancel-items" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr class="text-center">
-                                                                <th class="col-2">Item</th>
+                                                                <th class="col-2">Image</th>
                                                                 <th class="col-1">Item</th>
                                                                 <th class="col-5">Details</th>
                                                                 <th class="col-1">Category</th>

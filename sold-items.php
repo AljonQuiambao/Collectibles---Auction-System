@@ -15,6 +15,17 @@
     $result = mysqli_query($link, $sql);
     $items = $result->fetch_all(MYSQLI_ASSOC);
 
+    function filterByUser($items, $user_id)
+    {
+        return array_filter($items, function ($item) use ($user_id) {
+            if ($item['user_id'] == $user_id) {
+                return true;
+            }
+        });
+    }
+
+    $filterItems = filterByUser($items, $current_user_id);
+
     // print_r($items);
 
     function filterByStatus($items, $status)
@@ -26,7 +37,7 @@
         });
     }
 
-    $soldItems = filterByStatus($items, 5);
+    $soldItems = filterByStatus($filterItems, 5);
 
     $image_sql = "SELECT * FROM images ORDER BY id DESC";
     $item_result = mysqli_query($link, $image_sql);

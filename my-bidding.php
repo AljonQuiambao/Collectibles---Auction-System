@@ -319,6 +319,7 @@
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
                                                                 <th class="col-1">Bid date</th>
+                                                                <th class="col-1">Seller Information</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -365,7 +366,25 @@
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
-
+                                                                        <td>
+                                                                            <?php
+                                                                                $auctioneer_id = $item['user_id']; 
+                                                                                $sql = "SELECT * FROM users WHERE id = $auctioneer_id";
+                                                                                $result = mysqli_query($link, $sql);
+                                                                                $currentUser = $result->fetch_array(MYSQLI_ASSOC);
+                                                                            ?>
+                                                                        <div>Name:
+                                                                            <?php
+                                                                                echo $currentUser['name'];
+                                                                            ?>
+                                                                        </div>
+                                                                        <div>Age:
+                                                                            <?php echo
+                                                                                date_diff(date_create($item['date_of_birth']),
+                                                                                date_create('now'))->y;
+                                                                            ?>
+                                                                        </div>
+                                                                        </td>
                                                                     </tr>
                                                             <?php }
                                                             } ?>
