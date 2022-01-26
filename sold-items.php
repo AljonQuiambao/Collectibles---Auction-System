@@ -59,7 +59,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class="table-responsive">
-                            <table class="table table-bordered auction-table" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered auction-table" id="sold-items" width="100%" cellspacing="0">
                                     <thead>
                                         <tr class="text-center">
                                             <th class="col-2">Image</th>

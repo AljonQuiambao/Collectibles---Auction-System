@@ -99,8 +99,13 @@ if (isset($_POST['save_item_data'])) {
                     you may check the status of the item on the my auction page.', 0, now())";
             $run = mysqli_query($link, $query_sql);
 
+            $user_sql = "SELECT * FROM users WHERE id = $user_id";
+            $user_query = mysqli_query($link, $user_sql);
+            $user = $user_query->fetch_array(MYSQLI_ASSOC);
+            $unread_alert_user = $user['alert_unread_count'] + 1;
+
             //update notification status
-            $query_update = "UPDATE users SET alert_status = 0 
+            $query_update = "UPDATE users SET alert_status = 0, alert_unread_count = $unread_alert_user
                     WHERE id = $user_id"; 
 
             $query_update_run = mysqli_query($link, $query_update); 
@@ -165,7 +170,7 @@ if (isset($_POST['save_item_data'])) {
                                 </a>
                                 <button type="submit" name="save_item_data" class="btn btn-primary btn-lg ml-2">
                                     <i class="fas fa-save"></i>
-                                    Save
+                                    Request
                                 </button>
                             </div>
                         </div>

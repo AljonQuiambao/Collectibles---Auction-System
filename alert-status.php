@@ -16,7 +16,7 @@
 
         if ($totalrows > 0) {
             // Delete item record
-            $query = "UPDATE users SET alert_status = 1 WHERE id=" . $user_id;
+            $query = "UPDATE users SET alert_status = 1, alert_unread_count = 0 WHERE id=" . $user_id;
             mysqli_query($link, $query);
             echo 1;
             exit;
@@ -30,7 +30,7 @@
 
         if ($totalrows > 0) {
             // Delete item record
-            $query = "UPDATE users SET message_status = 1 WHERE id=" . $user_id;
+            $query = "UPDATE users SET message_status = 1, message_unread_count = 0 WHERE id=" . $user_id;
             mysqli_query($link, $query);
             echo 1;
             exit;

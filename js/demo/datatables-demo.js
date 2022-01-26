@@ -30,6 +30,10 @@ $(document).ready(function() {
     "order": [[ 4, "desc" ]]
   });
 
+  $('#sold-items').DataTable({
+    "order": [[ 5, "desc" ]]
+  });
+
   $('#bidder-users').DataTable();
   $('#auctioneer-users').DataTable();
   $('#multi-users').DataTable();

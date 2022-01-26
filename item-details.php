@@ -105,11 +105,24 @@
                                 VALUES ('$current_user_id', '$item_id', 2, 'Congratulations! Your are the highest bidder for the item ($item_title).', 0, NOW())"; 
                 $bid_notif_run = mysqli_query($link, $bid_notif_sql);
 
-                //update notification status
-                $query_update = "UPDATE users SET alert_status = 0 
-                    WHERE id = $current_user_id"; 
+                $user_sql = "SELECT * FROM users WHERE id = $current_user_id";
+                $user_query = mysqli_query($link, $user_sql);
+                $user = $user_query->fetch_array(MYSQLI_ASSOC);
+                $unread_alert_user = $user['alert_unread_count'] + 1;
 
-                $query_update_run = mysqli_query($link, $query_update); 
+                //update notification status
+                $query_update = "UPDATE users SET alert_status = 0, alert_unread_count = $unread_alert_user
+                    WHERE id = $current_user_id"; 
+                $query_update_run = mysqli_query($link, $query_update);
+
+                $user_sql = "SELECT * FROM users WHERE id = $auctioneer_id";
+                $user_query = mysqli_query($link, $user_sql);
+                $user = $user_query->fetch_array(MYSQLI_ASSOC);
+                $unread_alert_user = $user['alert_unread_count'] + 1;
+                
+                $query_update_status = "UPDATE users SET alert_status = 0, alert_unread_count = $unread_alert_user
+                    WHERE id = $auctioneer_id"; 
+                $query_update_run_status = mysqli_query($link, $query_update_status);
 
                 $_SESSION['success_status'] = "Your bid is successfully save.";
                 header("Location: item-details.php?item_id=" . $item_id);

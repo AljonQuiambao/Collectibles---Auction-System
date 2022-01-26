@@ -27,8 +27,13 @@
 
                 $run = mysqli_query($link, $query_sql);
 
+                $user_sql = "SELECT * FROM users WHERE id = $auctioneer_id";
+                $user_query = mysqli_query($link, $user_sql);
+                $user = $user_query->fetch_array(MYSQLI_ASSOC);
+                $unread_alert_user = $user['alert_unread_count'] + 1;
+
                 //update notification status
-                $query_update = "UPDATE users SET alert_status = 0 
+                $query_update = "UPDATE users SET alert_status = 0, alert_unread_count = $unread_alert_user
                     WHERE id = $auctioneer_id"; 
 
                 $query_update_run = mysqli_query($link, $query_update); 
@@ -69,8 +74,14 @@
 
                 $run = mysqli_query($link, $query_sql);
 
+                $user_sql = "SELECT * FROM users WHERE id = $auctioneer_id";
+                $user_query = mysqli_query($link, $user_sql);
+                $user = $user_query->fetch_array(MYSQLI_ASSOC);
+                $unread_alert_user = $user['alert_unread_count'] + 1;
+
                 //update notification status
-                $query_update = "UPDATE users SET alert_status = 0 
+                $query_update = "UPDATE users SET alert_status = 0,  
+                    alert_unread_count = $unread_alert_user
                     WHERE id = $auctioneer_id"; 
  
                 $query_update_run = mysqli_query($link, $query_update); 
@@ -151,8 +162,14 @@
                  VALUES ('$bidder_id', '$item_id', 2, 'Your proof already submitted to administrator.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
+            $user_sql = "SELECT * FROM users WHERE id = $bidder_id";
+            $user_query = mysqli_query($link, $user_sql);
+            $user = $user_query->fetch_array(MYSQLI_ASSOC);
+            $unread_alert_user = $user['alert_unread_count'] + 1;
+
             //update notification status
-            $query_update = "UPDATE users SET alert_status = 0 
+            $query_update = "UPDATE users SET alert_status = 0,
+                alert_unread_count = $unread_alert_user
                 WHERE id = $bidder_id"; 
 
             $query_update_run = mysqli_query($link, $query_update); 
@@ -196,8 +213,14 @@
                  VALUES ('$bidder_id', '$item_id', 2, 'You update your profile successfully!', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
+            $user_sql = "SELECT * FROM users WHERE id = $bidder_id";
+            $user_query = mysqli_query($link, $user_sql);
+            $user = $user_query->fetch_array(MYSQLI_ASSOC);
+            $unread_alert_user = $user['alert_unread_count'] + 1;
+
             //update notification status
-            $query_update = "UPDATE users SET alert_status = 0 
+            $query_update = "UPDATE users SET alert_status = 0,
+                alert_unread_count = $unread_alert_user
                 WHERE id = $bidder_id"; 
 
             $query_update_run = mysqli_query($link, $query_update); 
@@ -238,8 +261,14 @@
                  VALUES ('$bidder_id', '$item_id', 2, 'Successfully cash in your account.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
+            $user_sql = "SELECT * FROM users WHERE id = $bidder_id";
+            $user_query = mysqli_query($link, $user_sql);
+            $user = $user_query->fetch_array(MYSQLI_ASSOC);
+            $unread_alert_user = $user['alert_unread_count'] + 1;
+
             //update notification status
-            $query_update = "UPDATE users SET alert_status = 0 
+            $query_update = "UPDATE users SET alert_status = 0,
+                alert_unread_count = $unread_alert_user
                 WHERE id = $bidder_id"; 
 
             $query_update_run = mysqli_query($link, $query_update); 
@@ -285,8 +314,14 @@
                  VALUES ('$bidder_id', '$item_id', 2, 'Successfully cash out your account.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
+            $user_sql = "SELECT * FROM users WHERE id = $bidder_id";
+            $user_query = mysqli_query($link, $user_sql);
+            $user = $user_query->fetch_array(MYSQLI_ASSOC);
+            $unread_alert_user = $user['alert_unread_count'] + 1;
+
             //update notification status
-            $query_update = "UPDATE users SET alert_status = 0 
+            $query_update = "UPDATE users SET alert_status = 0,
+                alert_unread_count = $unread_alert_user 
                 WHERE id = $bidder_id"; 
 
             $query_update_run = mysqli_query($link, $query_update); 
@@ -320,8 +355,14 @@
                  VALUES ('$user_id', 0, 2, 'Successfully activated multirole in your account.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
+            $user_sql = "SELECT * FROM users WHERE id = $user_id";
+            $user_query = mysqli_query($link, $user_sql);
+            $user = $user_query->fetch_array(MYSQLI_ASSOC);
+            $unread_alert_user = $user['alert_unread_count'] + 1;
+
             //update notification status
-            $query_update = "UPDATE users SET alert_status = 0 
+            $query_update = "UPDATE users SET alert_status = 0,
+                alert_unread_count = $unread_alert_user 
                 WHERE id = $user_id"; 
 
             $query_update_run = mysqli_query($link, $query_update); 
@@ -356,8 +397,8 @@
             $query_run = mysqli_query($link, $query_status);
 
             //insert computation of tokens here
-            $admin_commission = $amount * 0.10;
-            $auctioneer_receivable = $amount - $admin_commission;
+            $admin_commission = intval($amount) * 0.10;
+            $auctioneer_receivable = intval($amount) - $admin_commission;
 
             //for bidder
             $bidder = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $bidder_id);
@@ -432,8 +473,14 @@
                     $run = mysqli_query($link, $query_user_sql);
                 }  
 
+                $user_sql = "SELECT * FROM users WHERE id = $auctioneer_id";
+                $user_query = mysqli_query($link, $user_sql);
+                $user = $user_query->fetch_array(MYSQLI_ASSOC);
+                $unread_alert_user = $user['alert_unread_count'] + 1;
+
                 //update notification status
-                $query_update = "UPDATE users SET alert_status = 0 
+                $query_update = "UPDATE users SET alert_status = 0,
+                    alert_unread_count = $unread_alert_user 
                     WHERE id = $auctioneer_id"; 
 
                 $query_update_run = mysqli_query($link, $query_update); 
@@ -450,8 +497,14 @@
                     $run = mysqli_query($link, $query_user_sql);
                 }   
 
+                $user_sql = "SELECT * FROM users WHERE id = $bidder_id";
+                $user_query = mysqli_query($link, $user_sql);
+                $user = $user_query->fetch_array(MYSQLI_ASSOC);
+                $unread_alert_user = $user['alert_unread_count'] + 1;
+
                 //update notification status
-                $query_update = "UPDATE users SET alert_status = 0 
+                $query_update = "UPDATE users SET alert_status = 0,
+                    alert_unread_count = $unread_alert_user 
                     WHERE id = $bidder_id"; 
 
                 $query_update_run = mysqli_query($link, $query_update); 
@@ -472,8 +525,14 @@
                 VALUES ('$user_id', '$item_id', 2, 'The proof is already approved.', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
+            $user_sql = "SELECT * FROM users WHERE id = $auctioneer_id";
+            $user_query = mysqli_query($link, $user_sql);
+            $user = $user_query->fetch_array(MYSQLI_ASSOC);
+            $unread_alert_user = $user['alert_unread_count'] + 1;
+
             //update notification status
-            $query_update = "UPDATE users SET alert_status = 0 
+            $query_update = "UPDATE users SET alert_status = 0,
+                alert_unread_count = $unread_alert_user  
                 WHERE id = $user_id"; 
 
             $query_update_run = mysqli_query($link, $query_update); 
@@ -514,8 +573,14 @@
             $run = mysqli_query($link, $query_sql);
         }
 
+        $user_sql = "SELECT * FROM users WHERE id = $user_id";
+        $user_query = mysqli_query($link, $user_sql);
+        $user = $user_query->fetch_array(MYSQLI_ASSOC);
+        $unread_alert_user = $user['alert_unread_count'] + 1;
+
         //update notification status
-        $query_update = "UPDATE users SET alert_status = 0 
+        $query_update = "UPDATE users SET alert_status = 0,
+            alert_unread_count = $unread_alert_user  
             WHERE id = $user_id"; 
 
         $run = mysqli_query($link, $query_update); 

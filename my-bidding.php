@@ -41,6 +41,14 @@
     $query_sql = "SELECT * FROM images ORDER BY id DESC";
     $item_result = mysqli_query($link, $query_sql);
     $images = $item_result->fetch_all(MYSQLI_ASSOC);
+
+    // $sql = "SELECT * FROM item_proof
+    //     JOIN items ON item_proof.item_id = items.id
+    //     JOIN users ON item_proof.bidder_id = users.id
+    //     JOIN item_category ON items.category = item_category.category_id";
+
+    // $item_result = mysqli_query($link, $sql);
+    // $items = $item_result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 

@@ -27,7 +27,7 @@
         <!-- Counter - Alerts -->
         <?php if ($user['alert_status'] == 0) { ?>
             <span class="badge badge-danger badge-counter">
-                <?php echo count($filteredNotifications); ?>
+                <?php echo $user['alert_unread_count']; ?>
             </span>
         <?php } ?>
     </a>

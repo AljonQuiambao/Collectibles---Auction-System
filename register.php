@@ -163,8 +163,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $run = mysqli_query($link, $query_sql);
     }
 
+    $user_sql = "SELECT * FROM users WHERE id = $currentUser_id";
+    $user_query = mysqli_query($link, $user_sql);
+    $user = $user_query->fetch_array(MYSQLI_ASSOC);
+    $unread_alert_user = $user['alert_unread_count'] + 1;
+
     //update notification status
-    $query_update = "UPDATE users SET alert_status = 0 
+    $query_update = "UPDATE users SET alert_status = 0,
+        alert_unread_count = $unread_alert_user
         WHERE id = $currentUser_id"; 
     $run = mysqli_query($link, $query_update); 
 
