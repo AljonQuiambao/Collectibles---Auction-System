@@ -383,7 +383,7 @@
         $auctioneer_id = $_POST['auctioneer_id'];
         $item_id = $_POST['item_id'];
         $category = $_POST['category'];
-        $amount = intval($_POST['amount']);
+        $amount = $_POST['amount'];
 
         $query_payment_status = "DELETE FROM item_proof
                 WHERE item_id = $item_id"; 

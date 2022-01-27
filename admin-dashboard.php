@@ -49,6 +49,11 @@ $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
 $token_result = mysqli_query($link, $token_sql);
 $token = $token_result->fetch_array(MYSQLI_ASSOC);
 $display_token = $token['token'] ? $token['token'] : 0;
+
+$fee_sql = "SELECT * FROM subscription_fee WHERE user_id = $user_id";
+$fee_result = mysqli_query($link, $fee_sql);
+$fee = $fee_result->fetch_array(MYSQLI_ASSOC);
+$subscription_fee = $fee['subscription_fee'] ? $fee['subscription_fee'] : 0;
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +81,7 @@ $display_token = $token['token'] ? $token['token'] : 0;
                     </div>
 
                     <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -96,7 +101,27 @@ $display_token = $token['token'] ? $token['token'] : 0;
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-secondary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                Subscription Fee
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                ₱ <?php echo number_format((float)$subscription_fee, 2, '.', ''); ?> tokens
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-coins fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -116,7 +141,7 @@ $display_token = $token['token'] ? $token['token'] : 0;
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -136,7 +161,7 @@ $display_token = $token['token'] ? $token['token'] : 0;
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">

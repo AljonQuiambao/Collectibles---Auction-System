@@ -5,6 +5,7 @@
     // Initialize the session
     session_start();
 
+    $current_user_id = trim($_SESSION["id"]);
     $sql = "SELECT * FROM items 
         JOIN item_status ON items.id = item_status.item_id
         JOIN users ON items.user_id = users.id
@@ -38,6 +39,8 @@
     }
 
     $soldItems = filterByStatus($filterItems, 5);
+
+    print_r($soldItems);
 
     $image_sql = "SELECT * FROM images ORDER BY id DESC";
     $item_result = mysqli_query($link, $image_sql);
@@ -79,6 +82,7 @@
                                             <th class="col-1">Category</th>
                                             <th class="col-1">Token</th>
                                             <th class="col-2">Bid date</th>
+                                            <th class="col-2"></th>
                                         </tr>
                                     </thead>
                                     <tbody>

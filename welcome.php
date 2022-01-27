@@ -33,7 +33,7 @@
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    $display_token = $token['token'] ? $token['token'] : 0;
+    $display_token = !empty($token) || $token['token'] ? $token['token'] : 0;
 
     $image_sql = "SELECT * FROM images ORDER BY id DESC";
     $item_result = mysqli_query($link, $image_sql);

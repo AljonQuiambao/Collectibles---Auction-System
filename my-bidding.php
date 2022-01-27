@@ -15,6 +15,16 @@
     $bid_history_result = mysqli_query($link, $bid_history_sql);
     $bid_history_items = $bid_history_result->fetch_all(MYSQLI_ASSOC);
 
+    $payment_confirmation_sql = "SELECT * FROM bidding_history
+                JOIN items ON items.id = bidding_history.item_id
+                JOIN item_status ON items.id = item_status.item_id
+                JOIN item_category ON items.category = item_category.category_id
+                JOIN payment_confirmation ON items.id = payment_confirmation.item_id
+                WHERE bidder_id = $param_id ORDER BY date_bid DESC"; 
+
+    $payment_confirmation_result = mysqli_query($link, $payment_confirmation_sql);
+    $payment_confirmation_items = $bid_history_result->fetch_all(MYSQLI_ASSOC);
+
     function filterByStatus($items, $status)
     {
         return array_filter($items, function ($item) use ($status) {
@@ -37,18 +47,11 @@
     $myBidItems = filterByDate($bid_history_items, $date_now);
     $bidHistoryItems = $bid_history_items;
     $wonItems = filterByStatus($bid_history_items, 5);
+    $boughtItems = $payment_confirmation_items;
 
     $query_sql = "SELECT * FROM images ORDER BY id DESC";
     $item_result = mysqli_query($link, $query_sql);
     $images = $item_result->fetch_all(MYSQLI_ASSOC);
-
-    // $sql = "SELECT * FROM item_proof
-    //     JOIN items ON item_proof.item_id = items.id
-    //     JOIN users ON item_proof.bidder_id = users.id
-    //     JOIN item_category ON items.category = item_category.category_id";
-
-    // $item_result = mysqli_query($link, $sql);
-    // $items = $item_result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 
@@ -323,8 +326,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <?php if (array_filter($wonItems) != []) {
-                                                                foreach ($wonItems as $item) { ?>
+                                                            <?php if (array_filter($boughtItems) != []) {
+                                                                foreach ($boughtItems as $item) { ?>
                                                                     <tr class="text-center">
                                                                         <td>
                                                                             <?php
@@ -380,7 +383,7 @@
                                                                         </div>
                                                                         <div>Age:
                                                                             <?php echo
-                                                                                date_diff(date_create($item['date_of_birth']),
+                                                                                date_diff(date_create($currentUser['date_of_birth']),
                                                                                 date_create('now'))->y;
                                                                             ?>
                                                                         </div>

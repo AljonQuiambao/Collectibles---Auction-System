@@ -141,17 +141,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $currentUser = $result->fetch_array(MYSQLI_ASSOC);
     $currentUser_id = $currentUser["id"];
 
-    $checkRecord = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" .  $currentUser_id);
+    $checkRecord = mysqli_query($link, "SELECT * FROM subscription_fee WHERE user_id=" .  $currentUser_id);
     $totalrows = mysqli_num_rows($checkRecord);
 
     if ($totalrows > 0) {
-        $final_amount = $checkRecord->fetch_array()['token'] + 200;
-        $query_update = "UPDATE tokens SET token = $final_amount
+        $final_amount = $checkRecord->fetch_array()['subscription_fee'] + 200;
+        $query_update = "UPDATE subscription_fee SET subscription_fee = $final_amount
             WHERE user_id = $currentUser_id"; 
 
         $query_update_run = mysqli_query($link, $query_update); 
     } else {
-        $query_update = "INSERT INTO tokens(user_id, token) 
+        $query_update = "INSERT INTO subscription_fee(user_id, subscription_fee) 
         VALUES ('$currentUser_id', '$final_amount')";
 
         $query_update_run = mysqli_query($link, $query_update); 
@@ -306,7 +306,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <ul class="pwd-restrictions">
-                                                <li><span id="pwd-restriction-length"></span>Be between 10-16 characters in length</li>
+                                                <li><span id="pwd-restriction-length"></span>Be between 8-16 characters in length</li>
                                                 <li><span id="pwd-restriction-upperlower"></span>Contain at least 1 lowercase and 1 uppercase letter</li>
                                             </ul>
                                         </div>
@@ -352,6 +352,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <option value="" selected disabled hidden>Subscription</option>
                                             <option value="1">Standard</option>
                                             <option value="2">Premium</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <select id="payment_option" class="form-control select-control-user hidden" name="payment_option">
+                                            <option value="" disabled hidden>Subscription</option>
+                                            <option value="1" selected>Cash</option>
                                         </select>
                                     </div>
                                 </div>
@@ -486,7 +492,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $("#subscription").change(function() {
         if ($(this).val() === "2") {
-            $('#payment_option').removeClass('hidden');
             $('#payment').removeClass('hidden');
         } else {
             $('#payment').addClass('hidden');
@@ -511,7 +516,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#password').keyup(function() {
             var s = $('#password').val();
-            var pwdLength = /^.{10,16}$/;
+            var pwdLength = /^.{8,16}$/;
             var pwdUpper = /[A-Z]+/;
             var pwdLower = /[a-z]+/;
             var pwdNumber = /[0-9]+/;
