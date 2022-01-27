@@ -210,10 +210,10 @@
 
         if ($query_run) {
             $query_sql = "INSERT INTO notifications (user_id, item_id, type, notification, status, date_posted) 
-                 VALUES ('$bidder_id', '$item_id', 2, 'You update your profile successfully!', 0, NOW())"; 
+                 VALUES ('$user_id', '$item_id', 2, 'You update your profile successfully!', 0, NOW())"; 
             $run = mysqli_query($link, $query_sql);
 
-            $user_sql = "SELECT * FROM users WHERE id = $bidder_id";
+            $user_sql = "SELECT * FROM users WHERE id = $user_id";
             $user_query = mysqli_query($link, $user_sql);
             $user = $user_query->fetch_array(MYSQLI_ASSOC);
             $unread_alert_user = $user['alert_unread_count'] + 1;
@@ -221,7 +221,7 @@
             //update notification status
             $query_update = "UPDATE users SET alert_status = 0,
                 alert_unread_count = $unread_alert_user
-                WHERE id = $bidder_id"; 
+                WHERE id = $user_id"; 
 
             $query_update_run = mysqli_query($link, $query_update); 
 
