@@ -266,7 +266,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-2 mt-4">Create an Account</h1>
                             </div>
-                            <form class="user" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
+                            <form class="user" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data" novalidate>
                                 <div class="form-group row">
                                     <div class="col-sm-3 mb-3 mb-sm-0">
                                         <img class="w-100 rounded-circle" src="img/male_avatar.svg" id="cimg">
@@ -373,7 +373,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text text-muted">₱</span>
                                             </div>
-                                            <input type="number" name="amount" placeholder="Amount" class="form-control form-control-user" value="200" readonly>
+                                            <input type="number" name="amount" placeholder="Amount" class="form-control form-control-user" value="199" readonly>
                                             <div class="input-group-append">
                                                 <span class="input-group-text text-muted">.00</span>
                                             </div>
