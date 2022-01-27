@@ -81,7 +81,7 @@
                                                             <td><?php echo $item['category']; ?></td>
                                                             <td>
                                                                 <?php
-                                                                    $item_id = $item['item_id'];
+                                                                    $item_id = $item['id'];
                                                                     $result = mysqli_query($link, "SELECT MAX(current_bid) 
                                                                         FROM bidding_sessions WHERE item_id =  $item_id");
                                                                     $row = mysqli_fetch_array($result);
@@ -121,7 +121,7 @@
                                                                     <input class="auctioneer_id" type="hidden" name="auctioneer_id" value="<?php echo $item['auctioneer_id'] ?>">
                                                                     <input class="item_id" type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
                                                                     <input class="category" type="hidden" name="category" value="<?php echo $item['category_id'] ?>">
-                                                                    <input class="amount" type="hidden" name="amount" value="<?php echo intval($row[0]); ?>">
+                                                                    <input class="amount" type="hidden" name="amount" value="<?php echo $row[0]; ?>">
                                                                     <input name="confirm_payment" type="submit" class="btn btn-success" value="Confirm">
                                                                 </form>
                                                             </td>
