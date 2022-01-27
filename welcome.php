@@ -16,7 +16,7 @@
                 JOIN items ON bidding_sessions.item_id = items.id";
 
     $item_result = mysqli_query($link, $sql);
-    $items = $item_result->fetch_all(MYSQLI_ASSOC);
+    $raw_items = $item_result->fetch_all(MYSQLI_ASSOC);
 
     function filterByDate($items, $dateNow)
     {
@@ -27,7 +27,7 @@
         });
     }
 
-    $items = filterByDate($items, $date_now);
+    $items = filterByDate($raw_items, $date_now);
 
     $user_id = trim($_SESSION["id"]);
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
