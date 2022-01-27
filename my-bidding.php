@@ -282,8 +282,8 @@
                                                                         <td class="title">
                                                                             <input name="auctioneer_id" type="hidden" value="<?php echo $item['user_id']; ?>">
                                                                             <input name="bidder_id" type="hidden" value="<?php echo $param_id; ?>">
-                                                                            <input name="item_id" type="hidden" value="<?php echo  $item['id']; ?>">
-                                                                            <a href="item-details.php?item_id=<?php echo $item['id']; ?>" target="_blank">
+                                                                            <input name="item_id" type="hidden" value="<?php echo  $item['item_id']; ?>">
+                                                                            <a href="item-details.php?item_id=<?php echo $item['item_id']; ?>" target="_blank">
                                                                                 <?php echo $item['title']; ?>
                                                                             </a>
                                                                         </td>
