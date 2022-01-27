@@ -1,57 +1,57 @@
 <?php
-    // Include config file
-    require_once "config.php";
+// Include config file
+require_once "config.php";
 
-    // Initialize the session
-    session_start();
+// Initialize the session
+session_start();
 
-    $param_id = trim($_SESSION["id"]);
-    $bid_history_sql = "SELECT * FROM bidding_history 
+$param_id = trim($_SESSION["id"]);
+$bid_history_sql = "SELECT * FROM bidding_history 
             JOIN items ON items.id = bidding_history.item_id
             JOIN item_status ON items.id = item_status.item_id
             JOIN item_category ON items.category = item_category.category_id
             WHERE bidder_id = $param_id ORDER BY date_bid DESC";
 
-    $bid_history_result = mysqli_query($link, $bid_history_sql);
-    $bid_history_items = $bid_history_result->fetch_all(MYSQLI_ASSOC);
+$bid_history_result = mysqli_query($link, $bid_history_sql);
+$bid_history_items = $bid_history_result->fetch_all(MYSQLI_ASSOC);
 
-    $payment_confirmation_sql = "SELECT * FROM bidding_history
+$payment_confirmation_sql = "SELECT * FROM bidding_history
                 JOIN items ON items.id = bidding_history.item_id
                 JOIN item_status ON items.id = item_status.item_id
                 JOIN item_category ON items.category = item_category.category_id
                 JOIN payment_confirmation ON items.id = payment_confirmation.item_id
-                WHERE bidder_id = $param_id ORDER BY date_bid DESC"; 
+                WHERE bidder_id = $param_id ORDER BY date_bid DESC";
 
-    $payment_confirmation_result = mysqli_query($link, $payment_confirmation_sql);
-    $payment_confirmation_items = $bid_history_result->fetch_all(MYSQLI_ASSOC);
+$payment_confirmation_result = mysqli_query($link, $payment_confirmation_sql);
+$payment_confirmation_items = $bid_history_result->fetch_all(MYSQLI_ASSOC);
 
-    function filterByStatus($items, $status)
-    {
-        return array_filter($items, function ($item) use ($status) {
-            if ($item['status'] == $status) {
-                return true;
-            }
-        });
-    }
+function filterByStatus($items, $status)
+{
+    return array_filter($items, function ($item) use ($status) {
+        if ($item['status'] == $status) {
+            return true;
+        }
+    });
+}
 
-    $date_now = date("Y-m-d H:i:s");
-    function filterByDate($items, $dateNow)
-    {
-        return array_filter($items, function ($item) use ($dateNow) {
-            if ($item['date_bid'] >= $dateNow) {
-                return true;
-            }
-        });
-    }
+$date_now = date("Y-m-d H:i:s");
+function filterByDate($items, $dateNow)
+{
+    return array_filter($items, function ($item) use ($dateNow) {
+        if ($item['date_bid'] >= $dateNow) {
+            return true;
+        }
+    });
+}
 
-    $myBidItems = filterByDate($bid_history_items, $date_now);
-    $bidHistoryItems = $bid_history_items;
-    $wonItems = filterByStatus($bid_history_items, 5);
-    $boughtItems = $payment_confirmation_items;
+$myBidItems = filterByDate($bid_history_items, $date_now);
+$bidHistoryItems = $bid_history_items;
+$wonItems = filterByStatus($bid_history_items, 5);
+$boughtItems = $payment_confirmation_items;
 
-    $query_sql = "SELECT * FROM images ORDER BY id DESC";
-    $item_result = mysqli_query($link, $query_sql);
-    $images = $item_result->fetch_all(MYSQLI_ASSOC);
+$query_sql = "SELECT * FROM images ORDER BY id DESC";
+$item_result = mysqli_query($link, $query_sql);
+$images = $item_result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 
@@ -250,57 +250,66 @@
                                                         <tbody>
                                                             <?php if (array_filter($wonItems) != []) {
                                                                 foreach ($wonItems as $item) { ?>
-                                                                    <tr class="text-center">
-                                                                        <td>
-                                                                            <?php
-                                                                            $result = array();
-                                                                            foreach ($images as $element) {
-                                                                                $result[$element['item_id']][] = $element;
-                                                                            }
+                                                                    <?php
+                                                                    $item_id = $item['item_id'];
+                                                                    $result = mysqli_query($link, "SELECT MAX(bid_token) 
+                                                                                FROM bidding_history WHERE item_id =  $item_id");
+                                                                    $row = mysqli_fetch_array($result);
 
-                                                                            foreach ($result as $key => $image) { ?>
-                                                                                <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
-                                                                                    <div class="carousel-inner">
-                                                                                        <?php
-                                                                                        foreach ($image as $id => $data) {
-                                                                                            if ($data['item_id'] === $item['item_id']) {
-                                                                                                $imageURL = 'uploads/' . $data["file_name"];
-                                                                                        ?>
-                                                                                                <div class="carousel-item <?php if ($id === 0) {
-                                                                                                                                echo "active";
-                                                                                                                            } ?>">
-                                                                                                    <img class="table-slider w-100 h-100 img-welcome" src="<?php echo $imageURL; ?>">
-                                                                                                </div>
-                                                                                        <?php
-                                                                                            }
-                                                                                        } ?>
+                                                                    if ($item['bid_token'] == $row['0']) {
+                                                                    ?>
+                                                                        <tr class="text-center">
+                                                                            <td>
+                                                                                <?php
+                                                                                $result = array();
+                                                                                foreach ($images as $element) {
+                                                                                    $result[$element['item_id']][] = $element;
+                                                                                }
+
+                                                                                foreach ($result as $key => $image) { ?>
+                                                                                    <div style="width: 100%;" id="<?php echo $key; ?>" class="carousel slide" data-ride="carousel">
+                                                                                        <div class="carousel-inner">
+                                                                                            <?php
+                                                                                            foreach ($image as $id => $data) {
+                                                                                                if ($data['item_id'] === $item['item_id']) {
+                                                                                                    $imageURL = 'uploads/' . $data["file_name"];
+                                                                                            ?>
+                                                                                                    <div class="carousel-item <?php if ($id === 0) {
+                                                                                                                                    echo "active";
+                                                                                                                                } ?>">
+                                                                                                        <img class="table-slider w-100 h-100 img-welcome" src="<?php echo $imageURL; ?>">
+                                                                                                    </div>
+                                                                                            <?php
+                                                                                                }
+                                                                                            } ?>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            <?php
-                                                                            } ?>
-                                                                        </td>
-                                                                        <td class="title">
-                                                                            <input name="auctioneer_id" type="hidden" value="<?php echo $item['user_id']; ?>">
-                                                                            <input name="bidder_id" type="hidden" value="<?php echo $param_id; ?>">
-                                                                            <input name="item_id" type="hidden" value="<?php echo  $item['item_id']; ?>">
-                                                                            <a href="item-details.php?item_id=<?php echo $item['item_id']; ?>" target="_blank">
-                                                                                <?php echo $item['title']; ?>
-                                                                            </a>
-                                                                        </td>
-                                                                        <td class="item-details"><?php echo $item['details']; ?></td>
-                                                                        <td><?php echo $item['category']; ?></td>
-                                                                        <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
-                                                                        <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
-                                                                        <td>
-                                                                            <button id="btn-submit" class="btn btn-success mb-2" data-toggle="modal" data-target="#submitProofModal" title="Ready to Bid">
-                                                                                Submit Proof
-                                                                            </button>
-                                                                            <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
-                                                                                Delete
-                                                                            </button>
-                                                                        </td>
-                                                                    </tr>
+                                                                                <?php
+                                                                                } ?>
+                                                                            </td>
+                                                                            <td class="title">
+                                                                                <input name="auctioneer_id" type="hidden" value="<?php echo $item['user_id']; ?>">
+                                                                                <input name="bidder_id" type="hidden" value="<?php echo $param_id; ?>">
+                                                                                <input name="item_id" type="hidden" value="<?php echo  $item['item_id']; ?>">
+                                                                                <a href="item-details.php?item_id=<?php echo $item['item_id']; ?>" target="_blank">
+                                                                                    <?php echo $item['title']; ?>
+                                                                                </a>
+                                                                            </td>
+                                                                            <td class="item-details"><?php echo $item['details']; ?></td>
+                                                                            <td><?php echo $item['category']; ?></td>
+                                                                            <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
+                                                                            <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
+                                                                            <td>
+                                                                                <button id="btn-submit" class="btn btn-success mb-2" data-toggle="modal" data-target="#submitProofModal" title="Ready to Bid">
+                                                                                    Submit Proof
+                                                                                </button>
+                                                                                <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
+                                                                                    Delete
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
                                                             <?php }
+                                                                }
                                                             } ?>
                                                         </tbody>
                                                     </table>
@@ -371,22 +380,24 @@
                                                                         <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                         <td>
                                                                             <?php
-                                                                                $auctioneer_id = $item['user_id']; 
-                                                                                $sql = "SELECT * FROM users WHERE id = $auctioneer_id";
-                                                                                $result = mysqli_query($link, $sql);
-                                                                                $currentUser = $result->fetch_array(MYSQLI_ASSOC);
+                                                                            $auctioneer_id = $item['user_id'];
+                                                                            $sql = "SELECT * FROM users WHERE id = $auctioneer_id";
+                                                                            $result = mysqli_query($link, $sql);
+                                                                            $currentUser = $result->fetch_array(MYSQLI_ASSOC);
                                                                             ?>
-                                                                        <div>Name:
-                                                                            <?php
+                                                                            <div>Name:
+                                                                                <?php
                                                                                 echo $currentUser['name'];
-                                                                            ?>
-                                                                        </div>
-                                                                        <div>Age:
-                                                                            <?php echo
-                                                                                date_diff(date_create($currentUser['date_of_birth']),
-                                                                                date_create('now'))->y;
-                                                                            ?>
-                                                                        </div>
+                                                                                ?>
+                                                                            </div>
+                                                                            <div>Age:
+                                                                                <?php echo
+                                                                                date_diff(
+                                                                                    date_create($currentUser['date_of_birth']),
+                                                                                    date_create('now')
+                                                                                )->y;
+                                                                                ?>
+                                                                            </div>
                                                                         </td>
                                                                     </tr>
                                                             <?php }

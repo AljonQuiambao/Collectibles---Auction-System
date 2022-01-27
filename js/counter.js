@@ -18,8 +18,6 @@
             // Find the distance between now and the count down date
             var distance = endTimeDate - now;
 
-            // console.log("distance", distance);
-                
             // Time calculations for days, hours, minutes and seconds
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -30,7 +28,38 @@
             // distance = -1; // for debug
             if (distance < 0) {
                 clearInterval(x);
-                $target.text("DONE");
+            
+                var itemId = $($target).data('item_id');
+                var bidderId = $($target).data('bidder_id');
+                var auctioneerId = $($target).data('auctioneer_id');
+
+                $($target).offsetParent().addClass('hidden');
+                //$target.text("DONE");
+
+                  // AJAX Request
+                  $.ajax({
+                    url: 'notification-updates.php',
+                    type: 'POST',
+                    data: {
+                        itemId: itemId,
+                        bidderId: bidderId,
+                        auctioneerId: auctioneerId
+                    },
+                    success: function(response) {
+                        if (response == 1) {
+                            // Remove row from HTML Table
+                            $(el).closest('tr').css('background', 'tomato');
+                            $(el).closest('tr').fadeOut(800, function() {
+                                $(this).remove();
+                            });
+
+                            $('.deleted-message').removeClass('hidden');
+                        } else {
+                            alert('Invalid data id.');
+                        }
+
+                    }
+                });
 
                 $('#bid-textbox').attr('disabled', 'disabled');
                 $('#place-bid').attr('disabled', 'disabled');

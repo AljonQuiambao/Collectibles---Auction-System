@@ -101,7 +101,14 @@
                                     <div class="thumbnail card shadow mb-4">
                                         <div class="ml-4">
                                             <span class="badge badge-danger badge-counter">
-                                                Ends in <span class="counter" data-bid-time="<?php echo $item['bidding_time']; ?>" data-end-time="<?php echo $item['end_time']; ?>"></span>
+                                                 Ends in 
+                                                 <span class="counter" 
+                                                    data-bidder-id="<?php echo $user_id; ?>"
+                                                    data-auctioneer-id="<?php echo $item['auctioneer_id']; ?>"
+                                                    data-item-id="<?php echo $item['item_id']; ?>"
+                                                    data-bid-time="<?php echo $item['bidding_time']; ?>" 
+                                                    data-end-time="<?php echo $item['end_time']; ?>">
+                                                </span>
                                             </span>
                                         </div>
                                         <div class="card-header py-3 text-center">

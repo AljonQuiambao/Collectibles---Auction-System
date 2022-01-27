@@ -81,7 +81,7 @@
                                                             <td><?php echo $item['category']; ?></td>
                                                             <td>
                                                                 <?php
-                                                                    $item_id = $item['id'];
+                                                                    $item_id = $item['item_id'];
                                                                     $result = mysqli_query($link, "SELECT MAX(current_bid) 
                                                                         FROM bidding_sessions WHERE item_id =  $item_id");
                                                                     $row = mysqli_fetch_array($result);

@@ -126,7 +126,13 @@
                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                 <td><?php echo $item['category']; ?></td>
                                                 <td>
-                                                    ₱ <?php echo number_format((float)$item['token'], 2, '.', ''); ?>
+                                                    <?php
+                                                        $item_id = $item['item_id'];
+                                                        $result = mysqli_query($link, "SELECT MAX(current_bid) 
+                                                            FROM bidding_sessions WHERE item_id =  $item_id");
+                                                        $row = mysqli_fetch_array($result);
+                                                    ?>
+                                                    ₱ <?php echo $row[0]; ?>
                                                 </td>
                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                 <td></td>
