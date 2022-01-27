@@ -53,7 +53,7 @@ $display_token = $token['token'] ? $token['token'] : 0;
 $fee_sql = "SELECT * FROM subscription_fee WHERE user_id = $user_id";
 $fee_result = mysqli_query($link, $fee_sql);
 $fee = $fee_result->fetch_array(MYSQLI_ASSOC);
-$subscription_fee = $fee['subscription_fee'] ? $fee['subscription_fee'] : 0;
+$subscription_fee = !empty($fee) || $fee['subscription_fee'] ? $fee['subscription_fee'] : 0;
 ?>
 
 <!DOCTYPE html>

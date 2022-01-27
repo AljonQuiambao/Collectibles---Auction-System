@@ -63,7 +63,7 @@
             $current_bid = $_POST['current_bid'];
             $item_title = $item['title'];
 
-            if (($current_bid - $bid_token) < 49) {
+            if (($bid_token - $current_bid) < 49) {
                 $_SESSION['error_status'] = "Sorry! Your input must be higher than 50.";
                 header("Location: item-details.php?item_id=" . $item_id);
                 exit();
