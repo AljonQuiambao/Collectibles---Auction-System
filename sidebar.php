@@ -15,14 +15,49 @@ $user = $result->fetch_array(MYSQLI_ASSOC);
 ?>
 
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="welcome.php">
-        <div class="sidebar-brand-icon rotate-n-15 mr-2">
-            <i class="fas fa-gavel"></i>
-        </div>
-        <div class="sidebar-brand-text mr-3">
-            Collectibles
-        </div>
-    </a>
+    <?php if ($user['role'] == 1) { ?>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="welcome.php">
+            <div class="sidebar-brand-icon rotate-n-15 mr-2">
+                <i class="fas fa-gavel"></i>
+            </div>
+            <div class="sidebar-brand-text mr-3">
+                Collectibles
+            </div>
+        </a> 
+    <?php } ?>
+
+    <?php if ($user['role'] == 2) { ?>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="my-auctions.php">
+            <div class="sidebar-brand-icon rotate-n-15 mr-2">
+                <i class="fas fa-gavel"></i>
+            </div>
+            <div class="sidebar-brand-text mr-3">
+                Collectibles
+            </div>
+        </a> 
+    <?php } ?>
+
+    <?php if ($user['role'] == 3) { ?>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="admin-dashboard.php">
+            <div class="sidebar-brand-icon rotate-n-15 mr-2">
+                <i class="fas fa-gavel"></i>
+            </div>
+            <div class="sidebar-brand-text mr-3">
+                Collectibles
+            </div>
+        </a> 
+    <?php } ?>
+
+    <?php if ($user['role'] == 4) { ?>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="welcome.php">
+            <div class="sidebar-brand-icon rotate-n-15 mr-2">
+                <i class="fas fa-gavel"></i>
+            </div>
+            <div class="sidebar-brand-text mr-3">
+                Collectibles
+            </div>
+        </a> 
+    <?php } ?>
 
     <?php if ($user['role'] == 1) { ?>
         <!-- Divider -->

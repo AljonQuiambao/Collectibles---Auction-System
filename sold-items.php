@@ -40,7 +40,7 @@
 
     $soldItems = filterByStatus($filterItems, 5);
 
-    print_r($soldItems);
+    //print_r($soldItems);
 
     $image_sql = "SELECT * FROM images ORDER BY id DESC";
     $item_result = mysqli_query($link, $image_sql);
@@ -82,7 +82,7 @@
                                             <th class="col-1">Category</th>
                                             <th class="col-1">Token</th>
                                             <th class="col-2">Bid date</th>
-                                            <th class="col-2"></th>
+                                            <th class="col-2">Buyer's Information</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -129,6 +129,7 @@
                                                     ₱ <?php echo number_format((float)$item['token'], 2, '.', ''); ?>
                                                 </td>
                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                <td></td>
                                             </tr>
                                             <?php
                                             }
