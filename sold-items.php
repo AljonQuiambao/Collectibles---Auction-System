@@ -118,7 +118,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <input name="auctioneer_id" type="hidden" value="<?php echo $param_id; ?>">
+                                                    <input name="auctioneer_id" type="hidden" value="<?php echo $current_user_id; ?>">
                                                     <input name="bidder_id" type="hidden" value="<?php echo $item['user_id']; ?>">
                                                     <input name="item_id" type="hidden" value="<?php echo  $item['id']; ?>">
                                                     <?php echo $item['title']; ?>
@@ -132,10 +132,34 @@
                                                             FROM bidding_sessions WHERE item_id =  $item_id");
                                                         $row = mysqli_fetch_array($result);
                                                     ?>
-                                                    ₱ <?php echo $row[0]; ?>
+                                                    ₱  <?php echo number_format((float)$row[0], 2, '.', ''); ?>
                                                 </td>
                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
-                                                <td></td>
+                                                <td>
+                                                    <?php
+                                                        $item_id = $item['item_id'];
+                                                        $result = mysqli_query($link, "SELECT bidder_id, MAX(bid_token)
+                                                            FROM bidding_history WHERE item_id = $item_id");
+                                                        $raw_row = mysqli_fetch_array($result);
+
+                                                        if ($raw_row['bidder_id'] > 0) {
+                                                            $bidder_id = $raw_row['bidder_id']; 
+                                                            $sql = "SELECT * FROM users WHERE id = $bidder_id";
+                                                            $result = mysqli_query($link, $sql);
+                                                            $currentUser = $result->fetch_array(MYSQLI_ASSOC);
+                                                        }
+                                                    ?>
+                                                    <div>Name:
+                                                        <?php
+                                                            echo $currentUser['name'];
+                                                        ?>
+                                                    </div>
+                                                    <div>Username:
+                                                        <?php
+                                                            echo $currentUser['username'];
+                                                        ?>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <?php
                                             }

@@ -299,6 +299,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                         <th class="col-1">Category</th>
                                                         <th class="col-1">Token</th>
                                                         <th class="col-1">Bid date</th>
+                                                        <th class="col-1">Admin Reason</th>
                                                         <th class="col-4">
                                                             Actions
                                                         </th>
@@ -342,6 +343,15 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <td>₱ <?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
+                                                                    <?php
+                                                                        $item_id = $item['item_id'];
+                                                                        $sql = "SELECT * FROM item_reason WHERE item_id = $item_id";
+                                                                        $result = mysqli_query($link, $sql);
+                                                                        $item_reason = $result->fetch_array(MYSQLI_ASSOC);
+                                                                    ?>
+                                                                    <?php echo $item_reason['reason']; ?>
+                                                                </td>
+                                                                <td>
                                                                     <button class="btn btn-secondary mb-2" data-toggle="modal" data-target="#cancelItemModal" title="Cancel Item">
                                                                         Cancel
                                                                     </button>
@@ -373,6 +383,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                         <th class="col-1">Category</th>
                                                         <th class="col-1">Token</th>
                                                         <th class="col-1">Bid date</th>
+                                                        <th class="col-1">Admin Reason</th>
                                                         <th class="col-4">
                                                             Actions
                                                         </th>
@@ -415,6 +426,15 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
+                                                                <td>
+                                                                    <?php
+                                                                        $item_id = $item['item_id'];
+                                                                        $sql = "SELECT * FROM item_reason WHERE item_id = $item_id";
+                                                                        $result = mysqli_query($link, $sql);
+                                                                        $item_reason = $result->fetch_array(MYSQLI_ASSOC);
+                                                                    ?>
+                                                                    <?php echo $item_reason['reason']; ?>
+                                                                </td>
                                                                 <td>
                                                                     <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
                                                                         Delete

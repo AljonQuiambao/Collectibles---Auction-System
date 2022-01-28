@@ -398,20 +398,22 @@
             //for bidder
             $bidder = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $bidder_id);
             $bidderRecords = mysqli_num_rows($bidder);
+
+            // $winning_bet = mysqli_query($link, "SELECT * FROM winning_bet WHERE bidder_id=" . $bidder_id);
     
-            if ($bidderRecords > 0) {
-                $final_amount = $bidder->fetch_array()['token'] - $amount;
-                $query_update = "UPDATE tokens SET token = $final_amount 
-                    WHERE user_id = $bidder_id"; 
+            // if ($bidderRecords > 0) {
+            //     $final_amount = $bidder->fetch_array()['token'] - $amount;
+            //     $query_update = "UPDATE tokens SET token = $final_amount 
+            //         WHERE user_id = $bidder_id"; 
     
-                $query_update_run = mysqli_query($link, $query_update); 
-            } else {
-                $final_amount = $bidder->fetch_array()['token'] - $amount;
-                $query_update = "INSERT INTO tokens(user_id, token) 
-                    VALUES ('$bidder_id', '$amount')";
+            //     $query_update_run = mysqli_query($link, $query_update); 
+            // } else {
+            //     $final_amount = $bidder->fetch_array()['token'] - $amount;
+            //     $query_update = "INSERT INTO tokens(user_id, token) 
+            //         VALUES ('$bidder_id', '$amount')";
     
-                $query_update_run = mysqli_query($link, $query_update); 
-            }
+            //     $query_update_run = mysqli_query($link, $query_update); 
+            // }
 
             //for auctioneer
             $auctioneer = mysqli_query($link, "SELECT * FROM tokens WHERE user_id=" . $auctioneer_id);

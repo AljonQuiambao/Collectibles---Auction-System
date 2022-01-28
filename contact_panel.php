@@ -45,6 +45,10 @@
 										echo 'Administrator';
 										break;
 									
+									case 4:
+										echo 'Multirole';
+										break;
+									
 									default:
 										echo 'Bidder';
 										break;

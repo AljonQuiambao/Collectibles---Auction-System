@@ -11601,4 +11601,9 @@ ul.pwd-restrictions {
   font-size: 12px;
 }
 
+.item-slider {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 

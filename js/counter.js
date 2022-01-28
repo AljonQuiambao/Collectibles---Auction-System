@@ -29,9 +29,10 @@
             if (distance < 0) {
                 clearInterval(x);
             
-                var itemId = $($target).data('item_id');
-                var bidderId = $($target).data('bidder_id');
-                var auctioneerId = $($target).data('auctioneer_id');
+                var currentBid = $($target).data('current-bid');
+                var itemId = $($target).data('item-id');
+                var bidderId = $($target).data('bidder-id');
+                var auctioneerId = $($target).data('auctioneer-id');
 
                 $($target).offsetParent().addClass('hidden');
                 //$target.text("DONE");
@@ -41,6 +42,7 @@
                     url: 'notification-updates.php',
                     type: 'POST',
                     data: {
+                        currentBid: currentBid,
                         itemId: itemId,
                         bidderId: bidderId,
                         auctioneerId: auctioneerId

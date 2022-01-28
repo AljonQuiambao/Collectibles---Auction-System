@@ -36,6 +36,14 @@
 						case 2:
 							echo 'Auctioneer';
 							break;
+
+						case 3:
+							echo 'Administrator';
+							break;
+						
+						case 4:
+							echo 'Multirole';
+							break;
 						
 						default:
 							echo 'Bidder';

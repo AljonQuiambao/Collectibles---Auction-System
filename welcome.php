@@ -103,6 +103,7 @@
                                             <span class="badge badge-danger badge-counter">
                                                  Ends in 
                                                  <span class="counter" 
+                                                    data-current-bid="<?php echo number_format((float)$row[0], 2, '.', ''); ?>"
                                                     data-bidder-id="<?php echo $user_id; ?>"
                                                     data-auctioneer-id="<?php echo $item['auctioneer_id']; ?>"
                                                     data-item-id="<?php echo $item['item_id']; ?>"
