@@ -143,6 +143,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                         <th class="col-2">Details</th>
                                                         <th class="col-2">Category</th>
                                                         <th class="col-2">Token</th>
+                                                        <th class="col-1 hidden">Date Added</th>
                                                         <th class="col-1">Date Added</th>
                                                         <th class="col-3">
                                                             Actions
@@ -185,6 +186,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
+                                                                <td class="hidden"><?php echo $item['bid_time']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
                                                                     <input type="hidden" class="category" value="<?php echo $item['category']; ?>"/>
@@ -219,6 +221,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                         <th class="col-2">Details</th>
                                                         <th class="col-1">Category</th>
                                                         <th class="col-2">Token</th>
+                                                        <th class="col-1 hidden">Bid date</th>
                                                         <th class="col-1">Bid date</th>
                                                         <th class="col-3">
                                                             Actions
@@ -261,6 +264,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
+                                                                <td class="hidden"><?php echo $item['bid_time']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
                                                                     <input type="hidden" class="category" value="<?php echo $item['category']; ?>"/>
@@ -298,6 +302,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                         <th class="col-1">Details</th>
                                                         <th class="col-1">Category</th>
                                                         <th class="col-1">Token</th>
+                                                        <th class="col-1 hidden">Bid date</th>
                                                         <th class="col-1">Bid date</th>
                                                         <th class="col-1">Admin Reason</th>
                                                         <th class="col-4">
@@ -341,6 +346,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
+                                                                <td class="hidden"><?php echo $item['bid_time']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
                                                                     <?php
@@ -382,6 +388,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                         <th class="col-1">Details</th>
                                                         <th class="col-1">Category</th>
                                                         <th class="col-1">Token</th>
+                                                        <th class="col-1 hidden">Bid date</th>
                                                         <th class="col-1">Bid date</th>
                                                         <th class="col-1">Admin Reason</th>
                                                         <th class="col-4">
@@ -425,6 +432,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <td class="item-details"><?php echo $item['details']; ?></td>
                                                                 <td><?php echo $item['category']; ?></td>
                                                                 <td>₱ <?php echo $item['token']; ?></td>
+                                                                <td><?php echo $item['bid_time']; ?></td>
                                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                 <td>
                                                                     <?php
@@ -578,9 +586,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                 });
 
                                 $('.deleted-message').removeClass('hidden');
-                            } else {
-                                alert('Invalid data id.');
-                            }
+                            } 
 
                         }
                     });

@@ -81,6 +81,7 @@
                                             <th class="col-2">Details</th>
                                             <th class="col-1">Category</th>
                                             <th class="col-1">Token</th>
+                                            <th class="col-2 hidden">Bid date</th>
                                             <th class="col-2">Bid date</th>
                                             <th class="col-2">Buyer's Information</th>
                                         </tr>
@@ -134,6 +135,7 @@
                                                     ?>
                                                     ₱  <?php echo number_format((float)$row[0], 2, '.', ''); ?>
                                                 </td>
+                                                <td class="hidden"><?php echo $item['bid_time']; ?></td>
                                                 <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                 <td>
                                                     <?php
@@ -157,6 +159,11 @@
                                                     <div>Username:
                                                         <?php
                                                             echo $currentUser['username'];
+                                                        ?>
+                                                    </div>
+                                                    <div>Contact:
+                                                        <?php
+                                                            echo $currentUser['contact'];
                                                         ?>
                                                     </div>
                                                 </td>

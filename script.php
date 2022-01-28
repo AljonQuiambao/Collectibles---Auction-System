@@ -45,10 +45,7 @@
                             $(el).closest('tr').fadeOut(800, function() {
                                 $(this).remove();
                             });
-                        } else {
-                            alert('Invalid data id.');
-                        }
-
+                        } 
                     }
                 });
             }
@@ -90,8 +87,7 @@
                     type: 2
                 },
                 success: function(response) {
-                    if (response == 1) {} else {
-                        alert('Invalid data id.');
+                    if (response == 1) {
                     }
 
                 }

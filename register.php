@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $totalrows = mysqli_num_rows($checkRecord);
 
     if ($totalrows > 0) {
-        $final_amount = $checkRecord->fetch_array()['subscription_fee'] + 200;
+        $final_amount = $checkRecord->fetch_array()['subscription_fee'] + 199;
         $query_update = "UPDATE subscription_fee SET subscription_fee = $final_amount
             WHERE user_id = $currentUser_id"; 
 

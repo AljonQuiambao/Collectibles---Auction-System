@@ -47,20 +47,7 @@
                         bidderId: bidderId,
                         auctioneerId: auctioneerId
                     },
-                    success: function(response) {
-                        if (response == 1) {
-                            // Remove row from HTML Table
-                            $(el).closest('tr').css('background', 'tomato');
-                            $(el).closest('tr').fadeOut(800, function() {
-                                $(this).remove();
-                            });
-
-                            $('.deleted-message').removeClass('hidden');
-                        } else {
-                            alert('Invalid data id.');
-                        }
-
-                    }
+                    success: function(response) {}
                 });
 
                 $('#bid-textbox').attr('disabled', 'disabled');

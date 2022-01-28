@@ -34,6 +34,10 @@ $(document).ready(function() {
     "order": [[ 5, "desc" ]]
   });
 
+  $('#payment-confirmation-items').DataTable({
+    "order": [[ 4, "desc" ]]
+  });
+
   $('#bidder-users').DataTable();
   $('#auctioneer-users').DataTable();
   $('#multi-users').DataTable();

@@ -56,13 +56,14 @@
                             <div class="card shadow mb-4">
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered auction-table" id="pending-items" width="100%" cellspacing="0">
+                                        <table class="table table-bordered auction-table" id="payment-confirmation-items" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr class="text-center">
                                                     <th class="col-1">Item</th>
                                                     <th class="col-2">Details</th>
                                                     <th class="col-1">Category</th>
                                                     <th class="col-1">Token</th>
+                                                    <th class="col-1 hidden">Bid Date</th>
                                                     <th class="col-1">Bid Date</th>
                                                     <th class="col-2">Bidder</th>
                                                     <th class="col-2">Seller Information</th>
@@ -86,8 +87,9 @@
                                                                         FROM bidding_sessions WHERE item_id =  $item_id");
                                                                     $row = mysqli_fetch_array($result);
                                                                 ?>
-                                                                ₱ <?php echo $row[0]; ?>
+                                                                ₱  <?php echo number_format((float)$row[0], 2, '.', ''); ?>
                                                             </td>
+                                                            <td class="hidden"><?php echo $item['bid_time']; ?></td>
                                                             <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                             <td>
                                                                 <div><?php echo $item['name']; ?></div>

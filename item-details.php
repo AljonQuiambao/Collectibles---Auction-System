@@ -62,9 +62,16 @@
             $start_bid = $_POST['start_bid'];
             $current_bid = $_POST['current_bid'];
             $item_title = $item['title'];
+            $balance = $_POST['balance'];
 
             if (($bid_token - $current_bid) < 49) {
                 $_SESSION['error_status'] = "Sorry! Your input must be higher than 50.";
+                header("Location: item-details.php?item_id=" . $item_id);
+                exit();
+            }
+
+            if ($bid_token > $balance) {
+                $_SESSION['error_status'] = "Sorry! Your balance is less than on what you want to bid! Kindly cashin to your account. Thank you!";
                 header("Location: item-details.php?item_id=" . $item_id);
                 exit();
             }
@@ -314,6 +321,7 @@
                                                     </span>
                                                     <div class="form-group row mb-2 mt-2">
                                                         <div class="col-sm-6 mb-3">
+                                                            <input name="balance" type="hidden" class="form-control form-control-user" id="balance-textbox" value="<?php echo intval($display_token); ?>">
                                                             <input name="current_bid" type="hidden" class="form-control" id="current-bid-textbox" value="<?php echo intval($bid_session['current_bid']); ?>">
                                                             <input name="start_bid" type="hidden" class="form-control" id="start-bid-textbox" value="<?php echo intval($item['token']); ?>">
                                                             <input name="bid_token" type="text" class="form-control form-control-user" id="bid-textbox" placeholder="Your Max Bid">

@@ -13,7 +13,7 @@
     $token_sql = "SELECT * FROM tokens WHERE user_id = $user_id";
     $token_result = mysqli_query($link, $token_sql);
     $token = $token_result->fetch_array(MYSQLI_ASSOC);
-    $display_token = $token['token'] ? $token['token'] : 0;
+    $display_token = !empty($token) || $token['token'] ? $token['token'] : 0;
 
     $date_now = date("Y-m-d H:i:s");
     $bid_history_sql = "SELECT * FROM bidding_history 

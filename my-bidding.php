@@ -133,6 +133,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <th class="col-2">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
+                                                                <th class="col-1 hidden">Bid Date</th>
                                                                 <th class="col-1">Bid Date</th>
                                                             </tr>
                                                         </thead>
@@ -176,6 +177,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                         <td class="item-details" style="word-wrap: break-word;"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
+                                                                        <td><?php echo $item['date_bid']; ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                     </tr>
 
@@ -198,6 +200,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <th class="col-3">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
+                                                                <th class="col-1 hidden">Bid Date</th>
                                                                 <th class="col-1">Bid Date</th>
                                                                 <th class="col-1">Actions</th>
                                                             </tr>
@@ -214,6 +217,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
+                                                                        <td class="hidden"><?php echo $item['date_bid']; ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                         <td>
                                                                             <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
@@ -237,10 +241,11 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                         <thead>
                                                             <tr class="text-center">
                                                                 <th class="col-1">Image</th>
-                                                                <th class="col-1">Item</th>
+                                                                <th class="col-2">Item</th>
                                                                 <th class="col-1">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
+                                                                <th class="col-1 hidden">Bid Date</th>
                                                                 <th class="col-1">Bid date</th>
                                                                 <th class="col-4">
                                                                     Actions
@@ -298,11 +303,21 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                             <td class="item-details"><?php echo $item['details']; ?></td>
                                                                             <td><?php echo $item['category']; ?></td>
                                                                             <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
+                                                                            <td class="hidden"><?php echo $item['date_bid']; ?></td>
                                                                             <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                             <td>
-                                                                                <button id="btn-submit" class="btn btn-success mb-2" data-toggle="modal" data-target="#submitProofModal" title="Ready to Bid">
-                                                                                    Submit Proof
-                                                                                </button>
+                                                                                <?php
+                                                                                    $item_id = $item['item_id'];
+                                                                                    $sql = "SELECT * FROM item_proof WHERE bidder_id = $param_id && item_id = $item_id";
+                                                                                    $result = mysqli_query($link, $sql);
+                                                                                    $proof = $result->fetch_array(MYSQLI_ASSOC);
+                                                                                ?>
+
+                                                                                <?php if (empty($proof)) { ?>
+                                                                                    <button id="btn-submit" class="btn btn-success mb-2" data-toggle="modal" data-target="#submitProofModal" title="Ready to Bid">
+                                                                                        Submit Proof
+                                                                                    </button>
+                                                                                <?php } ?>
                                                                                 <button class="btn btn-danger delete" data-id="<?php echo $item['item_id']; ?>" data-table-name="items" title="Delete">
                                                                                     Delete
                                                                                 </button>
@@ -330,6 +345,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <th class="col-1">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
+                                                                <th class="col-1 hidden">Bid date</th>
                                                                 <th class="col-1">Bid date</th>
                                                                 <th class="col-1">Seller Information</th>
                                                             </tr>
@@ -377,6 +393,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td>₱ <?php echo number_format((float)$item['bid_token'], 2, '.', ''); ?></td>
+                                                                        <td class="hidden"><?php echo $item['date_bid']; ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['date_bid'])); ?></td>
                                                                         <td>
                                                                             <?php

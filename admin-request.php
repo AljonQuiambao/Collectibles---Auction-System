@@ -116,6 +116,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <th class="col-1">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
+                                                                <th class="col-1 hidden">Bid Date</th>
                                                                 <th class="col-1">Bid Date</th>
                                                                 <th class="col-2">Seller Information</th>
                                                                 <th class="col-2">
@@ -159,6 +160,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td><?php echo $item['token']; ?></td>
+                                                                        <td class="hidden"><?php echo $item['bid_time']; ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <?php
@@ -210,6 +212,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <th class="col-2">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
+                                                                <th class="col-1 hidden">Bid Date</th>
                                                                 <th class="col-1">Bid Date</th>
                                                                 <th class="col-2">Seller Information</th>
                                                                 <th class="col-1">
@@ -252,7 +255,8 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo $item['token']; ?></td>
+                                                                        <td>₱ <?php echo $item['token']; ?></td>
+                                                                        <td class="hidden"><?php echo $item['bid_time']; ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
@@ -291,6 +295,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <th class="col-5">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
+                                                                <th class="col-1 hidden">Bid Date</th>
                                                                 <th class="col-1">Bid Date</th>
                                                                 <th class="col-1">Seller Information</th>
                                                                 <th class="col-1">Reason for Rejecting</th>
@@ -334,7 +339,8 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                         <td><?php echo $item['title']; ?></td>
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
-                                                                        <td><?php echo $item['token']; ?></td>
+                                                                        <td>₱ <?php echo $item['token']; ?></td>
+                                                                        <td><?php echo $item['bid_time']; ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
@@ -375,6 +381,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                 <th class="col-5">Details</th>
                                                                 <th class="col-1">Category</th>
                                                                 <th class="col-1">Token</th>
+                                                                <th class="col-1 hidden">Bid Date</th>
                                                                 <th class="col-1">Bid Date</th>
                                                                 <th class="col-1">Seller Information</th>
                                                                 <th class="col-1">Reason for Cancelling</th>
@@ -419,6 +426,7 @@ $images = $item_result->fetch_all(MYSQLI_ASSOC);
                                                                         <td class="item-details"><?php echo $item['details']; ?></td>
                                                                         <td><?php echo $item['category']; ?></td>
                                                                         <td><?php echo $item['token']; ?></td>
+                                                                        <td>₱ <?php echo $item['bid_time']; ?></td>
                                                                         <td><?php echo date('m-d-Y', strtotime($item['bid_time'])); ?></td>
                                                                         <td>
                                                                             <div>Name: <?php echo $item['name']; ?></div>
